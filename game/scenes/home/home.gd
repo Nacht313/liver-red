@@ -12,6 +12,7 @@ var near_obj: Dictionary = {}
 @onready var player: Node2D = $Player
 @onready var cam: Camera2D = $Player/Camera2D
 @onready var prompt: Label = $Hud/Prompt
+var dialogue: DialogueBox
 
 
 func _ready() -> void:
@@ -51,6 +52,12 @@ func _ready() -> void:
 	cam.limit_top = 0
 	cam.limit_bottom = 270
 	prompt.visible = false
+	dialogue = DialogueBox.new()
+	add_child(dialogue)
+	var speakers: Variant = JSON.parse_string(FileAccess.get_file_as_string("res://data/speakers.json"))
+	dialogue.bind(Game.story, speakers)
+	Game.story.line.connect(func(_w, _t): Game.request_ui("dialogue"))
+	Game.story.finished.connect(func(): Game.release_ui("dialogue"))
 
 
 func _process(_delta: float) -> void:

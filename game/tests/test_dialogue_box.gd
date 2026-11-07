@@ -1,0 +1,63 @@
+## Undertale 式對話框：逐字顯示、翻頁、選項、連按不出錯。
+extends TestCase
+
+var _next := 0
+var _picked: Array = []
+
+
+func _box() -> DialogueBox:
+	var b := DialogueBox.new()
+	(Engine.get_main_loop() as SceneTree).root.add_child(b)
+	b.next_requested.connect(func(): _next += 1)
+	b.choice_made.connect(func(i): _picked.append(i))
+	return b
+
+
+func test_typewriter_then_next() -> void:
+	var b := _box()
+	b.show_line("me", "第十一封拒信。")
+	ok(b.is_typing(), "一開始在逐字顯示")
+	b.skip_or_next()
+	ok(not b.is_typing(), "按一下：整句出來")
+	eq(_next, 0, "還沒要求下一句")
+	b.skip_or_next()
+	eq(_next, 1, "再按一下：下一句")
+	b.queue_free()
+
+
+func test_mash_does_not_skip_choices() -> void:
+	var b := _box()
+	b.show_choices([{"text": "A", "sub": "", "why": ""}, {"text": "B", "sub": "", "why": ""}])
+	for i in 10:
+		b.skip_or_next()
+	eq(_picked.size(), 0, "連按確認以外的鍵不會選到選項")
+	eq(_next, 0, "選項出現時不會跳到下一句")
+	b.move(1)
+	b.confirm()
+	eq(_picked, [1], "移到第二個再確認")
+	b.queue_free()
+
+
+func test_disabled_choice_cannot_be_confirmed() -> void:
+	var b := _box()
+	b.show_choices([{"text": "A", "sub": "", "why": "no"}, {"text": "B", "sub": "", "why": ""}])
+	b.confirm()
+	eq(_picked, [1], "游標自動跳過不能選的，確認選到 B")
+	b.queue_free()
+
+
+func test_long_text_pages() -> void:
+	var b := _box()
+	var long := "The immigration officer turned your passport to the very last page and looked up at you for a long time. ".repeat(3)
+	b.show_line("me", long)
+	ok(b.page_count() >= 2, "長句要分頁：%d 頁" % b.page_count())
+	for i in b.page_count():
+		ok(b.lines_on_page(i) <= DialogueBox.LINES, "第 %d 頁不超過 %d 行" % [i, DialogueBox.LINES])
+	for i in b.page_count():
+		b.skip_or_next()  # 出完這一頁
+		if i < b.page_count() - 1:
+			b.skip_or_next()  # 翻到下一頁
+	eq(_next, 0, "最後一頁之前不會要求下一句")
+	b.skip_or_next()
+	eq(_next, 1, "全部看完才下一句")
+	b.queue_free()

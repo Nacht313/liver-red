@@ -5,7 +5,7 @@
 extends SceneTree
 
 
-func _init() -> void:
+func _initialize() -> void:
 	var only := ""
 	var args := OS.get_cmdline_user_args()
 	if args.size() > 0:
