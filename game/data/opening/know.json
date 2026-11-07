@@ -1,0 +1,20 @@
+{
+ "k_tdac": "know.k_tdac",
+ "k_funds": "know.k_funds",
+ "k_onward": "know.k_onward",
+ "k_lcc": "know.k_lcc",
+ "k_pbank": "know.k_pbank",
+ "k_bkk": "know.k_bkk",
+ "k_taxi": "know.k_taxi",
+ "k_lock": "know.k_lock",
+ "k_plug": "know.k_plug",
+ "k_temple": "know.k_temple",
+ "k_water": "know.k_water",
+ "k_rate": "know.k_rate",
+ "k_scam": "know.k_scam",
+ "k_job": "know.k_job",
+ "k_cs": "know.k_cs",
+ "k_land": "know.k_land",
+ "k_region": "know.k_region",
+ "k_quota": "know.k_quota"
+}

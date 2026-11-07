@@ -1,0 +1,76 @@
+[
+ {
+  "id": "r_entry",
+  "name": "research.r_entry.name",
+  "src": "research.r_entry.src",
+  "k": [
+   "k_tdac",
+   "k_funds",
+   "k_onward"
+  ]
+ },
+ {
+  "id": "r_air",
+  "name": "research.r_air.name",
+  "src": "research.r_air.src",
+  "k": [
+   "k_lcc",
+   "k_pbank"
+  ]
+ },
+ {
+  "id": "r_bkk",
+  "name": "research.r_bkk.name",
+  "src": "research.r_bkk.src",
+  "k": [
+   "k_bkk",
+   "k_taxi"
+  ]
+ },
+ {
+  "id": "r_stay",
+  "name": "research.r_stay.name",
+  "src": "research.r_stay.src",
+  "k": [
+   "k_lock",
+   "k_cs"
+  ]
+ },
+ {
+  "id": "r_life",
+  "name": "research.r_life.name",
+  "src": "research.r_life.src",
+  "k": [
+   "k_plug",
+   "k_temple",
+   "k_water",
+   "k_rate"
+  ]
+ },
+ {
+  "id": "r_scam",
+  "name": "research.r_scam.name",
+  "src": "research.r_scam.src",
+  "k": [
+   "k_scam",
+   "k_job"
+  ]
+ },
+ {
+  "id": "r_land",
+  "name": "research.r_land.name",
+  "src": "research.r_land.src",
+  "k": [
+   "k_land"
+  ]
+ },
+ {
+  "id": "r_region",
+  "name": "research.r_region.name",
+  "src": "research.r_region.src",
+  "k": [
+   "k_region",
+   "k_quota"
+  ]
+ }
+]

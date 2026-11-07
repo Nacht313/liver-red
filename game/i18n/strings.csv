@@ -1,3 +1,186 @@
 keys,zh_TW
 ui.app.name,豬肝紅冒險
 ui.test.format,你換到了 {amount} 泰銖。
+# BEGIN generated: npm run export:godot
+know.k_tdac,泰國：中泰互免簽證，每次停留 30 天，180 天內累計不超過 90 天。入境前要在網上填 TDAC 數位入境卡，最早抵達前 3 天才能填，免費。
+know.k_funds,"泰國移民局可能抽查入境資金：免簽旅客每人 10,000 泰銖（或等值外幣、可證明的付款文件）。2026 年 7 月觀光局再次提醒。"
+know.k_onward,泰國入境時可能被問住哪裡、什麼時候離開。有訂房紀錄和離境票會比較順利。
+know.k_lcc,廉航的手提行李通常只有 7 公斤，而且是兩件加起來。超重在櫃台加購托運比網上貴很多。穿在身上和口袋裡的不算。
+know.k_pbank,行動電源只能隨身帶上飛機，絕對不能放在托運行李裡。
+know.k_bkk,曼谷有兩個機場：廉航多半飛廊曼（DMK），全服務航空多半飛素萬那普（BKK）。BKK 有機場快線，計程車要另付 50 銖機場附加費和過路費。
+know.k_taxi,機場出口有人喊「Taxi? Taxi?」的多半是黑車，要價是跳錶的兩三倍。要排官方計程車隊伍。
+know.k_lock,很多青旅的置物櫃要自備掛鎖。
+know.k_plug,泰國的插座大多能插兩孔扁頭，但中國的三孔扁頭（筆電常見）常常插不進去。
+know.k_temple,泰國寺廟要遮住肩膀和膝蓋。
+know.k_water,泰國的自來水不能直接喝，便利店的水很便宜。
+know.k_rate,機場換匯的匯率最差，市區的換匯店最好。在國內銀行換也行，但匯率普通。
+know.k_scam,嘟嘟車司機說「寺廟今天關門」然後載你去寶石店，是曼谷最經典的騙局。
+know.k_job,網上「東南亞高薪、包機票包住宿、不要求經驗」的招聘，很多是電詐集團。真的工作不會要你把護照交給公司保管。
+know.k_cs,沙發衝浪的危險信號：評價都很新、照片很少、一直要你換到別的聊天軟體、主動說要開車來接你。
+know.k_land,陸路：昆明南每天有 D87、D83 兩班動車到萬象，約 9.5 小時。磨丁口岸不辦落地簽，要提前辦寮國電子簽。萬象的 Khamsavath 站每晚 18:25 有 134 次直通曼谷，隔天 07:20 到。
+know.k_region,周邊免簽：馬來西亞每次 30 天（要填 MDAC），新加坡 30 天（要填 SG Arrival Card），格魯吉亞、哈薩克也免簽。日本、韓國、申根都要申請簽證。
+know.k_quota,中國居民每人每年購匯額度是 5 萬美元。
+research.r_entry.name,泰國入境規定
+research.r_entry.src,泰國移民局・旅客須知
+research.r_air.name,廉航與行李規定
+research.r_air.src,背包客論壇・廉航行李經驗談
+research.r_bkk.name,曼谷機場到市區
+research.r_bkk.src,曼谷自由行攻略
+research.r_stay.name,曼谷住宿與考山路
+research.r_stay.src,青旅評價整理
+research.r_life.name,泰國生活常識
+research.r_life.src,旅遊論壇・泰國生活
+research.r_scam.name,東南亞騙局與安全
+research.r_scam.src,外交部領事服務・安全提醒
+research.r_land.name,陸路去泰國
+research.r_land.src,中老鐵路購票須知
+research.r_region.name,周邊國家概況
+research.r_region.src,中國領事服務網・免簽國家
+item.passport.name,護照
+item.passport.desc,豬肝紅色的普通護照
+item.phone.name,手機
+item.wallet.name,錢包（現金＋銀聯卡）
+item.charger.name,手機充電器
+item.laptop.name,筆電＋三孔充電器
+item.laptop.desc,遠程工作必備，但很重
+item.tees.name,T 恤 ×3
+item.under.name,內衣褲襪 ×4
+item.pants.name,長褲
+item.pants.desc,進寺廟要遮住膝蓋
+item.shorts.name,短褲 ×2
+item.jacket.name,薄外套
+item.jacket.desc,車上和飛機上冷氣很強
+item.sandals.name,夾腳拖
+item.toilet.name,盥洗包
+item.towel.name,家裡的浴巾
+item.towel.desc,又大又重
+item.umbrella.name,雨傘
+item.novel.name,中文小說
+item.novel.desc,讀書能恢復信念
+item.notebook.name,日記本
+item.notebook.desc,睡在床上時可以寫日記存檔
+item.snacks.name,媽媽塞的零食
+item.snacks.desc,吃一次飽足大增
+item.meds.name,常備藥
+item.belt.name,防盜腰包
+item.belt.desc,解鎖「貼身腰包」欄位
+item.pbank.name,行動電源 20000mAh
+item.pbank.desc,只能隨身帶上飛機
+item.adapter.name,萬用轉換插頭
+item.adapter.desc,讓筆電的三孔插頭能用
+item.qtowel.name,速乾毛巾
+item.qtowel.desc,比浴巾輕得多
+item.rain.name,輕量雨衣
+item.lock.name,掛鎖
+item.lock.desc,鎖青旅的置物櫃
+item.plugs.name,耳塞＋眼罩
+item.plugs.desc,多人房睡得比較好
+item.repel.name,防蚊液
+item.repel.desc,東南亞有登革熱
+item.uke.name,尤克里里
+item.uke.desc,可以在街頭或酒吧賣藝
+item.gopro.name,運動相機（二手）
+item.gopro.desc,拍 vlog 發自媒體
+item.camera.name,微單相機（二手）
+item.camera.desc,拍照賣圖庫、幫人拍合照
+item.sleepbag.name,輕量睡袋
+item.tent.name,單人帳篷
+layer.pocket.name,褲袋
+layer.pocket.theft,高
+layer.pocket.speed,最快
+layer.waist.name,貼身腰包
+layer.waist.theft,最低
+layer.waist.speed,最快
+layer.day.name,隨身小包
+layer.day.theft,中
+layer.day.speed,快
+layer.top.name,大背包上層
+layer.top.theft,高
+layer.top.speed,快
+layer.mid.name,大背包中層
+layer.mid.theft,中
+layer.mid.speed,中
+layer.bot.name,大背包下層
+layer.bot.theft,低
+layer.bot.speed,慢
+trans.fsc.name,全服務航空直飛曼谷素萬那普
+trans.fsc.desc,含 20 公斤托運，有餐和 USB 充電。10:00 起飛，當地 13:00 抵達。
+trans.lcc.name,廉航直飛曼谷廊曼
+trans.lcc.desc,20:00 起飛，當地 22:30 抵達。
+trans.red.name,紅眼廉航飛曼谷廊曼
+trans.red.desc,23:00 起飛，當地凌晨 01:30 抵達。最便宜，也最累。
+trans.tra.name,廉航經吉隆坡轉機
+trans.tra.desc,09:00 起飛，在吉隆坡轉機，當地 19:00 抵達廊曼。
+trans.land.name,陸路：高鐵＋中老鐵路＋泰寮直通車
+trans.land.desc,高鐵到昆明，動車到萬象，夜車到曼谷。約 4 天，會多蓋兩個章。
+flight.fsc.text,空服員送來了雞肉飯。座位上有 USB，你把手機充滿了。
+flight.lcc.text,廉航上的泡麵要 60 塊，你忍住了。座位很窄，沒有插座。
+flight.red.text,機艙燈全關了。你靠著窗，怎麼也睡不著。
+flight.tra.text,你在吉隆坡機場的地板上坐了四個小時，轉機。吃了一碗叻沙。
+stay.hostel.name,考山路青旅 8 人房
+stay.hostel.desc,床頭有插座，置物櫃要自備鎖
+stay.guest.name,巷子裡的民宿單人房
+stay.guest.desc,安靜，有獨立衛浴
+stay.hotel.name,考山路附近的酒店
+stay.hotel.desc,有泳池和冷氣
+host.nok.desc,朱拉隆功大學的學生，公寓裡堆滿了書。
+host.tom.desc,在曼谷教英文的英國人，冰箱裡只有啤酒和芒果。
+host.pim.desc,插畫師，住考山路旁的巷子。願意接新人。
+host.jay.desc,「Welcome! I can pick you up from the airport with my car 😊 add my LINE」
+stop.bkk.name,泰國・曼谷
+stop.bkk.visa,免簽 30 天
+stop.kul.name,馬來西亞・吉隆坡
+stop.kul.visa,免簽 30 天
+stop.sin.name,新加坡
+stop.sin.visa,免簽 30 天，物價很高
+stop.tbs.name,格魯吉亞・第比利斯
+stop.tbs.visa,免簽
+stop.vte.name,寮國・萬象
+stop.vte.visa,要辦電子簽或落地簽
+stop.tyo.name,日本・東京
+stop.tyo.visa,要事先申請簽證
+family.0.from,媽媽
+family.0.text,東西收拾好了沒？藥要記得帶。
+family.1.from,二姨
+family.1.text,聽說你要出國玩？你表姐考上公務員了，你也該想想了。
+family.2.from,爸爸
+family.2.text,錢省著點花。
+family.3.from,家族群
+family.3.text,（奶奶轉發了一篇〈泰國十大騙局，第七個最可怕〉）
+family.4.from,媽媽
+family.4.text,你高中同學小林進了國企，他媽媽在群裡發了紅包。
+family.5.from,大學室友
+family.5.text,我拿到研究所錄取了！你出去玩得開心啊。
+family.6.from,媽媽
+family.6.text,到了記得報平安。
+tip.0,有些問題，只有出發以後才會知道答案。
+tip.1,背包裡每一公克，都要扛一整年。
+tip.2,手機沒電的時候，你會發現自己有多依賴它。
+tip.3,把護照放在最難被偷的地方。
+tip.4,睡在床上的晚上，可以寫日記存檔。
+tip.5,"入境泰國時，可能會被要求出示 10,000 銖的資金。"
+ending.tired.title,你撐不住了
+ending.tired.text,連續的奔波讓你在路邊坐了很久。你打開航空公司的 App，訂了回國的單程機票。
+ending.faith.title,你想回家了
+ending.faith.text,你在床上躺了一整天，什麼都不想做。第二天，你告訴爸媽你要回去了。
+ending.money.title,錢花完了
+ending.money.text,卡裡的最後一筆錢扣掉之後，媽媽打來電話：「機票我買好了。」你遵守了約定。
+ending.refused.title,入境被拒
+ending.refused.text,"你被帶進了旁邊的小房間。兩個小時後，航空公司的人把你送上了回程的飛機。
+
+你學到了：入境泰國時，身上要有 10,000 銖現金或等值的證明。"
+ending.cs.title,灰色的車
+ending.cs.text,"Jay 很熱情，遞給你一瓶水，說路上要開一個小時。
+你喝了幾口，窗外的路燈開始變得模糊……
+
+醒來的時候，你不知道自己在哪裡。護照和手機都不見了。"
+ending.csDrink.title,那杯酒
+ending.csDrink.text,"酒有點苦。你只記得天花板的吊扇一直在轉。
+
+醒來的時候，你躺在一條陌生的巷子裡，背包、護照、手機都不見了。"
+attr.knowledge.name,學識
+attr.nerve.name,膽識
+attr.craft.name,手藝
+attr.empathy.name,共情
+attr.charm.name,魅力
+# END generated

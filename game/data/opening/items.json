@@ -1,0 +1,330 @@
+{
+ "passport": {
+  "name": "item.passport.name",
+  "kg": 0.05,
+  "L": 0.1,
+  "must": 1,
+  "own": 1,
+  "desc": "item.passport.desc",
+  "size": [
+   1,
+   1
+  ]
+ },
+ "phone": {
+  "name": "item.phone.name",
+  "kg": 0.2,
+  "L": 0.2,
+  "must": 1,
+  "own": 1,
+  "size": [
+   1,
+   1
+  ]
+ },
+ "wallet": {
+  "name": "item.wallet.name",
+  "kg": 0.1,
+  "L": 0.2,
+  "must": 1,
+  "own": 1,
+  "size": [
+   1,
+   1
+  ]
+ },
+ "charger": {
+  "name": "item.charger.name",
+  "kg": 0.12,
+  "L": 0.2,
+  "own": 1,
+  "size": [
+   1,
+   1
+  ]
+ },
+ "laptop": {
+  "name": "item.laptop.name",
+  "kg": 1.9,
+  "L": 2.8,
+  "own": 1,
+  "desc": "item.laptop.desc",
+  "size": [
+   3,
+   1
+  ]
+ },
+ "tees": {
+  "name": "item.tees.name",
+  "kg": 0.6,
+  "L": 3,
+  "own": 1,
+  "size": [
+   2,
+   2
+  ]
+ },
+ "under": {
+  "name": "item.under.name",
+  "kg": 0.4,
+  "L": 2,
+  "own": 1,
+  "size": [
+   2,
+   1
+  ]
+ },
+ "pants": {
+  "name": "item.pants.name",
+  "kg": 0.5,
+  "L": 1.5,
+  "own": 1,
+  "desc": "item.pants.desc",
+  "size": [
+   2,
+   1
+  ]
+ },
+ "shorts": {
+  "name": "item.shorts.name",
+  "kg": 0.4,
+  "L": 1.5,
+  "own": 1,
+  "size": [
+   2,
+   1
+  ]
+ },
+ "jacket": {
+  "name": "item.jacket.name",
+  "kg": 0.5,
+  "L": 2.5,
+  "own": 1,
+  "desc": "item.jacket.desc",
+  "size": [
+   2,
+   1
+  ]
+ },
+ "sandals": {
+  "name": "item.sandals.name",
+  "kg": 0.3,
+  "L": 1.2,
+  "own": 1,
+  "size": [
+   2,
+   1
+  ]
+ },
+ "toilet": {
+  "name": "item.toilet.name",
+  "kg": 0.6,
+  "L": 1.5,
+  "own": 1,
+  "size": [
+   2,
+   1
+  ]
+ },
+ "towel": {
+  "name": "item.towel.name",
+  "kg": 0.7,
+  "L": 3,
+  "own": 1,
+  "desc": "item.towel.desc",
+  "size": [
+   2,
+   2
+  ]
+ },
+ "umbrella": {
+  "name": "item.umbrella.name",
+  "kg": 0.4,
+  "L": 1,
+  "own": 1,
+  "size": [
+   3,
+   1
+  ]
+ },
+ "novel": {
+  "name": "item.novel.name",
+  "kg": 0.4,
+  "L": 1,
+  "own": 1,
+  "desc": "item.novel.desc",
+  "size": [
+   1,
+   1
+  ]
+ },
+ "notebook": {
+  "name": "item.notebook.name",
+  "kg": 0.25,
+  "L": 0.5,
+  "own": 1,
+  "desc": "item.notebook.desc",
+  "size": [
+   1,
+   1
+  ]
+ },
+ "snacks": {
+  "name": "item.snacks.name",
+  "kg": 1.2,
+  "L": 3,
+  "own": 1,
+  "desc": "item.snacks.desc",
+  "size": [
+   2,
+   2
+  ]
+ },
+ "meds": {
+  "name": "item.meds.name",
+  "kg": 0.2,
+  "L": 0.5,
+  "own": 1,
+  "size": [
+   1,
+   1
+  ]
+ },
+ "belt": {
+  "name": "item.belt.name",
+  "kg": 0.1,
+  "L": 0.2,
+  "price": 59,
+  "desc": "item.belt.desc",
+  "worn": 1
+ },
+ "pbank": {
+  "name": "item.pbank.name",
+  "kg": 0.4,
+  "L": 0.4,
+  "price": 129,
+  "desc": "item.pbank.desc",
+  "size": [
+   1,
+   1
+  ]
+ },
+ "adapter": {
+  "name": "item.adapter.name",
+  "kg": 0.1,
+  "L": 0.2,
+  "price": 39,
+  "desc": "item.adapter.desc",
+  "size": [
+   1,
+   1
+  ]
+ },
+ "qtowel": {
+  "name": "item.qtowel.name",
+  "kg": 0.2,
+  "L": 0.6,
+  "price": 39,
+  "desc": "item.qtowel.desc",
+  "size": [
+   1,
+   1
+  ]
+ },
+ "rain": {
+  "name": "item.rain.name",
+  "kg": 0.25,
+  "L": 0.6,
+  "price": 49,
+  "size": [
+   1,
+   1
+  ]
+ },
+ "lock": {
+  "name": "item.lock.name",
+  "kg": 0.1,
+  "L": 0.1,
+  "price": 25,
+  "desc": "item.lock.desc",
+  "size": [
+   1,
+   1
+  ]
+ },
+ "plugs": {
+  "name": "item.plugs.name",
+  "kg": 0.03,
+  "L": 0.1,
+  "price": 19,
+  "desc": "item.plugs.desc",
+  "size": [
+   1,
+   1
+  ]
+ },
+ "repel": {
+  "name": "item.repel.name",
+  "kg": 0.15,
+  "L": 0.2,
+  "price": 29,
+  "desc": "item.repel.desc",
+  "size": [
+   1,
+   1
+  ]
+ },
+ "uke": {
+  "name": "item.uke.name",
+  "kg": 0.6,
+  "L": 4,
+  "price": 299,
+  "desc": "item.uke.desc",
+  "size": [
+   1,
+   3
+  ]
+ },
+ "gopro": {
+  "name": "item.gopro.name",
+  "kg": 0.2,
+  "L": 0.3,
+  "price": 1200,
+  "desc": "item.gopro.desc",
+  "size": [
+   1,
+   1
+  ]
+ },
+ "camera": {
+  "name": "item.camera.name",
+  "kg": 0.7,
+  "L": 1.5,
+  "price": 3200,
+  "desc": "item.camera.desc",
+  "size": [
+   2,
+   1
+  ]
+ },
+ "sleepbag": {
+  "name": "item.sleepbag.name",
+  "kg": 0.8,
+  "L": 5,
+  "price": 199,
+  "size": [
+   3,
+   2
+  ]
+ },
+ "tent": {
+  "name": "item.tent.name",
+  "kg": 1.5,
+  "L": 5,
+  "price": 399,
+  "size": [
+   3,
+   2
+  ]
+ }
+}

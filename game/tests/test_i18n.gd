@@ -31,6 +31,8 @@ func test_every_key_has_zh_tw() -> void:
 	for i in range(1, rows.size()):
 		var r: PackedStringArray = rows[i]
 		var key := r[0]
+		if key.begins_with("#"):
+			continue  # 匯出腳本的區段標記
 		ok(not seen.has(key), "代號重複：" + key)
 		seen[key] = true
 		ok(col < r.size() and r[col].strip_edges() != "", "代號沒有中文：" + key)

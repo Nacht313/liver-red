@@ -84,6 +84,15 @@ export const LAYERS = {
   mid: { n: '大背包中層', L: 18, theft: '中', speed: '中', big: 1 },
   bot: { n: '大背包下層', L: 12, theft: '低', speed: '慢', big: 1 },
 };
+// 格子背包（第二輪／Godot 版）：每件物品佔幾格 [寬, 高]，每層有幾格 [欄, 列]。照原型 prototypes/liver-red-demo-v3.html 的 SIZE、GRID。
+export const ITEM_SIZE = {
+  passport: [1, 1], phone: [1, 1], wallet: [1, 1], charger: [1, 1], laptop: [3, 1], tees: [2, 2], under: [2, 1], pants: [2, 1],
+  shorts: [2, 1], jacket: [2, 1], sandals: [2, 1], toilet: [2, 1], towel: [2, 2], umbrella: [3, 1], novel: [1, 1], notebook: [1, 1],
+  snacks: [2, 2], meds: [1, 1], pbank: [1, 1], adapter: [1, 1], qtowel: [1, 1], rain: [1, 1], lock: [1, 1], plugs: [1, 1],
+  repel: [1, 1], uke: [1, 3], gopro: [1, 1], camera: [2, 1], sleepbag: [3, 2], tent: [3, 2],
+};
+export const LAYER_GRID = { pocket: [2, 1], waist: [3, 2], day: [4, 3], top: [5, 2], mid: [5, 4], bot: [5, 3] };
+export const ITEM_WORN = ['belt']; // 穿在身上的東西，不佔格子
 export const PACK_KG = 1.4;  // 40 L 背包本身
 export const DAY_KG = 0.3;   // 隨身小包本身
 export const CABIN_LIMIT_KG = 7;

@@ -7,7 +7,10 @@
   "scripts": {
     "test": "node --test tests/unit/*.test.js",
     "serve": "python3 -m http.server 8000",
-    "e2e": "python3 tests/e2e/run.py"
+    "e2e": "python3 tests/e2e/run.py",
+    "export:godot": "node tools/export_opening_data.mjs"
   },
-  "engines": { "node": ">=20" }
+  "engines": {
+    "node": ">=20"
+  }
 }

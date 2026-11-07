@@ -1,0 +1,17 @@
+{
+ "hostel": {
+  "name": "stay.hostel.name",
+  "p": 350,
+  "desc": "stay.hostel.desc"
+ },
+ "guest": {
+  "name": "stay.guest.name",
+  "p": 900,
+  "desc": "stay.guest.desc"
+ },
+ "hotel": {
+  "name": "stay.hotel.name",
+  "p": 1800,
+  "desc": "stay.hotel.desc"
+ }
+}

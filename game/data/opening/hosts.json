@@ -1,0 +1,30 @@
+{
+ "nok": {
+  "name": "Nok",
+  "star": "4.9",
+  "refs": 42,
+  "need": 1,
+  "desc": "host.nok.desc"
+ },
+ "tom": {
+  "name": "Tom",
+  "star": "4.7",
+  "refs": 18,
+  "need": 1,
+  "desc": "host.tom.desc"
+ },
+ "pim": {
+  "name": "Pim",
+  "star": "4.5",
+  "refs": 6,
+  "need": 0,
+  "desc": "host.pim.desc"
+ },
+ "jay": {
+  "name": "Jay",
+  "star": "5.0",
+  "refs": 3,
+  "need": 0,
+  "desc": "host.jay.desc"
+ }
+}

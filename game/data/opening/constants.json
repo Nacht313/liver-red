@@ -1,0 +1,82 @@
+{
+ "FX": {
+  "THB": 4.55,
+  "USD": 7.2
+ },
+ "BANK_THB_PER_CNY": 4.4,
+ "AIRPORT_THB_PER_CNY": 4.3,
+ "PACK_KG": 1.4,
+ "DAY_KG": 0.3,
+ "CABIN_LIMIT_KG": 7,
+ "EXTRA_BAG_ONLINE": 250,
+ "EXTRA_BAG_COUNTER": 450,
+ "LAST_MINUTE": 1.25,
+ "START_DATE_UTC": [
+  2030,
+  5,
+  28
+ ],
+ "LAYER_GRID": {
+  "pocket": [
+   2,
+   1
+  ],
+  "waist": [
+   3,
+   2
+  ],
+  "day": [
+   4,
+   3
+  ],
+  "top": [
+   5,
+   2
+  ],
+  "mid": [
+   5,
+   4
+  ],
+  "bot": [
+   5,
+   3
+  ]
+ },
+ "DEFAULT_PACK": {
+  "charger": "top",
+  "laptop": "mid",
+  "tees": "mid",
+  "under": "mid",
+  "pants": "mid",
+  "shorts": "bot",
+  "jacket": "top",
+  "sandals": "bot",
+  "toilet": "top",
+  "towel": "bot",
+  "umbrella": "top",
+  "novel": "mid",
+  "notebook": "top",
+  "snacks": "top",
+  "meds": "top",
+  "belt": "pocket",
+  "pbank": "top",
+  "adapter": "top",
+  "qtowel": "mid",
+  "rain": "top",
+  "lock": "top",
+  "plugs": "top",
+  "repel": "top",
+  "uke": "top",
+  "gopro": "day",
+  "camera": "day",
+  "sleepbag": "bot",
+  "tent": "bot"
+ },
+ "ATTRS": [
+  "knowledge",
+  "nerve",
+  "craft",
+  "empathy",
+  "charm"
+ ]
+}

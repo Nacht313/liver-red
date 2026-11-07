@@ -1,0 +1,44 @@
+{
+ "pocket": {
+  "name": "layer.pocket.name",
+  "L": 0.6,
+  "theft": "layer.pocket.theft",
+  "speed": "layer.pocket.speed",
+  "body": 1
+ },
+ "waist": {
+  "name": "layer.waist.name",
+  "L": 1.5,
+  "theft": "layer.waist.theft",
+  "speed": "layer.waist.speed",
+  "body": 1,
+  "need": "belt"
+ },
+ "day": {
+  "name": "layer.day.name",
+  "L": 8,
+  "theft": "layer.day.theft",
+  "speed": "layer.day.speed"
+ },
+ "top": {
+  "name": "layer.top.name",
+  "L": 10,
+  "theft": "layer.top.theft",
+  "speed": "layer.top.speed",
+  "big": 1
+ },
+ "mid": {
+  "name": "layer.mid.name",
+  "L": 18,
+  "theft": "layer.mid.theft",
+  "speed": "layer.mid.speed",
+  "big": 1
+ },
+ "bot": {
+  "name": "layer.bot.name",
+  "L": 12,
+  "theft": "layer.bot.theft",
+  "speed": "layer.bot.speed",
+  "big": 1
+ }
+}

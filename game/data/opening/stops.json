@@ -1,0 +1,44 @@
+[
+ {
+  "id": "bkk",
+  "name": "stop.bkk.name",
+  "visa": "stop.bkk.visa",
+  "col": "#6cc27a",
+  "open": 1
+ },
+ {
+  "id": "kul",
+  "name": "stop.kul.name",
+  "visa": "stop.kul.visa",
+  "col": "#6cc27a",
+  "res": "r_region"
+ },
+ {
+  "id": "sin",
+  "name": "stop.sin.name",
+  "visa": "stop.sin.visa",
+  "col": "#6cc27a",
+  "res": "r_region"
+ },
+ {
+  "id": "tbs",
+  "name": "stop.tbs.name",
+  "visa": "stop.tbs.visa",
+  "col": "#6cc27a",
+  "res": "r_region"
+ },
+ {
+  "id": "vte",
+  "name": "stop.vte.name",
+  "visa": "stop.vte.visa",
+  "col": "#c9c25a",
+  "res": "r_land"
+ },
+ {
+  "id": "tyo",
+  "name": "stop.tyo.name",
+  "visa": "stop.tyo.visa",
+  "col": "#e0954a",
+  "res": "r_region"
+ }
+]

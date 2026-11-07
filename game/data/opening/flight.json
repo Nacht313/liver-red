@@ -1,0 +1,28 @@
+{
+ "fsc": {
+  "tod": "day",
+  "en": -8,
+  "food": 12,
+  "charge": 1,
+  "text": "flight.fsc.text"
+ },
+ "lcc": {
+  "tod": "night",
+  "en": -14,
+  "food": 0,
+  "text": "flight.lcc.text"
+ },
+ "red": {
+  "tod": "night",
+  "en": -28,
+  "food": 0,
+  "text": "flight.red.text"
+ },
+ "tra": {
+  "tod": "dusk",
+  "en": -26,
+  "food": 25,
+  "pay": 30,
+  "text": "flight.tra.text"
+ }
+}

@@ -1,0 +1,28 @@
+{
+ "tired": {
+  "title": "ending.tired.title",
+  "text": "ending.tired.text"
+ },
+ "faith": {
+  "title": "ending.faith.title",
+  "text": "ending.faith.text"
+ },
+ "money": {
+  "title": "ending.money.title",
+  "text": "ending.money.text"
+ },
+ "refused": {
+  "title": "ending.refused.title",
+  "text": "ending.refused.text"
+ },
+ "cs": {
+  "title": "ending.cs.title",
+  "hard": 1,
+  "text": "ending.cs.text"
+ },
+ "csDrink": {
+  "title": "ending.csDrink.title",
+  "hard": 1,
+  "text": "ending.csDrink.text"
+ }
+}

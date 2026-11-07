@@ -1,0 +1,57 @@
+{
+ "fsc": {
+  "name": "trans.fsc.name",
+  "p": 1700,
+  "desc": "trans.fsc.desc",
+  "air": "BKK",
+  "arriveDays": 0,
+  "airportAt": 8,
+  "departAt": 10,
+  "hours": 4,
+  "latest": 9
+ },
+ "lcc": {
+  "name": "trans.lcc.name",
+  "p": 780,
+  "desc": "trans.lcc.desc",
+  "air": "DMK",
+  "lcc": 1,
+  "arriveDays": 0,
+  "airportAt": 17,
+  "departAt": 20,
+  "hours": 3.5,
+  "latest": 18
+ },
+ "red": {
+  "name": "trans.red.name",
+  "p": 520,
+  "desc": "trans.red.desc",
+  "air": "DMK",
+  "lcc": 1,
+  "arriveDays": 1,
+  "airportAt": 21,
+  "departAt": 23,
+  "hours": 3.5,
+  "latest": 22
+ },
+ "tra": {
+  "name": "trans.tra.name",
+  "p": 640,
+  "desc": "trans.tra.desc",
+  "air": "DMK",
+  "lcc": 1,
+  "arriveDays": 0,
+  "airportAt": 7,
+  "departAt": 9,
+  "hours": 11,
+  "latest": 8
+ },
+ "land": {
+  "name": "trans.land.name",
+  "p": 1180,
+  "desc": "trans.land.desc",
+  "air": "LAND",
+  "arriveDays": 2,
+  "latest": 8.5
+ }
+}
