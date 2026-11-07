@@ -73,6 +73,7 @@ func bind(p_runner: StoryRunner, p_speakers: Dictionary = {}) -> void:
 	runner.line.connect(show_line)
 	runner.choices.connect(show_choices)
 	runner.finished.connect(close)
+	runner.check_started.connect(func(_info): visible = false)
 	next_requested.connect(runner.advance)
 	choice_made.connect(runner.choose)
 
@@ -137,6 +138,8 @@ func lines_on_page(i: int) -> int:
 func skip_or_next() -> void:
 	if not _choices.is_empty() or not visible:
 		return
+	if runner and runner.waiting.begins_with("check"):
+		return  # 判定欄在處理
 	if is_typing():
 		_label.visible_characters = -1
 		_arrow.visible = true

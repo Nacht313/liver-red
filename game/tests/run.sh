@@ -9,4 +9,5 @@ DIR="$(cd "$(dirname "$0")/.." && pwd)"
 OUT="$("$GODOT" --headless --path "$DIR" --script res://tests/run_tests.gd -- "${1:-}" 2>&1)"
 echo "$OUT" | grep -v -E "^(Godot Engine|$)"
 if echo "$OUT" | grep -q -E "SCRIPT ERROR|Parse Error"; then echo "有腳本錯誤"; exit 1; fi
+echo "$OUT" | grep -E "^[0-9]+ 項，[0-9]+ 項失敗$" | tail -1
 echo "$OUT" | grep -q -E "^[1-9][0-9]* 項，0 項失敗$" || exit 1

@@ -60,7 +60,9 @@ func _ready() -> void:
 	Game.story.line.connect(func(_w, _t): Game.request_ui("dialogue"))
 	Game.story.finished.connect(func(): Game.release_ui("dialogue"))
 	Game.story.open_ui.connect(_on_open_ui)
-	Game.story.check_started.connect(_on_check)
+	var check_panel := CheckPanel.new()
+	add_child(check_panel)
+	check_panel.bind(Game.story)
 	cards = Cards.new()
 	add_child(cards)
 	cards.closed.connect(_on_card_closed)
@@ -91,11 +93,6 @@ func _on_card_closed(kind: String) -> void:
 	Game.release_ui("card")
 	if kind == "end_card":
 		get_tree().change_scene_to_file("res://scenes/title/title.tscn")
-
-
-## 判定欄在 Task 8 才有；在那之前直接擲骰
-func _on_check(_info: Dictionary) -> void:
-	Game.story.roll_check.call_deferred()
 
 
 func _process(_delta: float) -> void:

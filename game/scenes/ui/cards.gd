@@ -15,7 +15,6 @@ func _init() -> void:
 	layer = 20
 	visible = false
 	_root = Control.new()
-	_root.set_anchors_preset(Control.PRESET_FULL_RECT)
 	_root.size = Vector2(480, 270)
 	add_child(_root)
 

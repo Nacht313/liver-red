@@ -66,11 +66,15 @@ func test_check_flow() -> void:
 	eq(_checks[0].chance, Checks.chance(R.J, "empathy"), "成功率")
 	R.roll_check()
 	ok(_results[0].win, "擲 1 一定成功")
-	ok(R.J.S.flags.has("won"), "走 win")
+	eq(R.waiting, "check_done", "結果出來，等玩家看完")
+	ok(not R.J.S.flags.has("won"), "還沒進下一個節點")
+	R.advance()
+	ok(R.J.S.flags.has("won"), "按一下走 win")
 	var R2 := _runner(nodes, 0.99)
 	R2.start("c")
 	R2.advance()
 	R2.roll_check()
+	R2.advance()
 	ok(R2.J.S.flags.has("lost"), "擲 100 走 lose")
 
 

@@ -82,3 +82,42 @@ func test_narration_has_no_portrait_gap() -> void:
 	b.show_line("me", "Text")
 	ok(b.text_x() > 60, "有頭像時讓出位置")
 	b.queue_free()
+
+
+func test_no_next_while_checking() -> void:
+	var J := Journey.new(DataDB.load_all(), SaveStore.new("user://test_saves/dlg/"), func() -> float: return 0.0)
+	J.new_game()
+	var R := StoryRunner.new(J, {"c": {"lines": [{"who": "me", "text": "ui.app.name"}],
+		"check": {"attr": "nerve", "text": "ui.app.name", "win": "w", "lose": "w"}}, "w": {"on_enter": [{"flag": "went"}]}})
+	var b := _box()
+	b.bind(R)
+	R.start("c")
+	b.skip_or_next()
+	b.skip_or_next()
+	eq(R.waiting, "check", "台詞看完，等判定")
+	R.roll_check()
+	b.skip_or_next()
+	b.skip_or_next()
+	ok(not J.S.flags.has("went"), "判定結果還在顯示，對話框不能往下推")
+	SaveStore.remove_dir("user://test_saves/dlg/")
+	b.queue_free()
+
+
+func test_box_hides_during_check() -> void:
+	var J := Journey.new(DataDB.load_all(), SaveStore.new("user://test_saves/dlg2/"), func() -> float: return 0.0)
+	J.new_game()
+	var R := StoryRunner.new(J, {"c": {"lines": [{"who": "me", "text": "ui.app.name"}],
+		"choices": [{"text": "ui.app.name", "check": {"attr": "nerve", "text": "ui.app.name", "win": "w", "lose": "w"}}]},
+		"w": {"lines": [{"who": "me", "text": "ui.app.name"}]}})
+	var b := _box()
+	b.bind(R)
+	R.start("c")
+	b.skip_or_next()
+	b.skip_or_next()
+	b.confirm()
+	ok(not b.visible, "判定時對話框收起來")
+	R.roll_check()
+	R.advance()
+	ok(b.visible, "判定後的台詞出現")
+	SaveStore.remove_dir("user://test_saves/dlg2/")
+	b.queue_free()

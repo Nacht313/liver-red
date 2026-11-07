@@ -34,6 +34,8 @@ func play(node: String, picks: Array = []) -> void:
 				R.advance()
 			"check":
 				R.roll_check()
+			"check_done":
+				R.advance()
 			"choice":
 				if picks.is_empty():
 					ok(false, "%s 需要選項，但沒有指定：%s" % [R.cur_id, str(R.current_choice_keys())])

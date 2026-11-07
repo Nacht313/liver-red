@@ -19,11 +19,12 @@ var nodes: Dictionary
 var actions: Dictionary
 
 var cur_id := ""
-var waiting := ""  # ""、"line"、"choice"、"check"
+var waiting := ""  # ""、"line"、"choice"、"check"（等擲骰）、"check_done"（結果出來，等玩家看完）
 var _lines: Array = []
 var _li := 0
 var _choices: Array = []
 var _check: Dictionary = {}
+var _check_won := false
 
 
 func _init(p_journey: Journey, p_nodes: Dictionary, p_actions: Dictionary = {}) -> void:
@@ -134,6 +135,9 @@ func _after_lines() -> void:
 func advance() -> void:
 	if waiting == "line":
 		_next_line()
+	elif waiting == "check_done":
+		waiting = ""
+		_enter(_check.win if _check_won else _check.lose)
 
 
 func choose(i: int) -> void:
@@ -170,10 +174,10 @@ func _begin_check(spec: Dictionary) -> void:
 func roll_check() -> void:
 	if waiting != "check":
 		return
-	waiting = ""
 	var res := Checks.roll(J, Checks.chance(J, _check.attr, int(_check.get("bonus", 0))))
+	_check_won = res.win
+	waiting = "check_done"
 	check_resolved.emit(res)
-	_enter(_check.win if res.win else _check.lose)
 
 
 func _finish() -> void:

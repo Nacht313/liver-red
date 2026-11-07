@@ -54,6 +54,6 @@ func _process(_delta: float) -> bool:
 		"x": current_scene.get_node("Player").position.x = float(c.substr(1))
 		"w": _wait = int(c.substr(1))
 		"h": root.get_node("Game").J.until(float(c.substr(1)))
-		"m": print("MARK frame %d" % _frame)
+		"m": print("  scene px=%s near=%s can_move=%s cards_open=%s" % [current_scene.player.position.x, current_scene.near_obj.get("id", ""), root.get_node("Game").can_move(), current_scene.cards.is_open()]) if current_scene.get("near_obj") != null else null; print("MARK frame %d node=%s waiting=%s ui=%s" % [_frame, root.get_node("Game").story.cur_id, root.get_node("Game").story.waiting, root.get_node("Game").ui.open])
 		"q": return true
 	return false

@@ -156,6 +156,12 @@ ui.end.departed_body,"在家準備的這幾天，花了 ¥{spent}，還剩 ¥{le
 接下來的路，還在前面。"
 ui.end.keep_knowledge,學到的旅行知識會留到下一次。
 ui.end.to_title,按 Enter 回到標題
+ui.check.head,{attr}［{level}］── 判定 {chance}%
+ui.check.press_roll,按 Enter 擲骰
+ui.check.result,擲出 {roll}：{word}
+ui.check.win,成功
+ui.check.fail,失敗
+ui.check.crit,大成功
 # BEGIN generated: npm run export:godot
 know.k_tdac,泰國：中泰互免簽證，每次停留 30 天，180 天內累計不超過 90 天。入境前要在網上填 TDAC 數位入境卡，最早抵達前 3 天才能填，免費。
 know.k_funds,"泰國移民局可能抽查入境資金：免簽旅客每人 10,000 泰銖（或等值外幣、可證明的付款文件）。2026 年 7 月觀光局再次提醒。"
