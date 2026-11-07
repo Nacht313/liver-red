@@ -4,6 +4,7 @@ class_name Journal
 extends CanvasLayer
 
 signal closed
+signal sfx(name: String)
 
 const PHOTO_COLORS := {"window": ["1a1e3a", "ffd98a"], "table": ["4a3428", "c86a3a"]}
 const TOD_TINT := {"night": Color(0.55, 0.6, 0.9), "dawn": Color(1.0, 0.85, 0.85), "day": Color(1, 1, 1), "dusk": Color(1.0, 0.8, 0.65)}
@@ -34,6 +35,7 @@ func open() -> bool:
 	_pages = JournalEntries.pages(J.S)
 	_i = maxi(0, _pages.size() - 1)
 	visible = true
+	sfx.emit("page_flip")
 	_render()
 	return true
 
@@ -47,7 +49,10 @@ func close() -> void:
 func flip(d: int) -> void:
 	if _pages.is_empty():
 		return
+	var before := _i
 	_i = clampi(_i + d, 0, _pages.size() - 1)
+	if _i != before:
+		sfx.emit("page_flip")
 	_render()
 
 

@@ -10,6 +10,9 @@ var dir := 1
 
 
 var _anim: AnimatedSprite2D
+var _step_t := 0.0
+var _step_i := 0
+signal step(name: String)
 
 
 func _ready() -> void:
@@ -41,6 +44,11 @@ func _process(delta: float) -> void:
 	dir = int(sign(v))
 	_anim.flip_h = dir < 0
 	_anim.play("walk")
+	_step_t -= delta
+	if _step_t <= 0:
+		_step_t = 0.32
+		_step_i = (_step_i % 4) + 1
+		step.emit("step_%d" % _step_i)
 	var old := position.x
 	position.x = clampf(position.x + v * SPEED * delta, 12, world_width - 12)
 	var moved := absf(position.x - old)

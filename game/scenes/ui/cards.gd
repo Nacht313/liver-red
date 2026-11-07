@@ -5,6 +5,7 @@ extends CanvasLayer
 
 signal closed(kind: String)
 signal choice(id: String)
+signal sfx(name: String)
 
 var _kind := ""
 var _root: Control
@@ -74,6 +75,7 @@ func show_day(J: Journey) -> void:
 	ln.rotation_degrees = -7
 	_label(tr("ui.card.press"), Vector2(0, 244), 10, Color(0.6, 0.6, 0.65), 480).horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	visible = true
+	sfx.emit("day_card")
 
 
 ## 結局卡：失敗結局，或下樓出發的「旅程開始」
@@ -99,6 +101,7 @@ func show_end(J: Journey, kind: String) -> void:
 
 ## 出門辦事：畫面暗一下再亮回來
 func fade() -> void:
+	sfx.emit("door_open")
 	var r := ColorRect.new()
 	r.color = Color(0, 0, 0, 0)
 	r.size = Vector2(480, 270)

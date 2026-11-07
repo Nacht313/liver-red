@@ -7,6 +7,8 @@ signal next_requested
 signal choice_made(i: int)
 ## 每打出幾個字發一次，給音效用（Task 14 的 Audio 接上）
 signal blip(voice: String)
+## 介面音效（選項移動、確認）
+signal sfx(name: String)
 
 const LINES := 3
 const CHARS_PER_SEC := 30.0
@@ -245,12 +247,14 @@ func move(d: int) -> void:
 		if _choices[_sel].why == "":
 			break
 	_render_choices()
+	sfx.emit("select")
 
 
 func confirm() -> void:
 	if _choices.is_empty() or _choices[_sel].why != "":
 		return
 	var i := _sel
+	sfx.emit("confirm")
 	_choices = []
 	_clear_choices()
 	choice_made.emit(i)

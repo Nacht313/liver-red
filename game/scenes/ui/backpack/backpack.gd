@@ -4,6 +4,7 @@ class_name Backpack
 extends CanvasLayer
 
 signal closed
+signal sfx(name: String)
 
 const CELL := 14
 const BED := Rect2(8, 26, 150, 214)
@@ -41,6 +42,7 @@ func open() -> bool:
 		return false
 	BagGrid.sync(J.S, J.db)
 	visible = true
+	sfx.emit("zipper")
 	_render()
 	return true
 

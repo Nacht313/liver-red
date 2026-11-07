@@ -9,6 +9,10 @@ func _game() -> Node:
 		g = load("res://autoload/game.gd").new()
 		g.name = "Game"
 		root.add_child(g)
+	if root.get_node_or_null("Audio") == null:
+		var au: Node = load("res://autoload/audio.gd").new()
+		au.name = "Audio"
+		root.add_child(au)
 	g.new_game()
 	g.J.S.flags["intro_seen"] = 1
 	return g

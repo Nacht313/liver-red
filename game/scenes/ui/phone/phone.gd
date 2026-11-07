@@ -5,6 +5,7 @@ extends CanvasLayer
 
 signal story_requested(node: String)
 signal closed
+signal sfx(name: String)
 
 const ROW_H := 22
 
@@ -236,7 +237,9 @@ func _map_image() -> Image:
 
 func _do(r: Dictionary) -> void:
 	if r.why != "" or r.act.is_empty():
+		sfx.emit("cancel")
 		return
+	sfx.emit("phone_tap")
 	var res := PhoneApps.act(J, r.act)
 	if J.S.over:
 		close()

@@ -13,6 +13,10 @@ func _initialize() -> void:
 		game = load("res://autoload/game.gd").new()
 		game.name = "Game"
 		root.add_child(game)
+	if root.get_node_or_null("Audio") == null:
+		var au: Node = load("res://autoload/audio.gd").new()
+		au.name = "Audio"
+		root.add_child(au)
 	game.new_game()
 	change_scene_to_file(_args[0] if _args.size() > 0 else "res://scenes/home/home.tscn")
 

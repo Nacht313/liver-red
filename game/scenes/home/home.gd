@@ -70,6 +70,7 @@ func _ready() -> void:
 	add_child(cards)
 	cards.closed.connect(_on_card_closed)
 	Game.J.ended.connect(func(kind): _show_end(kind))
+	_wire_audio(check_panel)
 	if Game.J.S.resume == "bed":
 		player.position.x = _object_x("bed")
 	if not Game.J.S.flags.has("intro_seen"):
@@ -106,6 +107,7 @@ func _on_card_closed(kind: String) -> void:
 
 func _process(_delta: float) -> void:
 	_update_lighting()
+	_update_music()
 	near_obj = _nearest()
 	prompt.visible = not near_obj.is_empty() and Game.can_move() and not cards.is_open()
 	if prompt.visible:
@@ -203,3 +205,19 @@ func _add_npc(n: Dictionary, floor_y: float) -> void:
 	a.z_index = -2
 	add_child(a)
 	a.play("idle")
+
+
+# ---------- 聲音 ----------
+func _wire_audio(check_panel: CheckPanel) -> void:
+	var play := func(n): Audio.play_sfx(n)
+	dialogue.blip.connect(func(v): Audio.blip(v))
+	for ui_node in [dialogue, check_panel, phone, journal, backpack, cards]:
+		ui_node.sfx.connect(play)
+	player.step.connect(func(n): Audio.play_sfx(n, randf_range(0.95, 1.05), -10.0))
+	Game.J.toast.connect(func(key, _a): if key == "toast.photo": Audio.play_sfx("shutter"))
+
+
+func _update_music() -> void:
+	if Game.J.S == null:
+		return
+	Audio.play_music("home_day" if Lighting.params(Game.J.S.h).day > 0.5 else "home_night", 2.0)

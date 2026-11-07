@@ -5,6 +5,7 @@ extends CanvasLayer
 
 signal roll_requested
 signal done
+signal sfx(name: String)
 
 const W := 192.0
 const IN_X := 480.0 - W
@@ -86,6 +87,7 @@ func show_check(info: Dictionary) -> void:
 func show_result(res: Dictionary) -> void:
 	_res = res
 	_state = "rolling"
+	sfx.emit("dice")
 	_spin = 0.0
 	_hint.text = ""
 
@@ -101,6 +103,7 @@ func _process(delta: float) -> void:
 
 func _land() -> void:
 	_state = "result"
+	sfx.emit("check_win" if _res.win else "check_lose")
 	var word := tr("ui.check.crit") if _res.crit else (tr("ui.check.win") if _res.win else tr("ui.check.fail"))
 	_result.text = tr("ui.check.result").format({"roll": _res.roll, "word": word})
 	_result.add_theme_color_override("font_color", Color("6cc27a") if _res.win else Color("e05a5a"))
