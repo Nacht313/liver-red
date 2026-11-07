@@ -281,6 +281,22 @@ ui.bag.very_heavy,很重
 ui.bag.weight,總重 {kg} kg（{word}）・手提 {cabin} kg
 ui.bag.bad_center,重的東西放在上層或下層，重心不穩
 ui.bag.hint,用滑鼠拖曳擺放，拖的時候按 R 旋轉，拖回床上就是不帶。Esc 關閉。
+diary.decided,晚飯的時候，終於說出口了。
+story.photo.c_take,用手機拍一張
+story.photo.c_take_sub,耗電 2%
+story.photo.taken,＊ 喀嚓。照片存進了相簿。
+toast.photo,拍好了
+photo.window.name,窗外的夜景
+photo.table.name,家裡的飯桌
+ui.journal.title,日記本
+ui.journal.empty,還沒有寫下任何東西。
+ui.journal.day,{date}
+ui.journal.hint,← → 翻頁　J 闔上
+ui.journal.no_photo,這天沒有照片。
+ui.title.new,新的旅程
+ui.title.load,讀取日記：{date} {where}
+ui.title.clear,清除所有存檔和旅行知識
+ui.title.know,你記得 {n} 條旅行知識。
 # BEGIN generated: npm run export:godot
 know.k_tdac,泰國：中泰互免簽證，每次停留 30 天，180 天內累計不超過 90 天。入境前要在網上填 TDAC 數位入境卡，最早抵達前 3 天才能填，免費。
 know.k_funds,"泰國移民局可能抽查入境資金：免簽旅客每人 10,000 泰銖（或等值外幣、可證明的付款文件）。2026 年 7 月觀光局再次提醒。"

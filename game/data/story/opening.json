@@ -103,6 +103,27 @@
      "who": "me",
      "text": "obj.window.1"
     }
+   ],
+   "choices": [
+    {
+     "text": "story.photo.c_take",
+     "sub": "story.photo.c_take_sub",
+     "when": {
+      "flag": "funded"
+     },
+     "effects": [
+      {
+       "photo": "window"
+      }
+     ],
+     "goto": "photo.taken"
+    },
+    {
+     "text": "story.common.c_leave",
+     "when": {
+      "flag": "funded"
+     }
+    }
    ]
   },
   "obj.bookshelf": {
@@ -338,6 +359,21 @@
      "who": "me",
      "text": "obj.table.1"
     }
+   ],
+   "choices": [
+    {
+     "text": "story.photo.c_take",
+     "sub": "story.photo.c_take_sub",
+     "effects": [
+      {
+       "photo": "table"
+      }
+     ],
+     "goto": "photo.taken"
+    },
+    {
+     "text": "story.common.c_leave"
+    }
    ]
   },
   "dinner": {
@@ -378,6 +414,9 @@
      "add": {
       "faith": 5
      }
+    },
+    {
+     "journal": "diary.decided"
     }
    ],
    "lines": [
@@ -398,6 +437,9 @@
      "add": {
       "faith": -3
      }
+    },
+    {
+     "journal": "diary.decided"
     }
    ],
    "lines": [
@@ -512,6 +554,11 @@
     {
      "text": "story.bed.c_sleep",
      "effects": [
+      {
+       "set": {
+        "resume": "bed"
+       }
+      },
       {
        "diary": "home.place.bedroom"
       },
@@ -974,6 +1021,14 @@
     {
      "who": "narr",
      "text": "story.cs.read_lose"
+    }
+   ]
+  },
+  "photo.taken": {
+   "lines": [
+    {
+     "who": "narr",
+     "text": "story.photo.taken"
     }
    ]
   }

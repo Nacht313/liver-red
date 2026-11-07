@@ -251,6 +251,14 @@ func write_diary(where_key: String) -> void:
 	save("diary", where_key)
 
 
+## 用手機拍照：記下地點和時段（日記本照這個打光重畫），耗電 2%
+func take_photo(spot: String) -> void:
+	S.photos.append({"day": S.day, "spot": spot, "tod": TimeUtil.tod(S.h)})
+	add("battery", -2)
+	toast.emit("toast.photo", {})
+	changed.emit()
+
+
 # ---------- 結局 ----------
 func end(kind: String) -> void:
 	if S.over:

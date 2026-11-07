@@ -16,6 +16,7 @@ var dialogue: DialogueBox
 var cards: Cards
 var phone: Phone
 var backpack: Backpack
+var journal: Journal
 
 
 func _ready() -> void:
@@ -72,10 +73,15 @@ func _ready() -> void:
 	backpack = Backpack.new()
 	add_child(backpack)
 	backpack.setup(Game.J, Game.ui)
+	journal = Journal.new()
+	add_child(journal)
+	journal.setup(Game.J, Game.ui)
 	cards = Cards.new()
 	add_child(cards)
 	cards.closed.connect(_on_card_closed)
 	Game.J.ended.connect(func(kind): _show_end(kind))
+	if Game.J.S.resume == "bed":
+		player.position.x = _object_x("bed")
 	if not Game.J.S.flags.has("intro_seen"):
 		Game.story.start.call_deferred("intro")
 
@@ -127,6 +133,10 @@ func _nearest() -> Dictionary:
 
 
 func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("journal") and Game.can_move() and not cards.is_open():
+		get_viewport().set_input_as_handled()
+		journal.open()
+		return
 	if event.is_action_pressed("phone") and Game.can_move() and not cards.is_open() and Game.J.S.flags.has("funded"):
 		get_viewport().set_input_as_handled()
 		phone.open()
@@ -139,3 +149,10 @@ func _unhandled_input(event: InputEvent) -> void:
 ## 和某個東西互動：開始它的劇情節點
 func interact(o: Dictionary) -> void:
 	Game.story.start(o.node)
+
+
+func _object_x(id: String) -> float:
+	for o in objects:
+		if o.id == id:
+			return float(o.x)
+	return float(data.start_x)

@@ -119,6 +119,10 @@ static func apply(list: Variant, J: Journey, actions: Dictionary = {}) -> void:
 			J.sleep(e.sleep)
 		elif e.has("unlock"):
 			J.unlock(e.unlock)
+		elif e.has("photo"):
+			J.take_photo(e.photo)
+		elif e.has("journal"):
+			S.diary.append({"day": S.day, "key": e.journal, "args": e.get("args", {})})
 		elif e.has("diary"):
 			J.write_diary(e.diary)
 		elif e.has("fam_msg"):
