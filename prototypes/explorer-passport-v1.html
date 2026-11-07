@@ -1,0 +1,732 @@
+<title>探險者護照</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Noto+Sans+TC:wght@400;700&family=Noto+Sans+Thai+Looped:wght@500;700&display=swap">
+<style>
+/* Layout: one-screen handheld — HUD strip, pixel stage, dialogue slip, controls. Single deliberate night palette. */
+:root{
+  --ink:#17142a; --panel:#221d38; --panel2:#2c2647; --line:#3d3563;
+  --paper:#f1e8d4; --dim:#a69ec0; --saffron:#f0a33a; --teal:#3aa69b; --red:#d9545a; --maroon:#7b2433; --green:#7cbf5a;
+  --f-pix:"DotGothic16","Noto Sans TC",monospace;
+  --f-body:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
+  --f-thai:"Noto Sans Thai Looped","Noto Sans Thai",sans-serif;
+  color-scheme:dark;
+}
+html,body{background:var(--ink);color:var(--paper)}
+body{font-family:var(--f-body);font-size:14px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:12px}
+#app{max-width:960px;margin:0 auto;display:flex;flex-direction:column;gap:8px}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid var(--saffron);outline-offset:2px}
+.pix{font-family:var(--f-pix)}
+#hud{display:flex;flex-direction:column;gap:6px;background:var(--panel);border:2px solid var(--line);padding:8px 10px}
+#hudTop{display:flex;flex-wrap:wrap;gap:4px 14px;font-family:var(--f-pix);font-size:13px;align-items:baseline;font-variant-numeric:tabular-nums}
+#hudTop .k{color:var(--dim);margin-right:4px}
+#hudTop .visa{color:var(--saffron)}
+#bars{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:4px 12px}
+.bar{display:grid;grid-template-columns:4.2em 1fr 2.2em;gap:6px;align-items:center;font-size:12px}
+.bar .lb{color:var(--dim);font-family:var(--f-pix)}
+.bar .tr{height:8px;background:var(--ink);border:1px solid var(--line);position:relative}
+.bar .fl{position:absolute;inset:0 auto 0 0;background:var(--teal)}
+.bar.low .fl{background:var(--red)}
+.bar.fam .fl{background:var(--maroon)}
+.bar.fam.low .fl{background:var(--red)}
+.bar .v{font-family:var(--f-pix);text-align:right;font-variant-numeric:tabular-nums}
+#stage{position:relative;border:2px solid var(--line);background:#000;line-height:0}
+#cv{width:100%;height:auto;image-rendering:pixelated;image-rendering:crisp-edges;display:block}
+#prompt{position:absolute;left:50%;bottom:8px;transform:translateX(-50%);background:var(--ink);border:2px solid var(--saffron);color:var(--paper);font-family:var(--f-pix);font-size:13px;line-height:1.3;padding:4px 10px;white-space:nowrap}
+#toast{position:absolute;top:8px;left:8px;right:8px;display:flex;flex-direction:column;gap:4px;align-items:flex-start;line-height:1.4;pointer-events:none}
+#toast div{background:rgba(23,20,42,.92);border-left:3px solid var(--saffron);padding:4px 8px;font-size:13px;max-width:100%}
+#dlg{background:var(--panel);border:2px solid var(--line);padding:10px 12px;min-height:64px;line-height:1.7}
+#dlg .who{font-family:var(--f-pix);color:var(--saffron);font-size:13px;margin-bottom:2px}
+.gest{color:var(--dim)}
+.th{font-family:var(--f-thai);font-size:17px}
+.w{font-family:var(--f-thai);font-size:18px;color:var(--saffron);border-bottom:2px dotted var(--saffron);cursor:pointer;padding:0 2px;position:relative;display:inline-block;line-height:1.5}
+.w.got{color:var(--paper);border-bottom-color:var(--dim)}
+.w.ok{color:var(--green);border-bottom-style:solid;border-bottom-color:var(--green)}
+.w .gl{display:block;font-family:var(--f-body);font-size:11px;color:var(--green);line-height:1;text-align:center}
+#controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between}
+#pad{display:grid;grid-template-columns:repeat(3,44px);grid-template-rows:repeat(2,40px);gap:4px}
+#pad button,#acts button{background:var(--panel2);border:2px solid var(--line);font-family:var(--f-pix);font-size:14px;touch-action:none;user-select:none;-webkit-user-select:none}
+#pad button:active,#acts button:active{background:var(--line)}
+#pad .u{grid-column:2;grid-row:1}#pad .l{grid-column:1;grid-row:2}#pad .d{grid-column:2;grid-row:2}#pad .r{grid-column:3;grid-row:2}
+#acts{display:flex;gap:6px;flex-wrap:wrap}
+#acts button{padding:8px 12px}
+#acts .a{background:var(--saffron);color:var(--ink);border-color:var(--saffron);min-width:64px}
+.keys{color:var(--dim);font-size:12px}
+@media (hover:hover) and (pointer:fine){#pad{display:none}}
+/* modal */
+#modal{position:fixed;inset:0;background:rgba(10,8,22,.82);display:flex;align-items:flex-start;justify-content:center;z-index:20;overflow-y:auto;padding:max(16px,env(safe-area-inset-top,0px)) max(12px,env(safe-area-inset-right,0px)) max(16px,env(safe-area-inset-bottom,0px)) max(12px,env(safe-area-inset-left,0px))}
+.sheet{background:var(--panel);border:2px solid var(--line);width:100%;max-width:640px;padding:16px;display:flex;flex-direction:column;gap:12px;box-shadow:6px 6px 0 #0007}
+.sheet h2{font-family:var(--f-pix);font-weight:400;font-size:22px;margin:0;color:var(--saffron);text-wrap:balance}
+.sheet h3{font-family:var(--f-pix);font-weight:400;font-size:15px;margin:4px 0 0;color:var(--paper)}
+.sheet p{margin:0;line-height:1.7;max-width:62ch}
+.sub{color:var(--dim);font-size:13px}
+.opts{display:flex;flex-direction:column;gap:6px}
+.opt{display:flex;justify-content:space-between;gap:10px;align-items:center;text-align:left;background:var(--panel2);border:2px solid var(--line);padding:9px 12px}
+.opt:hover:not(:disabled){border-color:var(--saffron)}
+.opt:disabled{opacity:.45;cursor:not-allowed}
+.opt .s{color:var(--dim);font-size:12px;text-align:right;flex-shrink:0;max-width:45%}
+.close{align-self:flex-end;background:none;border:2px solid var(--line);padding:4px 12px;font-family:var(--f-pix)}
+.btn{background:var(--saffron);color:var(--ink);border:none;padding:10px 18px;font-family:var(--f-pix);font-size:15px}
+.btn:disabled{opacity:.4}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+table{border-collapse:collapse;width:100%;font-size:13px}
+td,th{padding:5px 6px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+td.n,th.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.tbl{overflow-x:auto}
+.meter{height:10px;background:var(--ink);border:1px solid var(--line);position:relative}
+.meter i{position:absolute;inset:0 auto 0 0;background:var(--teal)}
+.meter.over i{background:var(--red)}
+.warn{color:var(--red)}
+.good{color:var(--green)}
+.note{border-left:3px solid var(--teal);padding:6px 10px;background:var(--ink);font-size:13px;line-height:1.6}
+.wordrow{display:grid;grid-template-columns:7em 1fr;gap:8px;align-items:center;border-bottom:1px solid var(--line);padding:6px 0}
+.wordrow input{background:var(--ink);border:1px solid var(--line);color:var(--paper);padding:5px 8px;font:inherit;min-width:0;width:100%}
+.page{border:2px solid var(--line);padding:10px;display:flex;flex-direction:column;gap:8px;background:var(--ink)}
+.slots{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.slot{display:flex;flex-direction:column;align-items:center;gap:6px}
+.slot canvas{width:56px;height:56px;image-rendering:pixelated;background:var(--paper);border:2px solid var(--line)}
+.slot select{width:100%;background:var(--panel2);color:var(--paper);border:1px solid var(--line);font-family:var(--f-thai);font-size:15px;padding:3px}
+.tabs{display:flex;gap:4px;flex-wrap:wrap}
+.tabs button{background:var(--panel2);border:2px solid var(--line);padding:5px 10px;font-family:var(--f-pix)}
+.tabs button[aria-selected="true"]{border-color:var(--saffron);color:var(--saffron)}
+.msg{border:1px solid var(--line);padding:8px 10px;display:flex;flex-direction:column;gap:6px;background:var(--ink)}
+.msg .f{font-family:var(--f-pix);color:var(--saffron);font-size:12px}
+.msg.done{opacity:.55}
+.mini{background:var(--panel2);border:1px solid var(--line);padding:5px 10px;font-size:13px}
+.mini:disabled{opacity:.4}
+.title-art{font-family:var(--f-pix);font-size:clamp(34px,9vw,56px);line-height:1;color:var(--saffron);letter-spacing:.04em}
+.passport{display:flex;gap:12px;align-items:center;background:var(--maroon);padding:12px;border:2px solid #000}
+.passport .emb{width:44px;height:44px;border:2px solid var(--saffron);border-radius:50%;flex-shrink:0;display:grid;place-items:center;font-family:var(--f-pix);color:var(--saffron)}
+.passport .t{font-family:var(--f-pix);color:var(--saffron);font-size:13px;line-height:1.5}
+.chk{display:grid;grid-template-columns:1.4em 1fr auto;gap:6px;align-items:start;padding:6px 0;border-bottom:1px solid var(--line);font-size:13px}
+.chk input{margin-top:3px}
+.chk .r{color:var(--dim);font-variant-numeric:tabular-nums;white-space:nowrap}
+[hidden]{display:none!important}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+
+<div id="app">
+  <div id="hud">
+    <div id="hudTop"></div>
+    <div id="bars"></div>
+  </div>
+  <div id="stage"><canvas id="cv"></canvas><div id="toast"></div><div id="prompt" hidden></div></div>
+  <div id="dlg"><div class="who">考山路，曼谷</div><div>計程車把你放在路口。空氣又熱又濕，到處是油煙和香茅的味道。用方向鍵或 WASD 走動，靠近門口或人按 E 互動。</div></div>
+  <div id="controls">
+    <div id="pad">
+      <button class="u" data-k="up" aria-label="上">▲</button>
+      <button class="l" data-k="left" aria-label="左">◀</button>
+      <button class="d" data-k="down" aria-label="下">▼</button>
+      <button class="r" data-k="right" aria-label="右">▶</button>
+    </div>
+    <div id="acts">
+      <button class="a" id="bA">互動 E</button>
+      <button id="bBag">背包 I</button>
+      <button id="bNote">筆記 J</button>
+      <button id="bPhone">手機 M</button>
+    </div>
+  </div>
+  <div class="keys">時間在選單打開時會暫停。死亡不是結束：你學到的生字猜測和旅行知識會留到下一輪。</div>
+</div>
+<div id="modal" hidden><div class="sheet" id="sheet"></div></div>
+
+<script>
+"use strict";
+const $=s=>document.querySelector(s);
+const T=16, MW=48, MH=34, VW=320, VH=208;
+const cv=$('#cv'), cx=cv.getContext('2d'); cv.width=VW; cv.height=VH; cx.imageSmoothingEnabled=false;
+const rnd=Math.random, clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+function hsh(x,y){let n=(x*374761393+y*668265263)|0;n=Math.imul(n^(n>>>13),1274126177);return ((n^(n>>>16))>>>0)/4294967296;}
+
+/* ---------- 真實數據（2026/10 查證，部分為示意） ---------- */
+const RATE_CNY=4.5, RATE_USD=34; // 示意匯率
+const TIPS=[
+ '曼谷經典騙局：嘟嘟車司機說「寺廟今天關門」，再用 20 銖載你去寶石店。',
+ '泰國 ATM 對外國卡每次收約 220 銖手續費，一次多領一點比較划算。',
+ '寮國對中國護照：可落地簽（中國公民費用較低，約 20 美元，以現場公告為準），要美元現金和證件照；LDIF 數位入境表要在入境前 3 天內線上填。',
+ '泰國寺廟要遮住肩膀和膝蓋，很多寺廟門口可以借紗籠。',
+ '曼谷市區公園晚上會關門，不能露營；國家公園的營地才能合法搭帳篷。',
+ '沙發衝浪的新帳號沒有評價，很難被接受。先在旅館累積經驗和朋友。',
+ '持免簽入境泰國不能工作。旅館換宿在法律上是灰色地帶，現實中有風險。'
+];
+const WORDS={'น้ำ':'水','ข้าว':'飯／米','เงิน':'錢','บาท':'銖','เท่าไหร่':'多少錢','ไม่':'不／沒有','ใช่':'是／對','วัด':'寺廟','นอน':'睡覺','ห้องน้ำ':'廁所','ร้อน':'熱','กิน':'吃','ขอบคุณ':'謝謝','เผ็ด':'辣','รถไฟ':'火車'};
+const PAGES=[
+ {id:'market',n:'市場',w:['น้ำ','ข้าว','เงิน'],r:'便利商店的東西你都看得懂了：買水和便當恢復更多。'},
+ {id:'polite',n:'禮貌',w:['ใช่','ไม่','ขอบคุณ'],r:'當地人對你更友善：聊天時心情恢復加成。'},
+ {id:'body',n:'身體',w:['กิน','นอน','ร้อน'],r:'你懂得在最熱的時候躲起來：中午口渴速度變慢。'},
+ {id:'city',n:'城市',w:['วัด','ห้องน้ำ','รถไฟ'],r:'看得懂車站指示，可以自己買票：不用付旅行社代購費。'},
+ {id:'price',n:'價格',w:['เท่าไหร่','บาท','เผ็ด'],r:'會問價也會說不辣：路邊攤用當地價，不再被辣到。'}
+];
+const ICONS={
+ 'น้ำ':['...#....','...#....','..###...','.#####..','.#####..','#######.','.#####..','..###...','#2f7fc1'],
+ 'ข้าว':['........','..#.#.#.','.#.#.#..','########','########','.######.','..####..','...##...','#8a5a2b'],
+ 'เงิน':['..####..','.#....#.','#..##..#','#.#....#','#..##..#','#....#.#','.#.##.#.','..####..','#c99a1c'],
+ 'ใช่':['........','.......#','......##','#....##.','##..##..','.####...','..##....','........','#3d9a4a'],
+ 'ไม่':['#......#','##....##','.##..##.','..####..','..####..','.##..##.','##....##','#......#','#c23b3b'],
+ 'ขอบคุณ':['...##...','..####..','..####..','..####..','..####..','.######.','.##..##.','.##..##.','#b0722e'],
+ 'กิน':['.#.#.#.#','.#.#.###','.###.###','..#...#.','..#...#.','..#...#.','..#...#.','..#...#.','#55606e'],
+ 'นอน':['.....###','.......#','......#.','#....###','#.......','#######.','#......#','#......#','#4a4f9a'],
+ 'ร้อน':['#..#..#.','.#####..','.#####..','#######.','.#####..','.#####..','#..#..#.','........','#e0721a'],
+ 'วัด':['...#....','...#....','..###...','..###...','.#####..','.#####..','#######.','#######.','#c9961a'],
+ 'ห้องน้ำ':['........','#...#.##','#...#.#.','#.#.#.#.','#.#.#.#.','.#.#..##','........','........','#2f7fc1'],
+ 'รถไฟ':['.######.','#.#..#.#','#.#..#.#','########','########','#.####.#','.#....#.','#......#','#2b6f73'],
+ 'เท่าไหร่':['..####..','.#....#.','......#.','....##..','...#....','...#....','........','...#....','#7b2433'],
+ 'บาท':['...#....','.####...','.#..#...','.####...','.#...#..','.#...#..','.####...','...#....','#3d7a3a'],
+ 'เผ็ด':['......#.','.....#..','....###.','...###..','..###...','.###....','###.....','#.......','#c23b3b']
+};
+const LINES={
+ vendor:[['（她指著冒煙的炒鍋，又指指盤裡的白飯，朝你揚揚下巴）','@ข้าว',' ','@กิน',' ไหม?'],
+  ['（旁邊的泰國大叔指著盤子問她）','@เท่าไหร่','? ','（她比了一個六、一個零）',' หกสิบ ','@บาท'],
+  ['（她舉起一根紅辣椒，搧了搧嘴巴，吐出舌頭）','@เผ็ด','! ','@เผ็ด','!'],
+  ['（她做出扒飯的動作，催你快吃）','@กิน',' ','@กิน','!']],
+ clerk:[['（找錢的時候，她雙手合十，微微低頭）','@ขอบคุณ',' ค่ะ'],
+  ['（她指著收銀機上跳出的數字，搓了搓手指）','@เงิน',' สามสิบห้า ','@บาท'],
+  ['（她指著冰櫃裡一整排透明的瓶子）','@น้ำ',' อยู่ตรงนั้น']],
+ temple:[['（守門的阿姨看了看你的腿，搖頭又擺手）','@ไม่',' ','@ไม่','!'],
+  ['（她指著身後金光閃閃的佛塔，一臉驕傲）','@วัด',' สวย'],
+  ['（你把腿遮好之後，她笑著點頭，比了個請）','@ใช่',' ','@ใช่',' เชิญ']],
+ hoststaff:[['（櫃台小哥指著走廊盡頭，門上畫著一男一女）','@ห้องน้ำ',' ทางนั้น'],
+  ['（他打了個大呵欠，雙手合起貼在臉頰旁）','@นอน',' กี่คืน?'],
+  ['（他擦著汗，指指頭上壞掉的電扇）','@ร้อน',' มาก']],
+ agent:[['（旅行社阿姨指著牆上一張藍色列車的照片）','@รถไฟ',' ไป หนองคาย'],
+  ['（她敲了敲計算機，把螢幕轉向你）','@เงิน',' เก้าร้อย ','@บาท']],
+ passer:[['（路人拿著小扇子拚命搧，抹了一把額頭的汗）','@ร้อน',' ','@ร้อน','!'],
+  ['（他指著你手上的空瓶子，又指了指便利商店）','@น้ำ','?'],
+  ['（你指著一個方向問路，他搖搖頭，又指向另一邊）','@ไม่',' ','@ใช่',' ทางนี้']]
+};
+const FAM=[['媽媽','吃飯了沒？那邊熱不熱？'],['媽媽','你表姐考上公務員了。你什麼時候回來找個穩定工作？'],['爸爸','玩夠了就回來，別在外面亂花錢。'],['二姨','聽說泰國很亂，護照一定要收好啊！'],['媽媽','隔壁王阿姨說東南亞騙子很多，你一個人我睡不著。'],['家族群','（奶奶轉發了一篇〈出國旅遊十大陷阱，第七個最可怕〉）'],['媽媽','你高中同學都上班了，你還在外面晃？'],['爸爸','錢夠不夠？不夠說一聲。'],['媽媽','別人都問我你去哪了，我都不知道怎麼說。']];
+const ITEMS=[
+ {id:'passport',n:'護照（中國普通護照）',kg:.05,L:0,req:1},
+ {id:'phone',n:'手機＋充電線',kg:.3,L:.3,req:1},
+ {id:'shirts',n:'速乾 T 恤 ×3',kg:.45,L:3,req:1},
+ {id:'under',n:'內衣褲＋襪子 ×4',kg:.4,L:2,req:1},
+ {id:'toilet',n:'盥洗包',kg:.6,L:1.5},
+ {id:'pants',n:'輕薄長褲',kg:.35,L:1.5,d:'進寺廟要遮住膝蓋'},
+ {id:'sarong',n:'紗籠／大圍巾',kg:.2,L:.5,d:'可當長裙、披肩、床單'},
+ {id:'rain',n:'輕量雨衣',kg:.3,L:1,d:'10 月仍在雨季尾聲'},
+ {id:'meds',n:'藥包（腸胃藥、OK 繃）',kg:.25,L:.8,d:'吃壞肚子時救命'},
+ {id:'bottle',n:'水壺 1L',kg:.15,L:1,d:'在旅館免費裝水'},
+ {id:'power',n:'行動電源 20000mAh',kg:.4,L:.4},
+ {id:'camera',n:'相機＋鏡頭',kg:1.1,L:3,d:'攝影 +3，可用拍照換宿'},
+ {id:'laptop',n:'筆電',kg:1.6,L:2.5,d:'很重，本 demo 用不到'},
+ {id:'tent',n:'單人帳篷',kg:1.6,L:5,d:'曼谷市區不能用'},
+ {id:'bag',n:'睡袋',kg:.9,L:5},
+ {id:'pad',n:'充氣睡墊',kg:.5,L:2},
+ {id:'book',n:'中文小說一本',kg:.4,L:1,d:'在公園讀，恢復心情'},
+ {id:'phrase',n:'泰語會話手冊',kg:.2,L:.5,d:'每天能查一個生字'},
+ {id:'photos',n:'護照規格證件照 ×4',kg:.01,L:0,d:'寮國落地簽要用'},
+ {id:'sandals',n:'夾腳拖',kg:.35,L:1.5},
+ {id:'snacks',n:'家裡帶的零食',kg:1.2,L:3,d:'吃一次飽足 +60'}
+];
+const PACK_KG=1.4, PACK_L=40;
+
+/* ---------- 地圖 ---------- */
+const map=[];
+for(let y=0;y<MH;y++){const r=[];for(let x=0;x<MW;x++)r.push(',');map.push(r);}
+for(let y=0;y<MH;y++)for(let x=0;x<3;x++)map[y][x]='w';
+for(let y=15;y<=17;y++)for(let x=4;x<MW;x++)map[y][x]='.';
+for(let y=0;y<MH;y++)for(let x=22;x<=23;x++)map[y][x]='.';
+for(let y=31;y<=32;y++)for(let x=24;x<MW;x++)map[y][x]='.';
+for(let y=2;y<=12;y++)for(let x=4;x<=14;x++)map[y][x]='g';
+[[5,3],[7,2],[12,3],[13,6],[5,8],[6,11],[11,11],[13,10],[9,4],[5,5]].forEach(([x,y])=>map[y][x]='t');
+const BLD=[
+ {id:'hostel',n:'竹床青年旅館',sign:'HOSTEL',x:26,y:4,w:8,h:6,wall:'#3a8d86',roof:'#24585a',door:30},
+ {id:'mart',n:'24 小時便利商店',sign:'24H MART',x:36,y:5,w:5,h:4,wall:'#e7e3d8',roof:'#e06a2c',door:38},
+ {id:'xchg',n:'換匯店',sign:'EXCHANGE',x:42,y:5,w:5,h:4,wall:'#5b8a3c',roof:'#33572a',door:44},
+ {id:'wat',n:'巷口的寺廟',sign:'',x:5,y:20,w:10,h:8,kind:'wat',door:9},
+ {id:'burger',n:'24 小時速食店',sign:'BURGER 24H',x:26,y:20,w:6,h:4,wall:'#c9473f',roof:'#e8b23a',door:28},
+ {id:'agent',n:'旅行社＆照相',sign:'TRAVEL',x:34,y:20,w:6,h:4,wall:'#4a5fa0',roof:'#2d3a6a',door:36},
+ {id:'house',n:'巷底的藍色鐵門',sign:'',x:40,y:26,w:6,h:5,wall:'#d8cfb8',roof:'#8b4a3a',door:42,kind:'house'}
+];
+BLD.forEach(b=>{for(let y=b.y;y<b.y+b.h;y++)for(let x=b.x;x<b.x+b.w;x++)map[y][x]='B';});
+for(let y=12;y<=13;y++)for(let x=16;x<=19;x++)map[y][x]='S';
+const SPOTS=[...BLD.map(b=>({x:b.door,y:b.y+b.h,id:b.id,n:b.n})),{x:17,y:14,id:'stall',n:'路邊攤'},{x:18,y:14,id:'stall',n:'路邊攤'},{x:9,y:13,id:'park',n:'公園'},{x:10,y:13,id:'park',n:'公園'}];
+const solid=(tx,ty)=>{if(tx<0||ty<0||tx>=MW||ty>=MH)return true;const c=map[ty][tx];return c==='w'||c==='B'||c==='t'||c==='S';};
+
+/* ---------- 狀態 ---------- */
+let meta={tips:[],guesses:{}};
+try{const m=JSON.parse(localStorage.getItem('ep_meta')||'null');if(m)meta=m;}catch(e){}
+function saveMeta(){try{localStorage.setItem('ep_meta',JSON.stringify(meta));}catch(e){}}
+let S=null, P=null, NPC=[], paused=true, keys={};
+function hour(){return (S.T%1440)/60;}
+function day(){return Math.floor(S.T/1440)+1;}
+function has(id){return S.items.includes(id);}
+function kg(){return PACK_KG+S.items.reduce((a,id)=>a+ITEMS.find(i=>i.id===id).kg,0);}
+function vol(){return S.items.reduce((a,id)=>a+ITEMS.find(i=>i.id===id).L,0);}
+function wf(){const k=kg();return k<=8?1:k<=11?1.25:k<=14?1.6:2.2;}
+function page(id){return S.pages.includes(id);}
+function net(){return S.simUntil>=day();}
+function engLv(){return Math.floor(S.eng);}
+
+function newState(items,extras){
+ return {T:9*60+30,thb:1500,cny:2000-(extras.ins?280:0)-(extras.usd?290:0),card:6000,usd:extras.usd?40:0,
+  hunger:70,water:60,energy:80,mood:70,health:100,family:20,
+  eng:3,photo:items.includes('camera')?6:3,know:[...meta.tips],items:[...items],ins:!!extras.ins,insUsed:false,
+  words:{},pages:[],simUntil:0,ldifDay:0,ticket:0,photosBought:false,vol:false,workDay:0,freeBed:false,
+  rentSarong:0,phraseDay:0,cs:null,refs:0,msgs:[],nextMsg:240,rainLeft:0,rainDay:0,talkIdx:{},stolen:0,snacksEaten:false,overDay:0};
+}
+
+/* ---------- UI 小工具 ---------- */
+function toast(t){const d=document.createElement('div');d.textContent=t;$('#toast').appendChild(d);setTimeout(()=>d.remove(),4200);while($('#toast').children.length>3)$('#toast').firstChild.remove();}
+function say(who,html){$('#dlg').innerHTML=`<div class="who">${who}</div><div>${html}</div>`;bindWords($('#dlg'));}
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+function lineHTML(tokens){return tokens.map(t=>{
+ if(t[0]==='@'){const w=t.slice(1),st=S.words[w];const ok=st&&st.ok;return `<span class="w ${ok?'ok':st?'got':''}" data-w="${w}" role="button" tabindex="0">${w}${ok?`<span class="gl">${WORDS[w]}</span>`:''}</span>`;}
+ if(t[0]==='（')return `<span class="gest">${esc(t)}</span>`;
+ return `<span class="th">${esc(t)}</span>`;}).join('');}
+function bindWords(root){root.querySelectorAll('.w').forEach(el=>{const f=()=>collect(el.dataset.w,el);el.onclick=f;el.onkeydown=e=>{if(e.key==='Enter')f();};});}
+function collect(w,el){if(!S.words[w]){S.words[w]={guess:meta.guesses[w]||'',ok:false,hint:''};toast(`記下「${w}」。打開筆記（J）寫下你的猜測。`);if(el)el.classList.add('got');}else if(!S.words[w].ok)toast(`「${w}」已經在筆記裡了。`);}
+function talk(id){S.talkIdx[id]=((S.talkIdx[id]??-1)+1)%LINES[id].length;const names={vendor:'攤販大嬸',clerk:'便利商店店員',temple:'守門的阿姨',hoststaff:'櫃台小哥',agent:'旅行社阿姨',passer:'路人'};
+ say(names[id],lineHTML(LINES[id][S.talkIdx[id]])+'<div class="sub" style="margin-top:4px">點底線的泰文字把它記進筆記。</div>');act(10);
+ if(page('polite'))mood(2);}
+
+function openModal(html){paused=true;$('#sheet').innerHTML=html;$('#modal').hidden=false;const c=$('#sheet .close');if(c)c.onclick=closeModal;bindWords($('#sheet'));}
+function closeModal(){$('#modal').hidden=true;if(S&&!S.over)paused=false;}
+function menu(title,sub,opts,after){
+ const html=`<h2>${title}</h2>${sub?`<p class="sub">${sub}</p>`:''}<div class="opts">${opts.map((o,i)=>`<button class="opt" data-i="${i}" ${o.ok===false?'disabled':''}><span>${o.t}</span><span class="s">${o.ok===false&&o.why?o.why:(o.s||'')}</span></button>`).join('')}</div><button class="close">離開 Esc</button>`;
+ openModal(html);
+ $('#sheet').querySelectorAll('.opt').forEach(b=>b.onclick=()=>{const r=opts[+b.dataset.i].fn();if(S.over)return;if(r==='close')closeModal();else if(r!=='keep'&&after)after();});
+}
+const pay=n=>{S.thb-=n;};
+const mood=n=>{S.mood=clamp(S.mood+n,0,100);};
+function engXp(n){S.eng=Math.min(10,S.eng+n*(1/(1+ (S.eng-3)*.25)));}
+function learnTip(i){if(i===undefined)i=TIPS.findIndex((t,k)=>!S.know.includes(k));if(i<0||S.know.includes(i))return false;S.know.push(i);if(!meta.tips.includes(i)){meta.tips.push(i);saveMeta();}toast('旅行知識＋1：'+TIPS[i].slice(0,22)+'…');return true;}
+
+/* ---------- 時間與數值 ---------- */
+function tick(mins,o={}){
+ const hrs=mins/60,h=hour();
+ let w=5*(h>=11&&h<16?(page('body')?1.2:1.6):1);if(S.rainLeft>0)w*=.7;if(o.sleep)w*=.4;
+ S.hunger-=3.6*hrs*(o.sleep?.5:1);S.water-=w*hrs;
+ if(!o.sleep)S.energy-=2.4*hrs*(o.mult||1);
+ S.mood-=.6*hrs+((S.hunger<20||S.water<20)?2*hrs:0);
+ const unread=S.msgs.filter(m=>!m.done).length;
+ S.family+=(.5+.45*unread)*hrs;
+ if(S.hunger<=0)S.health-=6*hrs;if(S.water<=0)S.health-=9*hrs;if(S.energy<=0)S.health-=3*hrs;
+ ['hunger','water','energy','mood','health','family'].forEach(k=>S[k]=clamp(S[k],0,100));
+ S.nextMsg-=mins;if(S.nextMsg<=0){const f=FAM[Math.floor(rnd()*FAM.length)];S.msgs.unshift({from:f[0],text:f[1],done:false,day:day(),h:Math.floor(hour())});S.nextMsg=420+rnd()*480;toast(`📱 ${f[0]} 傳來新訊息（M 打開手機）`);}
+ if(S.rainLeft>0)S.rainLeft-=mins;
+ checkFail();
+}
+function act(mins,o){S.T+=mins;tick(mins,o);}
+function checkFail(){
+ if(S.over)return;
+ if(S.health<=0){if(S.ins&&!S.insUsed){S.insUsed=true;S.health=45;S.hunger=60;S.water=70;S.T+=1440;mood(-15);S.family=clamp(S.family+15,0,100);toast('你倒在路邊被送醫。旅遊保險付了醫藥費，但你在醫院躺了一天，家裡也知道了。');return;}
+  return over('你在街頭中暑倒下','沒有旅遊保險，曼谷私立醫院的帳單超過一萬五千銖。家人匯了錢，也買好了你回國的機票。');}
+ if(S.family>=100)return over('「機票已經買好了，你給我回來。」','家人的壓力到了頂點。媽媽在家族群裡宣布你下週回國，所有親戚都按了讚。');
+ if(S.mood<=0)return over('你在宿舍的上鋪哭了一整晚','第二天早上，你打開航空公司 App，訂了回國的單程機票。');
+}
+function sleep(kind){
+ const cur=S.T;let wake=Math.floor(cur/1440)*1440+480;if(cur%1440>=480)wake+=1440;
+ const mins=wake-cur;tick(mins,{sleep:true});S.T=wake;
+ const Q={dorm:[100,10,5,'你在八人房的上鋪睡著了。冷氣很強，鼾聲此起彼落。'],cs:[95,8,10,'沙發不大，但很安心。'],mcd:[35,-4,-8,'你趴在速食店的桌上斷斷續續睡了幾個小時，店員沒有趕你。'],street:[25,-10,-15,'你靠著牆在騎樓下睡著了。']}[kind];
+ S.energy=kind==='dorm'||kind==='cs'?Q[0]:clamp(S.energy+Q[0],0,100);S.health=clamp(S.health+Q[1],0,100);mood(Q[2]);
+ let extra='';
+ if(kind==='street'&&S.thb>300&&rnd()<.4){const l=Math.round(S.thb*.4);S.thb-=l;S.stolen+=l;extra=` 醒來時，腰包被割開了，少了 ${l} 銖。`;}
+ newDay();
+ say('第 '+day()+' 天，08:00',Q[3]+extra);
+ checkFail();
+}
+function newDay(){
+ const d=day();
+ if(S.workDay===d-1&&S.vol){S.hunger=clamp(S.hunger+25,0,100);toast('換宿的免費早餐：吐司和咖啡。');}
+ S.freeBed=false;
+ if(S.cs&&S.cs.day<d)S.cs=null;
+ if(d>30){S.overDay=d-30;toast(`⚠ 你已經逾期停留 ${d-30} 天。泰國逾期每天罰 500 銖，嚴重會被禁止入境。`);}
+ else if(30-d<=5)toast(`簽證提醒：免簽停留只剩 ${30-d+1} 天。`);
+ if(S.simUntil&&S.simUntil===d-1)toast('觀光 SIM 卡到期了。');
+}
+
+/* ---------- 地點選單 ---------- */
+function covered(){return has('pants')||has('sarong')||S.rentSarong===day();}
+const LOC={
+ hostel(){const h=hour(),night=h>=19||h<5,canWork=S.vol&&h>=8&&h<=15&&S.workDay!==day();
+  menu('竹床青年旅館','考山路旁的背包客旅館。交誼廳有換書架、免費飲水機和不太穩的 Wi-Fi。',[
+   {t:S.freeBed?'睡宿舍床位（換宿，免費）':'睡 8 人房宿舍床位',s:S.freeBed?'免費':'350 ฿',ok:night&&(S.freeBed||S.thb>=350),why:!night?'19:00 後入住':'錢不夠',fn:()=>{if(!S.freeBed)pay(350);closeModal();sleep('dorm');return 'keep';}},
+   {t:'在交誼廳和背包客聊天',s:'1 小時｜英語↑ 心情↑',fn:()=>{act(60);engXp(.35);mood(page('polite')?11:8);const L=['德國女生 Lena 說她搭便車穿過了半個寮國。','英國大叔說他二十年前來的時候，一晚只要 80 銖。','一個韓國男生問你：中國護照去哪裡比較方便？你們聊了很久。','有人說北部的拜縣很美，但雨季的山路很危險。'];say('交誼廳',L[Math.floor(rnd()*L.length)]+` <span class="sub">（英語 ${S.eng.toFixed(1)}）</span>`);if(rnd()<.35)learnTip();}},
+   {t:'從換書架拿英文小說來讀',s:'2 小時｜英語↑',fn:()=>{act(120);S.energy-=4;engXp(.5);mood(3);say('換書架','你讀完了半本被翻爛的英文小說，查了很多單字。');}},
+   {t:'翻櫃台那本背包客指南',s:'2 小時｜旅行知識↑',ok:S.know.length<TIPS.length,why:'都讀過了',fn:()=>{act(120);S.energy-=3;learnTip();say('背包客指南','你在書頁邊緣做了筆記。（背包 I 可以查看已學到的旅行知識）');}},
+   {t:'用水壺裝免費飲水',s:'水分 +40',ok:has('bottle'),why:'沒帶水壺',fn:()=>{S.water=clamp(S.water+40,0,100);toast('裝滿了。省下 14 銖。');}},
+   ...(S.vol?[{t:'上工 4 小時（換今晚床位＋明早早餐）',s:has('camera')?'幫旅館拍 IG 照片':'櫃台接待＋打掃',ok:canWork,why:S.workDay===day()?'今天做完了':'08–15 點才能上工',fn:()=>{act(240,{mult:2});engXp(.25);if(has('camera'))S.photo=Math.min(10,S.photo+.3);S.freeBed=true;S.workDay=day();say('換宿','做完今天的班了。今晚的床位免費。');}}]
+   :[{t:'申請打工換宿',s:'要求：英語 4 或會攝影',fn:()=>{const okE=S.eng>=4,okP=has('camera')&&S.photo>=6;
+     if(okE||okP){S.vol=true;learnTip(6);say('櫃台小哥',okP?'他翻了翻你相機裡的照片，眼睛一亮：「我們的 IG 很久沒更新了。每天拍 4 小時，床位和早餐我們包。」':'「你英文不錯，可以幫忙顧櫃台。每天 4 小時，換床位和早餐。」');}
+     else say('櫃台小哥','他用很快的英文講了一串，你只聽懂「sorry」。也許英文再好一點，或帶著作品來會比較有機會。');}}]),
+   {t:'和櫃台小哥說話',s:'泰語',fn:()=>{talk('hoststaff');return 'close';}},
+   {t:'連 Wi-Fi 用手機',s:'免費網路',fn:()=>{phone(true);return 'keep';}}
+  ],LOC.hostel);},
+ mart(){const lp=page('market');
+  menu('24 小時便利商店','冷氣是全城最強的。',[
+   {t:'礦泉水 1.5L',s:'14 ฿',ok:S.thb>=14,why:'錢不夠',fn:()=>{pay(14);S.water=clamp(S.water+(lp?50:42),0,100);}},
+   {t:'微波打拋飯便當',s:'45 ฿',ok:S.thb>=45,why:'錢不夠',fn:()=>{pay(45);S.hunger=clamp(S.hunger+(lp?38:32),0,100);}},
+   {t:'火腿起司烤吐司',s:'35 ฿',ok:S.thb>=35,why:'錢不夠',fn:()=>{pay(35);S.hunger=clamp(S.hunger+(lp?26:22),0,100);mood(2);}},
+   {t:'觀光 SIM 卡（8 天）',s:net()?'已有網路':'299 ฿',ok:!net()&&S.thb>=299,why:net()?'已有網路':'錢不夠',fn:()=>{pay(299);S.simUntil=day()+7;toast('有網路了：可以在外面視訊、用沙發衝浪、填寮國 LDIF。');}},
+   {t:'銀聯卡 ATM 提款 3,000 ฿',s:'手續費 220 ฿',ok:S.card*RATE_CNY>=3220,why:'卡裡錢不夠',fn:()=>{S.card-=Math.round(3220/RATE_CNY);S.thb+=3000;toast(`扣了卡裡 ¥${Math.round(3220/RATE_CNY)}。`);if(!S.know.includes(1))learnTip(1);}},
+   {t:'和店員說話',s:'泰語',fn:()=>{talk('clerk');return 'close';}}
+  ],LOC.mart);},
+ stall(){const h=hour();if(h<7||h>=22)return say('路邊攤','攤子收起來了，只剩一張折疊桌。');const lp=page('price');
+  menu('路邊攤','一口大炒鍋，幾張塑膠凳。只有泰文菜單。',[
+   {t:'打拋豬肉飯＋煎蛋',s:lp?'60 ฿（當地價）':'80 ฿（觀光客價）',ok:S.thb>=(lp?60:80),why:'錢不夠',fn:()=>{pay(lp?60:80);act(20);S.hunger=clamp(S.hunger+50,0,100);mood(4);
+     if(!lp&&rnd()<.4){S.water-=20;mood(-6);say('攤販大嬸','你沒說「不要辣」。第一口就辣到眼淚直流，大嬸笑著遞給你冰水。');}else say('攤販大嬸',lp?'你用泰語問了價錢，說了不要太辣。大嬸給你多加了一顆蛋。':'很好吃，但你總覺得旁邊泰國人付的錢比你少。');}},
+   {t:'泰式奶茶',s:lp?'25 ฿':'35 ฿',ok:S.thb>=(lp?25:35),why:'錢不夠',fn:()=>{pay(lp?25:35);S.water=clamp(S.water+20,0,100);mood(5);}},
+   {t:'和大嬸說話',s:'泰語',fn:()=>{talk('vendor');return 'close';}}
+  ],LOC.stall);},
+ wat(){const h=hour();if(h<8||h>=17)return say('巷口的寺廟','大門關著。開放時間 08:00–17:00。');
+  menu('巷口的寺廟','不收門票的社區寺廟。門口貼著告示：衣著需遮蓋肩膀與膝蓋。',[
+   {t:'進去參拜',s:covered()?'1 小時｜心情 +15':'',ok:covered(),why:'短褲不能進',fn:()=>{act(60);mood(15);S.family=clamp(S.family-3,0,100);say('寺廟裡','很安靜。一位老和尚在掃落葉，你坐了很久。');}},
+   ...(!covered()?[{t:'向阿姨借紗籠圍上',s:'樂捐 20 ฿',ok:S.thb>=20,why:'錢不夠',fn:()=>{pay(20);S.rentSarong=day();learnTip(3);say('守門的阿姨',lineHTML(['（她遞給你一條花布，示範怎麼圍在腰上）','@ใช่',' ','@ใช่']));}}]:[]),
+   {t:'在菩提樹下靜坐',s:'1 小時｜心情↑ 體力↑',fn:()=>{act(60);mood(10);S.energy=clamp(S.energy+6,0,100);}},
+   {t:'和守門的阿姨說話',s:'泰語',fn:()=>{talk('temple');return 'close';}}
+  ],LOC.wat);},
+ park(){const h=hour(),night=h>=19||h<5;
+  menu('河邊的小公園','有長椅、大樹和一座白色碉堡。傍晚很多人在這裡跳有氧操。',[
+   {t:'在長椅上讀中文小說',s:'2 小時｜心情 +14',ok:has('book'),why:'沒帶書',fn:()=>{act(120);mood(14);say('公園','讀到一半，你想起了家。這次不是壓力，而是有點想念。');S.family=clamp(S.family-4,0,100);}},
+   {t:'拍街景',s:'1 小時｜攝影↑',ok:has('camera'),why:'沒帶相機',fn:()=>{act(60);S.photo=Math.min(10,S.photo+.4);mood(6);say('公園','夕陽照在湄南河上，你拍到了幾張很滿意的照片。');}},
+   {t:'散步吹河風',s:'30 分鐘｜心情 +4',fn:()=>{act(30);mood(4);}},
+   {t:'搭帳篷過夜',s:'省住宿費？',ok:has('tent')&&night,why:has('tent')?'晚上才行':'沒帶帳篷',fn:()=>{act(40);mood(-10);learnTip(4);say('公園警衛','帳篷搭到一半，警衛用手電筒照你：「Park close! No camping!」你只能收好帳篷離開。');return 'close';}},
+   {t:'睡在長椅上',s:'',ok:night,why:'晚上才行',fn:()=>{act(30);mood(-8);learnTip(4);say('公園警衛','公園晚上會鎖門，警衛把你請了出去。');return 'close';}}
+  ],LOC.park);},
+ burger(){const h=hour(),night=h>=21||h<5;
+  menu('24 小時速食店','冷氣、插座、Wi-Fi，還有一整夜不會趕人的店員。',[
+   {t:'點薯條，在這裡撐一整晚',s:'79 ฿｜很差的睡眠',ok:night&&S.thb>=79,why:!night?'21:00 後':'錢不夠',fn:()=>{pay(79);closeModal();sleep('mcd');return 'keep';}},
+   {t:'漢堡套餐',s:'159 ฿',ok:S.thb>=159,why:'錢不夠',fn:()=>{pay(159);act(30);S.hunger=clamp(S.hunger+45,0,100);S.water=clamp(S.water+15,0,100);mood(3);}},
+   {t:'連 Wi-Fi 用手機',s:'免費網路',fn:()=>{phone(true);return 'keep';}}
+  ],LOC.burger);},
+ xchg(){const h=hour();if(h<9||h>=20)return say('換匯店','鐵捲門拉下來了。營業時間 09:00–20:00。');
+  menu('換匯店','匯率看板上一排紅色數字。櫃員要看護照正本。',[
+   {t:'人民幣現金 ¥500 → 泰銖',s:`${500*RATE_CNY} ฿`,ok:S.cny>=500,why:'人民幣不夠',fn:()=>{S.cny-=500;S.thb+=500*RATE_CNY;}},
+   {t:'人民幣現金 ¥1,000 → 泰銖',s:`${1000*RATE_CNY} ฿`,ok:S.cny>=1000,why:'人民幣不夠',fn:()=>{S.cny-=1000;S.thb+=1000*RATE_CNY;}},
+   {t:'用泰銖買美元 $20',s:`${20*RATE_USD} ฿`,ok:S.thb>=20*RATE_USD,why:'錢不夠',fn:()=>{S.thb-=20*RATE_USD;S.usd+=20;toast('櫃員給你兩張全新的 10 美元。寮國邊境只收乾淨平整的鈔票。');}},
+   {t:'問櫃員：中國人換匯有限制嗎？',s:'',fn:()=>{say('換匯店櫃員','「這邊沒有限制，但你們在國內每人每年購匯額度是 5 萬美元，銀聯卡在境外提現也有年度上限。」');}}
+  ],LOC.xchg);},
+ agent(){const h=hour();if(h<9||h>=20)return say('旅行社','已經打烊了。營業時間 09:00–20:00。');
+  const fee=page('city')?0:150;
+  menu('旅行社＆照相','牆上貼滿了去寮國、柬埔寨、緬甸邊境的巴士和火車班次。',[
+   {t:'買今晚 25 次夜車：曼谷→廊開，二等臥鋪上鋪',s:S.ticket?'已購票':`898 ฿${fee?' ＋ 代購費 150':'（自己去車站買）'}`,ok:!S.ticket&&h<19.5&&S.thb>=898+fee,why:S.ticket?'已購票':h>=19.5?'太晚了':'錢不夠',fn:()=>{
+     if(rnd()<.25){menu('臥鋪賣完了','「Sleeper full. Only third class, fan, ten hours.」',[{t:'買三等硬座（電扇車廂，坐一整晚）',s:`約 250 ฿${fee?' ＋ 150':''}`,ok:S.thb>=250+fee,fn:()=>{pay(250+fee);S.ticket={cls:3,day:day()};toast('買到了三等座。今晚會很難熬。');return 'close';}},{t:'不買了，明天再來',fn:()=>'close'}]);return 'keep';}
+     pay(898+fee);S.ticket={cls:2,day:day()};toast('買到了！20:25 從 Krung Thep Aphiwat 中央車站發車，隔天早上到廊開。');}},
+   {t:'拍證件照',s:S.photosBought||has('photos')?'已經有了':'100 ฿／8 張',ok:!(S.photosBought||has('photos'))&&S.thb>=100,why:'已經有了',fn:()=>{pay(100);S.photosBought=true;act(20);}},
+   {t:'問：拿中國護照怎麼去寮國？',s:'旅行知識',fn:()=>{learnTip(2);say('旅行社阿姨','「中國護照？寮國可以落地簽，帶美元現金和照片。過友誼橋之前，手機上要先填 LDIF。」');}},
+   {t:'出發去火車站（今晚 20:25 發車）',s:'結束曼谷章節',ok:!!S.ticket&&S.ticket.day===day()&&h>=17&&h<20,why:!S.ticket?'還沒買票':S.ticket.day!==day()?'車票過期了':'17:00–20:00 出發',fn:()=>{ending();return 'keep';}},
+   {t:'和阿姨說話',s:'泰語',fn:()=>{talk('agent');return 'close';}}
+  ],LOC.agent);},
+ house(){const d=day(),h=hour();
+  if(!S.cs||!S.cs.ok||S.cs.day!==d)return say('巷底的藍色鐵門','一戶普通人家。門口的狗對你叫了兩聲。（用手機上的沙發衝浪發送借宿請求）');
+  if(h<18)return say('巷底的藍色鐵門','主人說晚上 6 點以後才會在家。');
+  const H=S.cs.host;
+  if(H==='sketchy'){menu('沙發主人 Mark','他看起來很熱情。晚餐後他一直勸你喝酒，還說「沙發不舒服，你可以睡我房間」。',[
+    {t:'找藉口拿著背包離開',s:'安全第一',fn:()=>{act(30);mood(-10);S.cs=null;say('夜裡的巷子','你在 App 上留了評價提醒其他旅客，然後背著包走進夜色。今晚得另外找地方睡。');return 'close';}},
+    {t:'堅持睡沙發，把背包抱在身邊',s:'',fn:()=>{mood(-15);S.cs=null;closeModal();sleep('cs');S.energy=55;say('早上','你幾乎沒睡，天一亮就離開了。這次不會留好評。');return 'keep';}}]);return;}
+  menu(H==='nok'?'沙發主人 Nok':'沙發主人 Tom',H==='nok'?'Nok 是朱拉隆功大學的學生，她的小公寓堆滿了書。':'Tom 是在曼谷教英文的英國人，冰箱裡只有啤酒和芒果。',[
+   {t:'吃晚餐、聊天，然後睡沙發',s:'免費',fn:()=>{
+     let msg='';
+     if(H==='nok'){const pend=Object.keys(S.words).filter(w=>!S.words[w].ok&&!S.words[w].hint).slice(0,2);pend.forEach(w=>S.words[w].hint=WORDS[w]);mood(10);msg=pend.length?`Nok 看了你的筆記，笑著解釋了 ${pend.map(w=>'「'+w+'」').join('、')} 的意思。`:'Nok 教你泰國人怎麼數到十。';}
+     else{engXp(.6);learnTip();mood(8);msg='Tom 跟你講了一整晚曼谷的生存技巧，你的英文聽力被迫進步。';}
+     S.refs++;closeModal();sleep('cs');say('早上',msg+' 你留了好評，他也給了你第一則評價。');return 'keep';}}
+  ]);}
+};
+
+/* ---------- 路上的人 ---------- */
+function tuk(){
+ const k=S.know.includes(0);
+ menu('嘟嘟車司機','「Hello my friend! Where you go? Temple today close, holiday! I take you see Lucky Buddha, only 20 baht!」'+(k?'<br><span class="good">你想起指南上寫過這個騙局。</span>':''),[
+  {t:'好啊，20 銖很便宜',s:'',fn:()=>{pay(20);act(90);
+    menu('寶石店','司機把你載到一家冷氣很強的寶石店。店員端來冰水，拿出一顆「只有今天特價」的藍寶石，說回國能賣三倍。',[
+     {t:'買一顆（3,000 ฿）',s:'',ok:S.thb>=3000,why:'錢不夠',fn:()=>{pay(3000);mood(-20);learnTip(0);say('寶石店','回到旅館，背包客告訴你那是染色玻璃。');return 'close';}},
+     {t:'堅持不買，走人',s:'',fn:()=>{act(60);mood(-10);learnTip(0);say('路邊','司機臉一沉，把你丟在一個不認識的路口。你走了一個小時才回到考山路。');return 'close';}}]);return 'keep';}},
+  {t:'不用了，謝謝',s:'',fn:()=>{if(k)mood(4);say('嘟嘟車司機','他聳聳肩，轉身去攔下一個觀光客。');return 'close';}},
+  ...(S.words['ไม่']&&S.words['ไม่'].ok?[{t:'用泰語說：ไม่',s:'',fn:()=>{mood(6);say('嘟嘟車司機','他愣了一下，然後大笑：「Oh, you speak Thai!」揮揮手放你走。');return 'close';}}]:[])
+ ]);
+}
+function backpacker(){act(15);engXp(.15);mood(page('polite')?6:4);const L=['「Hey! Where are you from? China? Cool, how is the visa for you guys?」','「I did the night train to Nong Khai last month. Book the lower bunk if you can.」','「Don\'t take the tuk-tuk near the temple, it\'s a scam!」','「Have you tried Couchsurfing? Nobody accepted me until I had a reference.」'];
+ const i=Math.floor(rnd()*L.length);say('背包客 Sam',L[i]+` <span class="sub">（你大概聽懂了。英語 ${S.eng.toFixed(1)}）</span>`);if(i===2&&!S.know.includes(0))learnTip(0);if(i===3)learnTip(5);}
+
+/* ---------- 手機 ---------- */
+let phoneTab='msg',wifi=false;
+function phone(w){wifi=!!w;renderPhone();}
+function hasNet(){return wifi||net();}
+function renderPhone(){
+ const nt=hasNet();
+ const tabs=[['msg','訊息'+(S.msgs.some(m=>!m.done)?' ●':'')],['cs','沙發衝浪'],['ldif','寮國 LDIF'],['wallet','錢包']];
+ let body='';
+ if(phoneTab==='msg'){
+  body=S.msgs.length?S.msgs.slice(0,8).map((m,i)=>`<div class="msg ${m.done?'done':''}"><div class="f">${esc(m.from)}・第 ${m.day} 天 ${String(m.h).padStart(2,'0')}:00</div><div>${esc(m.text)}</div>${m.done?'':`<div class="row"><button class="mini" data-a="call" data-i="${i}" ${nt?'':'disabled'}>視訊 30 分鐘</button><button class="mini" data-a="pic" data-i="${i}" ${nt?'':'disabled'}>傳幾張照片</button><button class="mini" data-a="ign" data-i="${i}">已讀不回</button></div>`}</div>`).join(''):'<p class="sub">還沒有訊息。家人很快就會想起你。</p>';
+  if(!nt)body='<p class="warn">沒有網路。去旅館或速食店連 Wi-Fi，或在便利商店買 SIM 卡。</p>'+body;
+ }else if(phoneTab==='cs'){
+  const c=S.cs;
+  body=`<p class="sub">你的檔案：評價 ${S.refs} 則・英語 ${S.eng.toFixed(1)}${has('camera')?'・有一組好看的旅行照':''}</p>`;
+  if(!nt)body+='<p class="warn">需要網路。</p>';
+  else if(!c)body+=`<button class="mini" data-a="csreq" ${hour()<17?'':'disabled'}>發送今晚的借宿請求</button> <span class="sub">${hour()<17?'主人通常要幾小時才回覆':'太晚了，主人不會回覆了'}</span>`;
+  else if(c.pending&&S.T<c.at)body+='<p>等待回覆中……（大約 2 小時）</p>';
+  else if(c.pending){c.pending=false;c.ok=rnd()<clamp(.15+S.refs*.25+(S.eng-3)*.05+(has('camera')?.07:0),0,.9);if(c.ok){const r=rnd();c.host=r<.5?'nok':r<.85?'tom':'sketchy';}renderPhone();return;}
+  else body+=c.ok?`<p class="good">有人接受了！今晚 18:00 後去右下角巷底的藍色鐵門。</p>`:`<p class="warn">被婉拒了。「Sorry, I have guests this week.」新帳號本來就很難。</p>`;
+ }else if(phoneTab==='ldif'){
+  body=`<p>Lao Digital Immigration Form：寮國的數位入境表，入境前 3 天內線上填寫。不是簽證。</p>`+(S.ldifDay?`<p class="good">已在第 ${S.ldifDay} 天填寫。</p>`:'')+`<button class="mini" data-a="ldif" ${nt?'':'disabled'}>${S.ldifDay?'重新填寫':'填寫'}（20 分鐘）</button>`;
+ }else{
+  body=`<div class="tbl"><table><tr><td>泰銖現金</td><td class="n">${Math.round(S.thb).toLocaleString()} ฿</td></tr><tr><td>人民幣現金</td><td class="n">¥${S.cny.toLocaleString()}</td></tr><tr><td>銀聯卡餘額</td><td class="n">¥${S.card.toLocaleString()}</td></tr><tr><td>美元現金</td><td class="n">$${S.usd}</td></tr><tr><td>旅遊保險</td><td class="n">${S.ins?(S.insUsed?'已使用':'有'):'沒有'}</td></tr></table></div><p class="sub">匯率為示意：¥1 ≈ ${RATE_CNY} ฿，$1 ≈ ${RATE_USD} ฿。</p>`;
+ }
+ openModal(`<h2>手機 ${nt?'<span class="good" style="font-size:13px">●'+(wifi?' Wi-Fi':' 4G')+'</span>':'<span class="warn" style="font-size:13px">● 無網路</span>'}</h2><div class="tabs" role="tablist">${tabs.map(t=>`<button role="tab" aria-selected="${phoneTab===t[0]}" data-t="${t[0]}">${t[1]}</button>`).join('')}</div><div style="display:flex;flex-direction:column;gap:8px">${body}</div><button class="close">關閉 Esc</button>`);
+ $('#sheet').querySelectorAll('[data-t]').forEach(b=>b.onclick=()=>{phoneTab=b.dataset.t;renderPhone();});
+ $('#sheet').querySelectorAll('[data-a]').forEach(b=>b.onclick=()=>{const a=b.dataset.a,m=S.msgs[+b.dataset.i];
+  if(a==='call'){act(30);m.done=true;S.family=clamp(S.family-18,0,100);if(rnd()<.5){mood(-4);toast('視訊被唸了半小時，但他們安心多了。');}else{mood(5);toast('媽媽看到你曬黑了，笑了。');}}
+  if(a==='pic'){act(10);m.done=true;S.family=clamp(S.family-(has('camera')?15:9),0,100);mood(2);toast(has('camera')?'你傳了幾張用相機拍的照片，家族群一片讚嘆。':'你傳了幾張自拍。');}
+  if(a==='ign'){m.done=true;S.family=clamp(S.family+6,0,100);toast('已讀不回。你知道他們會繼續問。');}
+  if(a==='csreq'){S.cs={pending:true,at:S.T+120,day:day()};act(15);}
+  if(a==='ldif'){act(20);S.ldifDay=day();toast('LDIF 填好了，QR code 存在相簿裡。');}
+  if(!S.over)renderPhone();});
+}
+
+/* ---------- 筆記（巴別塔式語言學習） ---------- */
+const iconCache={};
+function iconURL(w){if(iconCache[w])return iconCache[w];const c=document.createElement('canvas');c.width=c.height=10;const g=c.getContext('2d');g.fillStyle='#f1e8d4';g.fillRect(0,0,10,10);const ic=ICONS[w];g.fillStyle=ic[8];ic.slice(0,8).forEach((r,y)=>[...r].forEach((ch,x)=>{if(ch==='#')g.fillRect(x+1,y+1,1,1);}));return iconCache[w]=c.toDataURL();}
+function notebook(){
+ const seen=Object.keys(S.words);
+ const canPhrase=has('phrase')&&S.phraseDay!==day();
+ const rows=seen.length?seen.map(w=>{const st=S.words[w];return `<div class="wordrow"><span class="w ${st.ok?'ok':'got'}" style="cursor:default">${w}</span>${st.ok?`<span class="good">${WORDS[w]}（已確認）</span>`:`<div style="display:flex;flex-direction:column;gap:2px;min-width:0"><input id="g_${seen.indexOf(w)}" data-w="${w}" placeholder="你覺得是什麼意思？" value="${esc(st.guess)}">${st.hint?`<span class="sub">提示：${st.hint}</span>`:''}</div>`}</div>`;}).join(''):'<p class="sub">還沒有記下任何字。和人說話時，點對話裡有底線的泰文。</p>';
+ const pages=PAGES.map(p=>{const done=page(p.id),ready=p.w.every(w=>S.words[w]);
+  if(done)return `<div class="page"><h3 class="good">✓ ${p.n}</h3><p class="sub">${p.r}</p></div>`;
+  if(!ready)return `<div class="page"><h3>${p.n}</h3><p class="sub">還缺 ${p.w.filter(w=>!S.words[w]).length} 個字才能拼出這一頁。</p></div>`;
+  return `<div class="page" data-p="${p.id}"><h3>${p.n}</h3><p class="sub">把字放到對應的圖下面。三個全對才會確認。</p><div class="slots">${p.w.map((w,i)=>`<div class="slot"><img src="${iconURL(w)}" alt="" style="width:56px;height:56px;image-rendering:pixelated;border:2px solid var(--line)"><select id="s_${p.id}_${i}" aria-label="第 ${i+1} 張圖"><option value="">—</option>${seen.map(x=>`<option>${x}</option>`).join('')}</select></div>`).join('')}</div><button class="mini" data-chk="${p.id}">核對這一頁</button></div>`;}).join('');
+ openModal(`<h2>語言筆記</h2><p class="sub">像《巴別塔聖歌》：沒有人會直接告訴你意思。從手勢和情境猜，寫下來，再用圖頁驗證。</p>
+ ${has('phrase')?`<div class="row"><button class="mini" id="phr" ${canPhrase?'':'disabled'}>查泰語會話手冊</button><span class="sub">${canPhrase?'今天還能查 1 個字':'今天查過了'}</span></div>`:''}
+ <h3>生字（${seen.length}/15）</h3><div>${rows}</div><h3>圖頁（${S.pages.length}/5）</h3><div style="display:flex;flex-direction:column;gap:8px">${pages}</div><button class="close">關閉 Esc</button>`);
+ $('#sheet').querySelectorAll('input[data-w]').forEach(i=>i.oninput=()=>{S.words[i.dataset.w].guess=i.value;meta.guesses[i.dataset.w]=i.value;saveMeta();});
+ const ph=$('#phr');if(ph)ph.onclick=()=>{const c=seen.filter(w=>!S.words[w].ok&&!S.words[w].hint);if(!c.length){toast('筆記裡的字你都查過了。');return;}const w=c[Math.floor(rnd()*c.length)];S.words[w].hint=WORDS[w];S.phraseDay=day();act(30);notebook();};
+ $('#sheet').querySelectorAll('[data-chk]').forEach(b=>b.onclick=()=>{const p=PAGES.find(x=>x.id===b.dataset.chk);const ans=p.w.map((w,i)=>$(`#s_${p.id}_${i}`).value);
+  if(ans.every((a,i)=>a===p.w[i])){S.pages.push(p.id);p.w.forEach(w=>{S.words[w].ok=true;S.words[w].guess=WORDS[w];meta.guesses[w]=WORDS[w];});saveMeta();mood(10);toast(`「${p.n}」這一頁確認了！${p.r}`);notebook();}
+  else{const n=ans.filter((a,i)=>a===p.w[i]).length;toast(n>=2?'差一點。有兩個是對的……但不知道是哪兩個。':'不對。再回去聽聽當地人怎麼說。');}});
+}
+
+/* ---------- 背包 ---------- */
+function bagView(){
+ const k=kg(),v=vol();
+ openModal(`<h2>背包</h2>
+ <div class="passport"><div class="emb">护</div><div><div class="t">中華人民共和國 普通護照</div><div class="sub" style="color:var(--paper)">泰國：中泰互免簽證協定（2024/3/1 生效），每次停留 30 天，180 天內累計不超過 90 天。入境前須線上填 TDAC 數位入境卡。</div></div></div>
+ <div><div class="row" style="justify-content:space-between"><span>重量 ${k.toFixed(2)} kg</span><span class="sub">舒適負重 ≤ 8 kg</span></div><div class="meter ${k>8?'over':''}"><i style="width:${Math.min(100,k/16*100)}%"></i></div></div>
+ <div><div class="row" style="justify-content:space-between"><span>容量 ${v.toFixed(1)} / ${PACK_L} L</span></div><div class="meter"><i style="width:${Math.min(100,v/PACK_L*100)}%"></i></div></div>
+ <div class="tbl"><table>${S.items.map(id=>{const it=ITEMS.find(i=>i.id===id);return `<tr><td>${it.n}${it.d?`<div class="sub">${it.d}</div>`:''}</td><td class="n">${it.kg} kg</td><td class="n">${id==='snacks'?`<button class="mini" data-eat>吃掉</button>`:(it.req?'':`<button class="mini" data-drop="${id}">丟掉</button>`)}</td></tr>`;}).join('')}</table></div>
+ <p class="sub">技能：英語 ${S.eng.toFixed(1)}・攝影 ${S.photo.toFixed(1)}・泰語圖頁 ${S.pages.length}/5・換宿 ${S.vol?'有':'無'}・沙發評價 ${S.refs}</p>
+ <h3>旅行知識（${S.know.length}/${TIPS.length}）</h3>${S.know.length?S.know.map(i=>`<div class="note">${TIPS[i]}</div>`).join(''):'<p class="sub">讀旅館的背包客指南、和人聊天，或者吃虧，都會學到東西。</p>'}
+ <button class="close">關閉 Esc</button>`);
+ $('#sheet').querySelectorAll('[data-drop]').forEach(b=>b.onclick=()=>{S.items=S.items.filter(i=>i!==b.dataset.drop);toast('丟掉了。背包輕了一點。');bagView();});
+ const e=$('#sheet [data-eat]');if(e)e.onclick=()=>{S.items=S.items.filter(i=>i!=='snacks');S.hunger=clamp(S.hunger+60,0,100);mood(6);toast('媽媽塞的辣條和豆乾。突然有點想家。');bagView();};
+}
+
+/* ---------- 開場與打包 ---------- */
+function intro(){
+ paused=true;
+ const prev=meta.tips.length||Object.keys(meta.guesses).length;
+ openModal(`<div class="title-art">探險者護照</div>
+ <p>在中國網路上，有人把自己的護照戲稱為「探險者護照」：想去的國家簽證難辦，有些地方乾脆進不去。</p>
+ <p>你拿著它，背著一個 40 公升的背包，決定環遊世界。第一站：曼谷。</p>
+ <div class="note">這個 demo 的目標：在曼谷考山路一帶活下去，學一點泰語，準備好去寮國的一切，搭上 25 次夜車前往邊境。<br>不要讓<b>健康</b>、<b>心情</b>歸零，也不要讓<b>家人壓力</b>滿格。</div>
+ ${prev?`<p class="good">上一輪的旅行筆記還在：${meta.tips.length} 條知識、${Object.keys(meta.guesses).length} 個生字猜測。</p>`:''}
+ <p class="sub">簽證、交通、物價依 2026 年 10 月公開資料設定（匯率為示意）。現實政策會變，出發前務必查官方公告。</p>
+ <div class="row"><button class="btn" id="go">開始打包</button>${prev?'<button class="mini" id="wipe">清除舊筆記</button>':''}</div>`);
+ $('#go').onclick=packing;const w=$('#wipe');if(w)w.onclick=()=>{meta={tips:[],guesses:{}};saveMeta();intro();};
+}
+function packing(){
+ const sel=new Set(ITEMS.filter(i=>i.req||['toilet','pants','meds','bottle','power','photos'].includes(i.id)).map(i=>i.id));
+ let ins=true,usd=false;
+ const render=()=>{
+  const k=PACK_KG+[...sel].reduce((a,id)=>a+ITEMS.find(i=>i.id===id).kg,0),v=[...sel].reduce((a,id)=>a+ITEMS.find(i=>i.id===id).L,0);
+  const cny=2000-(ins?280:0)-(usd?290:0);
+  openModal(`<h2>出發前打包</h2><p class="sub">背包本身 1.4 kg、容量 40 L。超過 8 kg 會走得慢、累得快；超過 11 kg 更慘。現實中很多人第一週就開始丟東西。</p>
+  <div><div class="row" style="justify-content:space-between"><span>重量 <b>${k.toFixed(2)} kg</b></span><span class="${k>8?'warn':'good'}">${k<=8?'輕鬆':k<=11?'有點重':k<=14?'很重':'背不動'}</span></div><div class="meter ${k>8?'over':''}"><i style="width:${Math.min(100,k/16*100)}%"></i></div></div>
+  <div><div class="row" style="justify-content:space-between"><span>容量 <b>${v.toFixed(1)} / 40 L</b></span><span class="${v>40?'warn':''}">${v>40?'塞不下':''}</span></div><div class="meter ${v>40?'over':''}"><i style="width:${Math.min(100,v/40*100)}%"></i></div></div>
+  <div>${ITEMS.map(it=>`<label class="chk"><input type="checkbox" id="it_${it.id}" data-id="${it.id}" ${sel.has(it.id)?'checked':''} ${it.req?'disabled':''}><span>${it.n}${it.d?`<span class="sub">　${it.d}</span>`:''}</span><span class="r">${it.kg} kg・${it.L} L</span></label>`).join('')}</div>
+  <h3>出發前的準備</h3>
+  <label class="chk"><input type="checkbox" id="ins" ${ins?'checked':''}><span>買旅遊保險<span class="sub">　倒下一次時保你一命</span></span><span class="r">¥280</span></label>
+  <label class="chk"><input type="checkbox" id="usd" ${usd?'checked':''}><span>在國內銀行換 40 美元現金</span><span class="r">¥290</span></label>
+  <p class="sub">起始資金：泰銖現金 1,500 ฿、人民幣現金 ¥${cny}、銀聯卡 ¥6,000。</p>
+  <button class="btn" id="start" ${v>40?'disabled':''}>落地曼谷</button>`);
+  $('#sheet').querySelectorAll('[data-id]').forEach(c=>c.onchange=()=>{c.checked?sel.add(c.dataset.id):sel.delete(c.dataset.id);render();});
+  $('#ins').onchange=e=>{ins=e.target.checked;render();};$('#usd').onchange=e=>{usd=e.target.checked;render();};
+  $('#start').onclick=()=>start([...sel],{ins,usd});
+ };render();
+}
+function start(items,extras){
+ S=newState(items,extras);
+ P={x:24*T+8,y:18*T+10,dir:'down',frame:0,moving:false};
+ NPC=[
+  {id:'passer',x:12*T,y:16*T,col:'#d97b3a',hair:'#222',area:[5,14,46,18],t:0,vx:0,vy:0},
+  {id:'backpacker',x:31*T,y:12*T,col:'#3e7fc4',hair:'#c9a24a',area:[25,11,35,14],t:0,vx:0,vy:0,pack:1},
+  {id:'tuk',x:14*T+8,y:18*T+12,col:'#2a2a2a',hair:'#111',still:1},
+ ];
+ closeModal();paused=false;
+ say('考山路，曼谷','計程車把你放在路口。空氣又熱又濕，到處是油煙和香茅的味道。<br>先找個地方住，換點錢，吃點東西。<span class="sub">（方向鍵／WASD 走動，E 互動，I 背包，J 筆記，M 手機）</span>');
+}
+function over(t,d){
+ S.over=true;paused=true;saveMeta();
+ openModal(`<h2>${t}</h2><p>${d}</p><p class="sub">你撐到了第 ${day()} 天。確認的泰語圖頁 ${S.pages.length}/5，學到的旅行知識 ${S.know.length} 條——這些會留到下一輪。</p><button class="btn" id="again">再來一次</button>`);
+ $('#again').onclick=()=>{S=null;intro();};
+}
+function ending(){
+ S.over=true;paused=true;
+ const d=day(),out=[];let ok=true,thb=S.thb;
+ out.push(['火車',S.ticket.cls===2?'二等臥鋪上鋪。燈整晚都開著，冷氣很強。':'三等電扇車廂，你坐了十個小時，腰快斷了。',true]);
+ out.push(['泰國出境',d>30?`逾期 ${d-30} 天，罰款 ${(d-30)*500} 銖。`:`停留 ${d} 天，沒有逾期。`,true]);if(d>30)thb-=(d-30)*500;
+ const pic=has('photos')||S.photosBought;
+ out.push(['證件照',pic?'準備好了。':'沒帶，在泰方邊境的小攤花 100 銖補拍。',true]);if(!pic)thb-=100;
+ const ld=S.ldifDay&&d-S.ldifDay<=3;
+ out.push(['LDIF 數位入境表',ld?'QR code 一掃就過。':S.ldifDay?'填得太早，過期了。'+(net()?'你用手機重填，排在隊伍最後。':'沒有網路，只能借移民局的電腦，多等了一個多小時。'):(net()?'沒填，在邊境用手機補填。':'沒填也沒網路，借移民局的電腦，多等了一個多小時。'),true]);
+ let visa;
+ if(S.usd>=20)visa='用 20 美元付了落地簽。';else if(thb>=1000){visa='沒有美元，用泰銖付，官員報的價比美元貴不少（約 1,000 銖）。';thb-=1000;}else{visa='沒有美元，泰銖也不夠。你被擋在友誼橋的寮國那一側。';ok=false;}
+ out.push(['寮國落地簽',visa,ok]);
+ saveMeta();
+ openModal(`<h2>${ok?'過境成功：你踏進了寮國':'被擋在邊境'}</h2>
+ <p>${ok?'清晨的友誼橋上，湄公河是混濁的咖啡色。章蓋下去的那一刻，你的護照又多了一頁故事。':'你站在橋上，看著別的背包客一個個走過去。'}</p>
+ <div class="tbl"><table>${out.map(r=>`<tr><td style="white-space:nowrap">${r[2]?'✓':'✗'} ${r[0]}</td><td>${r[1]}</td></tr>`).join('')}</table></div>
+ <div class="tbl"><table><tr><td>在曼谷的天數</td><td class="n">${d} 天</td></tr><tr><td>剩下的泰銖</td><td class="n">${Math.max(0,Math.round(thb)).toLocaleString()} ฿</td></tr><tr><td>人民幣＋銀聯卡</td><td class="n">¥${(S.cny+S.card).toLocaleString()}</td></tr><tr><td>泰語圖頁</td><td class="n">${S.pages.length}/5</td></tr><tr><td>英語</td><td class="n">${S.eng.toFixed(1)}</td></tr><tr><td>旅行知識</td><td class="n">${S.know.length}/${TIPS.length}</td></tr><tr><td>家人壓力</td><td class="n">${Math.round(S.family)}</td></tr>${S.stolen?`<tr><td>被偷的錢</td><td class="n">${S.stolen} ฿</td></tr>`:''}</table></div>
+ <p class="sub">Demo 到此結束。完整版的下一章：萬象 → 琅勃拉邦。</p><button class="btn" id="again">再玩一次</button>`);
+ $('#again').onclick=()=>{S=null;intro();};
+}
+
+/* ---------- 輸入 ---------- */
+const KM={ArrowUp:'up',KeyW:'up',ArrowDown:'down',KeyS:'down',ArrowLeft:'left',KeyA:'left',ArrowRight:'right',KeyD:'right'};
+addEventListener('keydown',e=>{
+ if(e.target.tagName==='INPUT'||e.target.tagName==='SELECT')return;
+ if(e.code==='Escape'&&!$('#modal').hidden&&S&&!S.over&&$('#sheet .close')){closeModal();return;}
+ if(!S||S.over)return;
+ if(KM[e.code]){keys[KM[e.code]]=true;e.preventDefault();}
+ if(!$('#modal').hidden)return;
+ if(e.code==='KeyE'||e.code==='Space'||e.code==='Enter'){e.preventDefault();interact();}
+ if(e.code==='KeyI')bagView();if(e.code==='KeyJ')notebook();if(e.code==='KeyM')phone(false);
+});
+addEventListener('keyup',e=>{if(KM[e.code])keys[KM[e.code]]=false;});
+addEventListener('blur',()=>keys={});
+document.querySelectorAll('#pad button').forEach(b=>{const k=b.dataset.k;
+ b.addEventListener('pointerdown',e=>{e.preventDefault();keys[k]=true;b.setPointerCapture(e.pointerId);});
+ ['pointerup','pointercancel','lostpointercapture'].forEach(ev=>b.addEventListener(ev,()=>keys[k]=false));});
+$('#bA').onclick=()=>{if(S&&!S.over&&$('#modal').hidden)interact();};
+$('#bBag').onclick=()=>{if(S&&!S.over)bagView();};
+$('#bNote').onclick=()=>{if(S&&!S.over)notebook();};
+$('#bPhone').onclick=()=>{if(S&&!S.over)phone(false);};
+
+function nearby(){
+ for(const n of NPC){if(Math.hypot(n.x-P.x,n.y-P.y)<20)return {npc:n};}
+ const tx=Math.floor(P.x/T),ty=Math.floor((P.y-2)/T);
+ const s=SPOTS.find(s=>s.x===tx&&s.y===ty);return s?{spot:s}:null;
+}
+function interact(){
+ const n=nearby();if(!n)return;
+ if(n.npc){const id=n.npc.id;if(id==='tuk')return tuk();if(id==='backpacker')return backpacker();return talk(id);}
+ LOC[n.spot.id]();
+}
+
+/* ---------- 更新 ---------- */
+function moveNPC(n,dt){
+ if(n.still)return;
+ n.t-=dt;if(n.t<=0){n.t=1+rnd()*2.5;const a=rnd()<.3?null:Math.floor(rnd()*4);n.vx=a===0?1:a===1?-1:0;n.vy=a===2?1:a===3?-1:0;}
+ const sp=22,nx=n.x+n.vx*sp*dt,ny=n.y+n.vy*sp*dt,[x0,y0,x1,y1]=n.area;
+ if(nx>x0*T&&nx<x1*T&&ny>y0*T&&ny<y1*T&&!solid(Math.floor(nx/T),Math.floor(ny/T))){n.x=nx;n.y=ny;}else n.t=0;
+}
+function update(dt){
+ if(paused||!S)return;
+ let dx=(keys.right?1:0)-(keys.left?1:0),dy=(keys.down?1:0)-(keys.up?1:0);
+ const tired=S.energy<10?.6:1, sp=52/(1+(wf()-1)*.6)*tired;
+ P.moving=!!(dx||dy);
+ if(P.moving){if(dx&&dy){dx*=.707;dy*=.707;}
+  P.dir=Math.abs(dx)>Math.abs(dy)?(dx>0?'right':'left'):(dy>0?'down':'up');
+  const tryMove=(nx,ny)=>{const pts=[[nx-4,ny-3],[nx+4,ny-3],[nx-4,ny],[nx+4,ny]];return pts.every(([x,y])=>!solid(Math.floor(x/T),Math.floor(y/T)));};
+  const nx=P.x+dx*sp*dt,ny=P.y+dy*sp*dt;
+  if(tryMove(nx,P.y))P.x=nx;if(tryMove(P.x,ny))P.y=ny;
+  P.frame+=dt*8;S.energy=clamp(S.energy-sp*dt/T*.045*wf(),0,100);}
+ NPC.forEach(n=>moveNPC(n,dt));
+ const gm=dt*3; S.T+=gm; tick(gm);
+ const h=hour();
+ if(!S.rainLeft&&S.rainDay!==day()&&h>=13&&h<17&&rnd()<dt*.004){S.rainDay=day();S.rainLeft=60+rnd()*60;
+  if(has('rain'))toast('午後雷陣雨。你穿上雨衣，繼續走。');else{mood(-7);S.health=clamp(S.health-3,0,100);toast('午後雷陣雨！你沒帶雨衣，全身濕透。');}}
+ if(h>=2&&h<6&&!S.over){sleep('street');}
+}
+
+/* ---------- 繪製 ---------- */
+let camX=0,camY=0,tt=0;
+function R(c,x,y,w,h){cx.fillStyle=c;cx.fillRect(Math.round(x),Math.round(y),w,h);}
+function drawTile(c,x,y,sx,sy){
+ const n=hsh(x,y);
+ if(c==='w'){R('#2c5674',sx,sy,T,T);if((n*10+tt*.6|0)%3===0)R('#4b7c9b',sx+(n*10|0),sy+((n*97|0)%12)+2,4,1);return;}
+ if(c==='.'){R('#3b3842',sx,sy,T,T);if(n<.15)R('#45424d',sx+(n*80|0)%14,sy+(n*300|0)%14,2,1);
+  if(y===16&&x%3===0)R('#d8cfa0',sx+2,sy+7,10,2);
+  if(x===23&&(y<15||y>17)&&y%3===0)R('#d8cfa0',sx-1,sy+2,2,10);
+  if(y===14+0)return;return;}
+ if(c==='g'||c==='t'){R('#4c7838',sx,sy,T,T);if(n<.5)R('#5a8a42',sx+(n*40|0)%13,sy+(n*90|0)%13,2,2);if(n>.8)R('#e7c94a',sx+(n*70|0)%13,sy+(n*50|0)%13,1,1);
+  if(c==='t'){R('#00000040',sx+1,sy+11,14,4);R('#5b3a22',sx+6,sy+7,4,7);R('#2f5a2a',sx-2,sy-6,20,14);R('#3d7034',sx,sy-8,14,10);R('#4f8a40',sx+3,sy-7,6,4);}return;}
+ R('#8b8378',sx,sy,T,T);R('#958d82',sx,sy,T-1,1);R('#958d82',sx,sy,1,T-1);if(n<.08)R('#6f685f',sx+4,sy+6,5,1);
+}
+function drawBuilding(b){
+ const x=b.x*T-camX,y=b.y*T-camY,w=b.w*T,h=b.h*T,nt=hour()>=18.5||hour()<6;
+ if(x>VW||y>VH||x+w<0||y+h<0)return;
+ if(b.kind==='wat'){
+  R('#e9e1cc',x,y+h*.45,w,h*.55);R('#b8ad94',x,y+h-3,w,3);
+  R('#a83a2e',x+8,y+22,w-16,26);R('#c84c3a',x+14,y+14,w-28,14);R('#e2b23c',x+8,y+46,w-16,2);R('#e2b23c',x+14,y+26,w-28,2);
+  for(let i=0;i<5;i++)R('#e2b23c',x+w/2-2-i*3,y+2+i*6,4+i*6,6);R('#f3cf62',x+w/2-1,y-6,2,10);
+  R('#e2b23c',x+6,y+18,3,6);R('#e2b23c',x+w-9,y+18,3,6);
+  const dx=b.door*T-camX;R('#5a2a1c',dx-2,y+h-18,20,18);R('#e2b23c',dx-2,y+h-20,20,2);
+  for(let i=0;i<4;i++)R('#2b2a35',x+12+i*30,y+h-24,8,10);
+  return;}
+ R('#00000040',x+3,y+h,w,3);
+ R(b.wall,x,y,w,h);R(b.roof,x,y,w,8);R('#00000030',x,y+8,w,2);
+ for(let wy=y+14;wy<y+h-18;wy+=14)for(let wx=x+6;wx<x+w-10;wx+=14)R(nt?(hsh(wx,wy)<.7?'#f2d27a':'#2a3348'):'#2a3348',wx,wy,8,8);
+ const dx=b.door*T-camX;R('#1d1a2a',dx+2,y+h-16,12,16);R(nt?'#f2d27a55':'#ffffff22',dx+3,y+h-15,10,6);
+ if(b.sign){cx.font='8px "DotGothic16", monospace';const tw=cx.measureText(b.sign).width+6;const sx=Math.round(Math.min(Math.max(dx+8-tw/2,x+2),x+w-tw-2));R('#1d1a2a',sx,y+h-28,tw,10);cx.fillStyle=nt?'#ffd36a':'#f1e8d4';cx.fillText(b.sign,sx+3,y+h-20);}
+ if(b.id==='mart'){R('#3c9a4a',x,y+8,w,3);}
+}
+function drawStall(){const x=16*T-camX,y=12*T-camY;R('#00000040',x+2,y+30,64,3);R('#6b4a2e',x+4,y+12,56,18);R('#c9c1b0',x+6,y+10,52,4);
+ for(let i=0;i<8;i++)R(i%2?'#d9545a':'#f1e8d4',x+i*8,y-6,8,10);R('#5b5b66',x+10,y+4,10,6);R('#888',x+11,y+2,8,2);
+ if(((tt*3)|0)%2)R('#ddd8',x+14,y-2,2,3);person(x+44+camX,y+14+camY,{skin:'#b07a50',hair:'#222',shirt:'#e6a03a',pants:'#5a3a5a'},'down',0);}
+function person(px,py,o,dir,frame,pack){
+ const x=Math.round(px-camX-5),y=Math.round(py-camY-17);
+ R('#00000040',x,y+15,10,3);
+ const st=Math.floor(frame)%2;
+ R(o.pants,x+2,y+11,2,st&&o.walk?3:5);R(o.pants,x+6,y+11,2,!st&&o.walk?3:5);
+ if(pack&&dir!=='up'){const ph=Math.min(12,6+pack*.15);R('#7b4a2a',dir==='left'?x+6:dir==='right'?x-1:x+1,y+7-ph+6,dir==='down'?8:5,ph);}
+ R(o.shirt,x+1,y+6,8,6);R(o.skin,x+2,y+1,6,6);R(o.hair,x+2,y,6,dir==='up'?6:2);
+ if(dir==='down'){R('#1a1a1a',x+3,y+4,1,1);R('#1a1a1a',x+6,y+4,1,1);}
+ if(dir==='left')R('#1a1a1a',x+3,y+4,1,1);if(dir==='right')R('#1a1a1a',x+6,y+4,1,1);
+ if(pack&&dir==='up'){const ph=Math.min(12,6+pack*.15);R('#7b4a2a',x+1,y+5,8,ph);R('#5c3620',x+1,y+5,8,2);}
+}
+function drawTuk(x,y){x=Math.round(x-camX);y=Math.round(y-camY);R('#00000040',x,y+12,26,3);R('#2a8f86',x,y,24,10);R('#1d6862',x+2,y-6,20,3);R('#2a8f86',x+2,y-3,2,4);R('#2a8f86',x+20,y-3,2,4);R('#d9c24a',x+20,y+2,4,3);R('#151515',x+2,y+9,5,5);R('#151515',x+17,y+9,5,5);}
+function draw(){
+ tt+=1/60;
+ cx.fillStyle='#000';cx.fillRect(0,0,VW,VH);
+ if(!S){drawAttract();return;}
+ camX=clamp(Math.round(P.x-VW/2),0,MW*T-VW);camY=clamp(Math.round(P.y-VH/2),0,MH*T-VH);
+ const x0=Math.floor(camX/T),y0=Math.floor(camY/T);
+ for(let y=y0;y<=y0+VH/T+1&&y<MH;y++)for(let x=x0;x<=x0+VW/T+1&&x<MW;x++){const c=map[y][x];if(c!=='t')drawTile(c==='B'||c==='S'?',':c,x,y,x*T-camX,y*T-camY);}
+ for(let y=y0;y<=y0+VH/T+1&&y<MH;y++)for(let x=x0;x<=x0+VW/T+1&&x<MW;x++)if(map[y][x]==='t')drawTile('t',x,y,x*T-camX,y*T-camY);
+ BLD.forEach(drawBuilding);drawStall();
+ drawTuk(16*T,16*T+4);
+ // fence + gate of park
+ for(let x=4;x<=14;x++)if(x!==9&&x!==10)R('#d8d0bd',x*T-camX,13*T-camY-2,T,3);
+ const ents=[...NPC.map(n=>({y:n.y,f:()=>person(n.x,n.y,{skin:'#c58c5c',hair:n.hair,shirt:n.col,pants:'#2d2d3a',walk:!!(n.vx||n.vy)},n.vy<0?'up':n.vx>0?'right':n.vx<0?'left':'down',tt*6,n.pack?20:0)})),
+  {y:P.y,f:()=>person(P.x,P.y,{skin:'#e3b98f',hair:'#1b1b1b',shirt:'#d9545a',pants:has('pants')?'#3a4a6a':'#5a6a8a',walk:P.moving},P.dir,P.frame,vol())}];
+ ents.sort((a,b)=>a.y-b.y).forEach(e=>e.f());
+ // light
+ const h=hour();let dark=h<5?.6:h<7?.6-(h-5)*.3:h<17.5?0:h<19.5?(h-17.5)*.3:.6;
+ if(S.rainLeft>0)dark=Math.max(dark,.25);
+ if(dark>0){cx.fillStyle=`rgba(14,12,40,${dark})`;cx.fillRect(0,0,VW,VH);
+  if(dark>.3){BLD.forEach(b=>{if(b.kind)return;const dx=b.door*T-camX+8,dy=(b.y+b.h)*T-camY+4;const g=cx.createRadialGradient(dx,dy,2,dx,dy,30);g.addColorStop(0,'rgba(255,200,110,.28)');g.addColorStop(1,'rgba(255,200,110,0)');cx.fillStyle=g;cx.fillRect(dx-30,dy-30,60,60);});}}
+ if(S.rainLeft>0){cx.fillStyle='rgba(180,200,230,.5)';for(let i=0;i<90;i++){const rx=(hsh(i,1)*VW+tt*40*(1+hsh(i,2)))%VW,ry=(hsh(i,3)*VH+tt*220)%VH;cx.fillRect(rx|0,ry|0,1,4);}}
+ const n=nearby(),pr=$('#prompt');
+ if(n&&$('#modal').hidden){const nm=n.npc?({passer:'路人',backpacker:'背包客',tuk:'嘟嘟車司機'}[n.npc.id]):n.spot.n;pr.textContent=`E　${n.npc?'和'+nm+'說話':'進入 '+nm}`;pr.hidden=false;}else pr.hidden=true;
+}
+function drawAttract(){
+ for(let y=0;y<VH/T+1;y++)for(let x=0;x<VW/T+1;x++)drawTile(y>=6&&y<=8?'.':',',x+3,y+8,x*T-((tt*12)%T),y*T);
+ cx.fillStyle='rgba(14,12,40,.4)';cx.fillRect(0,0,VW,VH);
+}
+
+/* ---------- HUD ---------- */
+const BARS=[['hunger','飽足'],['water','水分'],['energy','體力'],['mood','心情'],['health','健康'],['family','家人壓力']];
+$('#bars').innerHTML=BARS.map(b=>`<div class="bar ${b[0]==='family'?'fam':''}" id="b_${b[0]}"><span class="lb">${b[1]}</span><span class="tr"><span class="fl"></span></span><span class="v"></span></div>`).join('');
+function hud(){
+ if(!S){$('#hudTop').innerHTML='<span>探險者護照</span><span class="k">demo・曼谷</span>';return;}
+ const h=hour(),hh=String(Math.floor(h)).padStart(2,'0'),mm=String(Math.floor((h%1)*60)).padStart(2,'0'),d=day();
+ $('#hudTop').innerHTML=`<span><span class="k">第</span>${d}<span class="k"> 天</span> ${hh}:${mm}</span><span class="visa">${d<=30?`免簽剩 ${30-d+1} 天`:`逾期 ${d-30} 天`}</span><span>${Math.round(S.thb).toLocaleString()} ฿</span><span><span class="k">¥</span>${S.cny.toLocaleString()}</span><span><span class="k">卡</span>¥${S.card.toLocaleString()}</span><span><span class="k">$</span>${S.usd}</span><span><span class="k">背包</span>${kg().toFixed(1)}kg</span>${net()?'<span class="k">4G</span>':''}${S.rainLeft>0?'<span class="k">下雨</span>':''}`;
+ BARS.forEach(([k])=>{const el=$('#b_'+k),v=S[k];el.querySelector('.fl').style.width=v+'%';el.querySelector('.v').textContent=Math.round(v);el.classList.toggle('low',k==='family'?v>=75:v<=25);});
+}
+
+/* ---------- 主迴圈 ---------- */
+let last=performance.now(),hudT=0;
+function loop(now){const dt=Math.min(.05,(now-last)/1000);last=now;update(dt);draw();hudT+=dt;if(hudT>.2){hudT=0;hud();}requestAnimationFrame(loop);}
+hud();intro();requestAnimationFrame(loop);
+</script>

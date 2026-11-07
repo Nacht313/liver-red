@@ -1,0 +1,13 @@
+{
+  "name": "liver-red",
+  "version": "0.1.0",
+  "private": true,
+  "description": "豬肝紅冒險：拿著「探險者護照」的高難度像素背包旅行遊戲",
+  "type": "module",
+  "scripts": {
+    "test": "node --test tests/unit/*.test.js",
+    "serve": "python3 -m http.server 8000",
+    "e2e": "python3 tests/e2e/run.py"
+  },
+  "engines": { "node": ">=20" }
+}
