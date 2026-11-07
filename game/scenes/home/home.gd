@@ -15,6 +15,7 @@ var near_obj: Dictionary = {}
 var dialogue: DialogueBox
 var cards: Cards
 var phone: Phone
+var backpack: Backpack
 
 
 func _ready() -> void:
@@ -68,6 +69,9 @@ func _ready() -> void:
 	add_child(phone)
 	phone.setup(Game.J, Game.ui)
 	phone.story_requested.connect(func(node): Game.story.start.call_deferred(node))
+	backpack = Backpack.new()
+	add_child(backpack)
+	backpack.setup(Game.J, Game.ui)
 	cards = Cards.new()
 	add_child(cards)
 	cards.closed.connect(_on_card_closed)
@@ -86,6 +90,8 @@ func _on_open_ui(kind: String, arg: Variant) -> void:
 			cards.fade()
 		"pc":
 			phone.open.call_deferred("home", null, true)
+		"backpack":
+			backpack.open.call_deferred()
 		_:
 			pass  # pc、backpack：Task 9、10
 

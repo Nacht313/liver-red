@@ -106,11 +106,11 @@ func test_not_yet_time_at_exit() -> void:
 func test_parcel_pickup() -> void:
 	_setup(0.0, "50k")
 	play("obj.bed", ["sleep"])
-	ok(OpeningActions.buy_item(J, "belt"), "買防盜腰包")
+	ok(OpeningActions.buy_item(J, "lock"), "買掛鎖")
 	sleep_until(J.S.day + 2)
-	ok(not J.S.items.has("belt"), "到了也還在快遞櫃")
+	ok(not J.S.items.has("lock"), "到了也還在快遞櫃")
 	play("obj.locker")
-	eq(J.S.items.get("belt"), "home", "去快遞櫃拿回來")
+	eq(J.S.items.get("lock"), "home", "去快遞櫃拿回來")
 
 
 func test_missed_departure() -> void:

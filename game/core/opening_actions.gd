@@ -156,7 +156,7 @@ static func pick_up_parcels(J: Journey) -> Array:
 	for o in J.S.orders:
 		if o.get("arrived", false) and not o.get("got", false):
 			o["got"] = true
-			J.S.items[o.id] = "home"
+			J.S.items[o.id] = "worn" if J.db.items[o.id].get("worn", 0) else "home"
 			got.append(o.id)
 	if got.is_empty():
 		J.S.flags.erase("parcels_got")
