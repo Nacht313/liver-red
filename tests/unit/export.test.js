@@ -50,3 +50,18 @@ test('export: 重跑兩次結果相同，而且磁碟上的檔案是最新的', 
   assert.ok(csv.includes(BEGIN) && csv.includes(END), 'strings.csv 要有自動區段');
   for (const [k] of a.strings) assert.ok(csv.includes('\n' + k + ','), `strings.csv 少了 ${k}`);
 });
+
+test('export: 亞洲地圖（原型的經緯度資料算成網格）', () => {
+  const { files, strings } = buildExport();
+  const m = files.asia_map;
+  assert.ok(m.rows.length > 50 && m.rows[0].length > 100, '網格夠大');
+  const cells = m.rows.join('').replace(/\./g, '').length;
+  assert.ok(cells > 2000, `陸地格子數 ${cells}`);
+  const th = m.countries.findIndex((c) => c.code === 'TH');
+  assert.equal(m.countries[th].st, 'free');
+  const bkk = m.cities.find((c) => c.id === 'bkk');
+  assert.equal(bkk.open, 1);
+  assert.equal(bkk.name, 'city.bkk.name');
+  assert.ok(new Map(strings).get('country.TH.name') === '泰國');
+  assert.ok(new Map(strings).get('city.bkk.desc').includes('考山路'));
+});

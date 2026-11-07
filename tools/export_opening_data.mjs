@@ -4,6 +4,7 @@
 import { writeFileSync, readFileSync, mkdirSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import * as D from '../src/story/opening/data.js';
+import { buildAsiaMap } from './asia_map.mjs';
 
 export const OUT_DIR = 'game/data/opening';
 export const CSV_PATH = 'game/i18n/strings.csv';
@@ -52,6 +53,10 @@ export function buildExport() {
   };
   // 屬性：Godot 版用英文代號當鍵，名字進翻譯表（順序和網頁版 ATTRS 一樣）
   D.ATTRS.forEach((zh, i) => strings.push([`attr.${ATTR_IDS[i]}.name`, zh]));
+  // 亞洲地圖（地圖 App 用）
+  const am = buildAsiaMap();
+  files.asia_map = am.map;
+  strings.push(...am.strings);
   return { files, strings };
 }
 

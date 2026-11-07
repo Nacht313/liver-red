@@ -18,13 +18,15 @@ var stops: Array
 var family: Array
 var tips: Array
 var endings: Dictionary
+## 亞洲地圖（地圖 App）：rows、countries、cities、st_col
+var asia_map: Dictionary
 ## 常數：FX、匯率、背包重量、格子、預設打包、屬性代號、開始日期
 var c: Dictionary
 
 
 static func load_all() -> DataDB:
 	var db := DataDB.new()
-	for field in ["know", "research", "items", "layers", "trans", "flight", "stays", "nights", "hosts", "stops", "family", "tips", "endings"]:
+	for field in ["know", "research", "items", "layers", "trans", "flight", "stays", "nights", "hosts", "stops", "family", "tips", "endings", "asia_map"]:
 		db.set(field, _read(field))
 	db.c = _read("constants")
 	return db

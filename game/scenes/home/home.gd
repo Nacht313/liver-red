@@ -14,6 +14,7 @@ var near_obj: Dictionary = {}
 @onready var prompt: Label = $Hud/Prompt
 var dialogue: DialogueBox
 var cards: Cards
+var phone: Phone
 
 
 func _ready() -> void:
@@ -63,6 +64,10 @@ func _ready() -> void:
 	var check_panel := CheckPanel.new()
 	add_child(check_panel)
 	check_panel.bind(Game.story)
+	phone = Phone.new()
+	add_child(phone)
+	phone.setup(Game.J, Game.ui)
+	phone.story_requested.connect(func(node): Game.story.start.call_deferred(node))
 	cards = Cards.new()
 	add_child(cards)
 	cards.closed.connect(_on_card_closed)
@@ -79,6 +84,8 @@ func _on_open_ui(kind: String, arg: Variant) -> void:
 			_show_end(str(arg))
 		"fade":
 			cards.fade()
+		"pc":
+			phone.open.call_deferred("home", null, true)
 		_:
 			pass  # pc、backpack：Task 9、10
 
@@ -114,6 +121,10 @@ func _nearest() -> Dictionary:
 
 
 func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("phone") and Game.can_move() and not cards.is_open() and Game.J.S.flags.has("funded"):
+		get_viewport().set_input_as_handled()
+		phone.open()
+		return
 	if event.is_action_pressed("interact") and not near_obj.is_empty() and Game.can_move() and not cards.is_open():
 		get_viewport().set_input_as_handled()
 		interact(near_obj)

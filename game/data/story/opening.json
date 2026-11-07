@@ -928,6 +928,54 @@
      "arg": "departed"
     }
    ]
+  },
+  "cs.read": {
+   "lines": [
+    {
+     "who": "narr",
+     "text": "story.cs.read1"
+    }
+   ],
+   "check": {
+    "attr": "empathy",
+    "bonus": 0,
+    "text": "check.cs.prompt",
+    "win": "cs.read_win",
+    "lose": "cs.read_lose"
+   }
+  },
+  "cs.read_win": {
+   "on_enter": [
+    {
+     "time": 1
+    },
+    {
+     "know": "k_cs"
+    },
+    {
+     "attr": "empathy",
+     "add": 1
+    }
+   ],
+   "lines": [
+    {
+     "who": "narr",
+     "text": "story.cs.read_win"
+    }
+   ]
+  },
+  "cs.read_lose": {
+   "on_enter": [
+    {
+     "time": 1
+    }
+   ],
+   "lines": [
+    {
+     "who": "narr",
+     "text": "story.cs.read_lose"
+    }
+   ]
   }
  }
 }

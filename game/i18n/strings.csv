@@ -162,6 +162,116 @@ ui.check.result,擲出 {roll}：{word}
 ui.check.win,成功
 ui.check.fail,失敗
 ui.check.crit,大成功
+phone.home,手機
+phone.badge,{n} 則未讀
+phone.back,返回
+phone.back_list,回到列表
+phone.done,已辦好
+phone.unread,未讀
+phone.no_net,沒有網路
+phone.low_battery,電量不夠
+phone.app.map,地圖
+phone.app.web,瀏覽器
+phone.app.trip,旅行
+phone.app.hotel,訂房
+phone.app.cs,沙發衝浪
+phone.app.shop,購物
+phone.app.chat,聊天
+phone.app.immig,出入境
+phone.app.bank,銀行
+phone.app.photos,相簿
+phone.map.hint,顏色是各國對中國普通護照的態度；灰色的地方還沒查過。
+phone.map.picked,第一站定了。
+phone.map.picked_mark,已選
+map.st.free,免簽
+map.st.voa,落地簽或電子簽
+map.st.visa,要事先申請簽證
+map.st.no,幾乎進不去
+map.st.home,你的家
+map.unknown,？？？（上網查資料可以知道更多）
+map.closed,尚未開放
+phone.web.hint,在家用手機查資料不花時間，但查太多，家人會開始說閒話。
+phone.web.read,查過了
+phone.web.old,有些你本來就知道了（上一輪的記憶）。
+phone.web.nag,媽媽在門外喊：「又在滑手機！」
+phone.trip.ticket,"{name}
+{date} 出發・{bag}"
+phone.trip.bag_yes,含 20 公斤托運
+phone.trip.bag_no,手提 7 公斤
+phone.trip.add_bag,加購 20 公斤托運
+phone.trip.add_bag_sub,現在買比機場櫃台便宜
+phone.trip.no_dest,還沒決定要去哪裡。
+phone.trip.open_map,打開地圖
+phone.trip.lcc_known,手提只有 7 公斤。
+phone.trip.lcc_unknown,行李規定：？
+phone.trip.booked,訂好了。
+phone.trip.ins,旅遊保險・30 天
+phone.trip.ins_sub,生病、受傷時的醫療費
+phone.trip.in2,後天・{date}
+phone.trip.in2_sub,臨時訂，貴 25%
+phone.trip.in5,五天後・{date}
+phone.trip.in5_bag,五天後＋20 公斤托運
+phone.hotel.need_trans,先訂好交通，才知道哪天入住。
+phone.hotel.cs_set,已經安排沙發衝浪了。
+phone.hotel.booked_info,"{name}
+{nights} 晚・{thb} ฿"
+phone.hotel.cancel,取消訂單
+phone.hotel.refund,可免費取消
+phone.hotel.no_refund,不可退款
+phone.hotel.per_night,{thb} ฿／晚
+phone.hotel.where,曼谷・考山路　{date} 入住
+phone.hotel.nights,{n} 晚
+phone.hotel.save,省 {pct}%
+phone.hotel.booked,訂好了。
+phone.hotel.nights_hint,訂得越久越便宜，但長訂不能退。泰國免簽每次最多停留 30 天。
+phone.cs.account,你的帳號：{refs} 則評價。評價越少，願意接你的人越少。
+phone.cs.with_jay,已安排：Jay 家
+phone.cs.jay_warn,Jay 的 3 則評價都是上個月寫的，寫評價的帳號都沒有照片。他一直要你換到 LINE 聊，還主動說要開車來接你。
+phone.cs.need_refs,只接受至少 {n} 則評價的旅客
+phone.cs.asked,已經問過了
+phone.cs.has_stay,已經訂了住處
+phone.cs.refs,{n} 則評價
+phone.cs.read,花時間仔細讀每個人的檔案
+phone.cs.read_sub,共情判定
+phone.cs.jay_yes,Jay 秒回：「Of course! See you!」
+phone.cs.busy,"對方回覆：「Sorry, I already have guests this week. Maybe next time!」"
+phone.shop.hint,快遞兩天到樓下的快遞櫃。錢從爸媽給的卡裡扣，大筆支出他們會看到。
+phone.shop.bought,已買
+phone.shop.got,已拿
+phone.shop.at_locker,在快遞櫃
+phone.shop.eta,{date} 到
+phone.shop.orders,訂單：{list}
+phone.chat.empty,家族群裡沒有新訊息。
+phone.chat.video,視訊聊一會兒
+phone.chat.video_sub,花時間和電量，信念大增
+phone.chat.photo,傳幾張照片
+phone.chat.photo_sub,不扣電量，信念小增
+phone.chat.ignore,故意不回
+phone.chat.ignore_sub,信念會扣一點
+phone.immig.tdac,泰國 TDAC 數位入境卡
+phone.immig.tdac_sub,免費，要填航班和住址
+phone.immig.tdac_fake,還沒訂住處，只能隨便填一個地址
+phone.immig.need_trans,要先訂交通
+phone.immig.tdac_later,抵達前 3 天內才能填（{date} 起）
+phone.immig.esim,泰國 8 天流量 eSIM
+phone.immig.esim_sub,落地就有網路
+phone.immig.laos,寮國電子簽
+phone.immig.laos_sub,3 個工作天
+phone.immig.laos_ok,已批准
+phone.immig.laos_wait,審核中，{date} 下來
+phone.bank.balance,"銀聯卡　¥{card}
+人民幣現金　¥{cny}
+泰銖現金　฿{thb}
+總共約　¥{total}"
+phone.bank.hint,換泰銖、領現金要出門去銀行。
+phone.photos.empty,還沒有照片。
+story.cs.read1,＊ 你把每個人的檔案從頭到尾讀了一遍。
+check.cs.prompt,共情說：照片很少、評價都很新的人，你真的了解他嗎？
+story.cs.read_win,＊ Jay 的評價全是上個月寫的，寫評價的帳號都沒有照片。他主動說要開車來接你。你記下了這些危險信號。
+story.cs.read_lose,＊ 看了一個小時，大家看起來都很友善。
+phone.shop.order_item,{name}（{state}）
+ui.list_sep,、
+phone.pc,電腦
 # BEGIN generated: npm run export:godot
 know.k_tdac,泰國：中泰互免簽證，每次停留 30 天，180 天內累計不超過 90 天。入境前要在網上填 TDAC 數位入境卡，最早抵達前 3 天才能填，免費。
 know.k_funds,"泰國移民局可能抽查入境資金：免簽旅客每人 10,000 泰銖（或等值外幣、可證明的付款文件）。2026 年 7 月觀光局再次提醒。"
@@ -344,4 +454,80 @@ attr.nerve.name,膽識
 attr.craft.name,手藝
 attr.empathy.name,共情
 attr.charm.name,魅力
+country.CN.name,中國
+country.MN.name,蒙古
+country.RU.name,俄羅斯
+country.KZ.name,哈薩克
+country.KP.name,朝鮮
+country.KR.name,韓國
+country.JP.name,日本
+country.TW.name,台灣
+country.VN.name,越南
+country.LA.name,寮國
+country.TH.name,泰國
+country.KH.name,柬埔寨
+country.MM.name,緬甸
+country.MY.name,馬來西亞
+country.SG.name,新加坡
+country.ID.name,印尼
+country.PH.name,菲律賓
+country.IN.name,印度
+country.BD.name,孟加拉
+country.NP.name,尼泊爾
+country.LK.name,斯里蘭卡
+country.PK.name,巴基斯坦
+country.AF.name,阿富汗
+country.IR.name,伊朗
+country.TM.name,土庫曼
+country.UZ.name,烏茲別克
+country.KG.name,吉爾吉斯
+country.TJ.name,塔吉克
+country.IQ.name,伊拉克
+country.SY.name,敘利亞
+country.JO.name,約旦
+country.SA.name,沙烏地阿拉伯
+country.YE.name,葉門
+country.OM.name,阿曼
+country.AE.name,阿聯酋
+country.TR.name,土耳其
+country.GE.name,格魯吉亞
+country.AM.name,亞美尼亞
+country.AZ.name,亞塞拜然
+country.UA.name,烏克蘭
+country.BY.name,白俄羅斯
+country.PL.name,波蘭
+country.RO.name,羅馬尼亞
+country.BG.name,保加利亞
+country.GR.name,希臘
+country.RS.name,巴爾幹
+country.BA.name,波羅的海
+country.EG.name,埃及
+country.LY.name,利比亞
+country.SD.name,蘇丹
+country.ET.name,衣索比亞
+country.SO.name,索馬利亞
+country.KE.name,肯亞
+country.TZ.name,坦尚尼亞
+country.CD.name,中非
+country.AU.name,澳洲
+country.PG.name,巴紐
+city.home.name,家
+city.bkk.name,曼谷
+city.bkk.desc,泰國首都。中泰互免簽證，每次 30 天。背包客的起點，考山路有大量青旅。
+city.vte.name,萬象
+city.vte.desc,寮國首都。要提前辦電子簽，或在部分口岸辦落地簽。可以走中老鐵路過去。
+city.kul.name,吉隆坡
+city.kul.desc,中馬互免簽證，每次 30 天，入境前要填 MDAC。
+city.sin.name,新加坡
+city.sin.desc,中新互免簽證，30 天，入境前要填 SG Arrival Card。物價很高。
+city.ala.name,阿拉木圖
+city.ala.desc,中哈互免簽證。去中亞的入口。
+city.tbs.name,第比利斯
+city.tbs.desc,中格互免簽證。高加索山腳下的老城。
+city.tyo.name,東京
+city.tyo.desc,日本要事先申請簽證，要看存款證明和在職證明。對無業應屆生很難。
+city.dps.name,峇里島
+city.dps.desc,印尼可以辦落地簽。
+city.han.name,河內
+city.han.desc,越南要辦電子簽。
 # END generated

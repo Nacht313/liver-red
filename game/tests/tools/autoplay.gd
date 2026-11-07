@@ -1,6 +1,6 @@
 ## 開發用自動操作：照指令按鍵、移動主角，搭配 --write-movie 錄下畫面。
 ## godot --path game --script res://tests/tools/autoplay.gd --write-movie <絕對路徑>.png --fixed-fps 10 -- "<指令>"
-## 指令用空白分開：i 確認鍵、c 取消鍵、u／d 選項上／下、x1200 主角移到 x=1200、w5 等 5 幀、
+## 指令用空白分開：i 確認鍵、c 取消鍵、p 手機鍵、u／d 選項上／下、x1200 主角移到 x=1200、w5 等 5 幀、
 ## i*6 重複 6 次、h18 時間快轉到 18 點、mark 在輸出印出目前幀數（方便找截圖）、quit 結束。
 extends SceneTree
 
@@ -49,6 +49,7 @@ func _process(_delta: float) -> bool:
 	match c[0]:
 		"i": _press("interact")
 		"c": _press("cancel")
+		"p": _press("phone")
 		"u": _press("choice_up")
 		"d": _press("choice_down")
 		"x": current_scene.get_node("Player").position.x = float(c.substr(1))
