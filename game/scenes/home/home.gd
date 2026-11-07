@@ -17,6 +17,9 @@ var cards: Cards
 var phone: Phone
 var backpack: Backpack
 var journal: Journal
+var _modulate: CanvasModulate
+var _lamps: Array[PointLight2D] = []
+var _sky: ColorRect
 
 
 func _ready() -> void:
@@ -49,6 +52,7 @@ func _ready() -> void:
 		box.z_index = -5
 		add_child(box)
 		objects.append(o)
+	_setup_lighting(floor_y)
 	player.position = Vector2(data.start_x, floor_y)
 	player.world_width = data.width
 	cam.limit_left = 0
@@ -115,6 +119,7 @@ func _on_card_closed(kind: String) -> void:
 
 
 func _process(_delta: float) -> void:
+	_update_lighting()
 	near_obj = _nearest()
 	prompt.visible = not near_obj.is_empty() and Game.can_move() and not cards.is_open()
 	if prompt.visible:
@@ -156,3 +161,49 @@ func _object_x(id: String) -> float:
 		if o.id == id:
 			return float(o.x)
 	return float(data.start_x)
+
+
+# ---------- 打光：整體色調跟著時間走，每個房間一盞天花板燈，窗外的天色 ----------
+func _setup_lighting(floor_y: float) -> void:
+	_sky = ColorRect.new()
+	_sky.position = Vector2(_object_x("window") - 24, 40)
+	_sky.size = Vector2(48, 50)
+	_sky.z_index = -8
+	add_child(_sky)
+	_modulate = CanvasModulate.new()
+	add_child(_modulate)
+	var tex := GradientTexture2D.new()
+	tex.fill = GradientTexture2D.FILL_RADIAL
+	tex.fill_from = Vector2(0.5, 0.5)
+	tex.fill_to = Vector2(1.0, 0.5)
+	tex.width = 256
+	tex.height = 256
+	var g := Gradient.new()
+	g.set_color(0, Color(1, 1, 1, 1))
+	g.set_color(1, Color(1, 1, 1, 0))
+	tex.gradient = g
+	for a in data.areas:
+		if a.id == "stairwell" or a.id == "door":
+			continue
+		var l := PointLight2D.new()
+		l.texture = tex
+		l.texture_scale = 1.2
+		l.color = Color(1.0, 0.82, 0.58)
+		l.position = Vector2((a.x0 + a.x1) / 2.0, 30)
+		l.blend_mode = Light2D.BLEND_MODE_ADD
+		add_child(l)
+		_lamps.append(l)
+
+
+func _update_lighting() -> void:
+	if Game.J.S == null:
+		return
+	var p := Lighting.params(Game.J.S.h)
+	_modulate.color = p.tint
+	for l in _lamps:
+		l.energy = 0.9 * p.lamp
+		l.visible = p.lamp > 0.01
+	var day_sky := Color("7fb8e0")
+	var dusk_sky := Color("f2a674")
+	var night_sky := Color("1a1e3a")
+	_sky.color = night_sky.lerp(day_sky, p.day).lerp(dusk_sky, 0.6 * p.warm)
