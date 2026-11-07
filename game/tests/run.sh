@@ -9,5 +9,10 @@ DIR="$(cd "$(dirname "$0")/.." && pwd)"
 OUT="$("$GODOT" --headless --path "$DIR" --script res://tests/run_tests.gd -- "${1:-}" 2>&1)"
 echo "$OUT" | grep -v -E "^(Godot Engine|$)"
 if echo "$OUT" | grep -q -E "SCRIPT ERROR|Parse Error"; then echo "有腳本錯誤"; exit 1; fi
+# 冒煙檢查：從標題畫面按確認，進到家裡，不能有腳本錯誤
+SMOKE="$("$GODOT" --headless --path "$DIR" --script res://tests/tools/title_press.gd 2>&1)"
+if echo "$SMOKE" | grep -q "SCRIPT ERROR" || ! echo "$SMOKE" | grep -q "TITLE_PRESS scene=Home"; then
+	echo "$SMOKE" | grep -E "SCRIPT ERROR|TITLE_PRESS" -A2; echo "標題畫面冒煙檢查失敗"; exit 1
+fi
 echo "$OUT" | grep -E "^[0-9]+ 項，[0-9]+ 項失敗$" | tail -1
 echo "$OUT" | grep -q -E "^[1-9][0-9]* 項，0 項失敗$" || exit 1

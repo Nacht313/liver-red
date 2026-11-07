@@ -50,7 +50,10 @@ func _unhandled_input(event: InputEvent) -> void:
 		_sel = maxi(_sel - 1, 0)
 		_render()
 	elif event.is_action_pressed("interact"):
+		# 先標成已處理：換場景會馬上把標題畫面移出場景樹，之後就拿不到 viewport
+		get_viewport().set_input_as_handled()
 		_pick(_opts[_sel].id)
+		return
 	else:
 		return
 	get_viewport().set_input_as_handled()
