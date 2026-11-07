@@ -5,7 +5,18 @@
 extends SceneTree
 
 
-func _initialize() -> void:
+var _ran := false
+
+
+## 第一幀才跑：這時根節點已經就緒，加進去的場景會正常執行 _ready
+func _process(_delta: float) -> bool:
+	if not _ran:
+		_ran = true
+		_run_all()
+	return false
+
+
+func _run_all() -> void:
 	var only := ""
 	var args := OS.get_cmdline_user_args()
 	if args.size() > 0:
