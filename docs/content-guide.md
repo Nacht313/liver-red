@@ -1,5 +1,7 @@
 # 內容撰寫指南（給策劃）
 
+> 這份寫的是**捲軸場景**（加拉達橋）。開幕這類文字場景的劇情寫在 `src/story/opening/nodes.js`，條件和效果的寫法在 `src/game/journey/rules.js` 開頭，格式說明在 `nodes.js` 開頭。改完一樣跑 `npm test`。
+
 劇情、價錢、位置都寫在 `src/scenes/<場景>/index.js`。只要照下面的格式改，不用碰引擎。改完跑 `npm test`，資料寫錯的地方會被指出來。
 
 ## Spot

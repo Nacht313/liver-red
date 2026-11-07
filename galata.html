@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>加拉達橋黃昏</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Silkscreen&display=swap">
+<link rel="stylesheet" href="src/style.css">
+</head>
+<body>
+<div class="app">
+  <header>
+    <h1>加拉達橋・黃昏<small>ISTANBUL 19:30</small></h1>
+    <p class="sub">捲軸場景測試：從埃米諾努走到卡拉柯伊。點畫面或 ← → 走路，走到記號旁按 E 或 Enter 互動。背景和道具由 Anima 生成，光影由程式統一。</p>
+  </header>
+
+  <div class="stage" id="stage">
+    <canvas id="cv" aria-label="伊斯坦堡加拉達橋黃昏場景"></canvas>
+    <div class="hud" id="hud"></div>
+    <div class="hint" id="hint">← → 走路・走到記號旁按 E 或 Enter 互動</div>
+    <button class="act" id="act" hidden></button>
+    <div class="toast" id="toast"></div>
+    <div class="sheet" id="sheet" hidden></div>
+  </div>
+
+  <div class="controls">
+    <button class="walk" id="bl" aria-label="往左走">&lt;&lt;</button>
+    <button class="walk" id="br" aria-label="往右走">&gt;&gt;</button>
+    <button id="wait">站著等 10 分鐘</button>
+    <button id="actBtn">互動（E）</button>
+    <span class="sp"></span>
+    <button id="dbg" aria-pressed="false">顯示 spot 範圍</button>
+    <button id="reset">重新開始</button>
+  </div>
+
+  <div class="panels">
+    <section class="card">
+      <h3>Spot 設定表</h3>
+      <p class="note">每個互動點的類型、怎麼觸發、出現條件和代價。狀態會跟著你的遊玩即時更新。</p>
+      <div class="tbl"><table id="spotTable"></table></div>
+    </section>
+    <section class="card">
+      <h3>筆記本</h3>
+      <ul class="words" id="words"></ul>
+      <h3>相片</h3>
+      <div class="photos" id="photos"></div>
+      <h3 style="margin-top:12px">經過</h3>
+      <ol class="log" id="log"></ol>
+    </section>
+  </div>
+</div>
+<script type="module" src="src/main.js"></script>
+</body>
+</html>

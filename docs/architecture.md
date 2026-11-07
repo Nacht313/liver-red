@@ -48,3 +48,27 @@ main.js tick(now)
 3. `assets/scenes/<id>/`：素材。
 4. 在 `tests/unit/scene-data.test.js` 的 `scenes` 陣列加進去。
 5. 目前 `main.js` 直接載入 galata；有第二個場景時要加場景切換（見 roadmap）。
+
+## 旅程和文字場景（src/game/journey/、src/story/）
+
+開幕這類「選單式」的段落用 DoL 式文字場景：左側狀態欄、插圖、敘述、編號選項。
+
+| 檔案 | 用途 |
+|---|---|
+| `journey/journey.js` | `Journey`：旅程狀態（第幾天、幾點、精力／飽食／信念／電量／衛生／家裡、錢、背包、旅行知識）、時間流逝、上限鎖、付錢、睡覺、存檔（日記、入境章）、結局 |
+| `journey/bag.js` | 背包分層、總重、手提行李重量、重心 |
+| `journey/time.js` | 日期、時鐘、一天的分段 |
+| `journey/rules.js` | 劇情節點的條件、效果、文字變數（寫法說明在檔案開頭） |
+| `journey/flow.js` | `Flow`：目前在哪個節點、產生畫面資料、選項之後去哪裡 |
+| `story/opening/data.js` | 開幕的資料表：知識、物品、交通、住宿、結局（純資料，可轉 JSON） |
+| `story/opening/nodes.js` | 劇情節點（純資料，策劃可以直接改） |
+| `story/opening/screens-*.js` | 清單類畫面（查資料、網購、訂票、機場、入境…）：由資料表產生選項 |
+| `story/opening/actions.js` | 節點用 `{ do: '名稱' }` 呼叫的複雜規則 |
+| `ui/textgame.js`、`ui/journey-side.js`、`render/paint.js` | 介面、側欄、SVG 插圖 |
+
+規則：
+
+- 劇情節點和資料表必須能 `JSON.stringify` 來回不變（`tests/unit/opening.test.js` 會檢查），之後搬 Godot 時直接帶走。
+- 清單畫面的 `view()` 只能讀狀態；改狀態寫在選項的 `fn` 或畫面的 `enter()`。亂數也只能在這兩個地方擲。
+- 上一個動作的結果用 `J.flash` 帶到下一個畫面最上面。
+- 存檔：睡在家裡寫日記（`zgh_diary`）、泰國入境蓋章（`zgh_stamp`）；旅行知識跨輪保留（`zgh_meta`）。

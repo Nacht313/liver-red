@@ -41,7 +41,7 @@ async def desktop(br):
     errors = []
     pg.on('pageerror', lambda e: errors.append(str(e)))
     pg.on('console', lambda m: errors.append(m.text) if m.type == 'error' and 'fonts.g' not in m.text else None)
-    await pg.goto(f'http://127.0.0.1:{PORT}/index.html')
+    await pg.goto(f'http://127.0.0.1:{PORT}/galata.html')
     await pg.wait_for_function('() => window.__game')
     await pg.wait_for_timeout(600)
     await pg.locator('.stage').screenshot(path=OUT / 'd0-start.png')
@@ -99,7 +99,7 @@ async def phone(br):
     pg = await br.new_page(viewport={'width': 400, 'height': 860}, device_scale_factor=2)
     errors = []
     pg.on('pageerror', lambda e: errors.append(str(e)))
-    await pg.goto(f'http://127.0.0.1:{PORT}/index.html')
+    await pg.goto(f'http://127.0.0.1:{PORT}/galata.html')
     await pg.wait_for_function('() => window.__game')
     await state(pg, 'window.__game.S.tx = 120')
     await pg.wait_for_function('() => window.__game.S.tx === null', timeout=10000)
@@ -113,6 +113,70 @@ async def phone(br):
     await pg.close()
 
 
+async def opening(br, width, height, tag):
+    """開幕：從標題玩到走出機場、進市區。選項用數字鍵和點擊混著操作。"""
+    print(f'開幕 {width}x{height}')
+    pg = await br.new_page(viewport={'width': width, 'height': height})
+    errors = []
+    pg.on('pageerror', lambda e: errors.append(str(e)))
+    await pg.goto(f'http://127.0.0.1:{PORT}/index.html')
+    await pg.wait_for_function('() => window.__journey')
+    await pg.evaluate('() => localStorage.clear()')
+
+    async def pick(text):
+        btn = pg.locator('#ch .c:not([disabled])', has_text=text).first
+        await btn.click()
+        await pg.wait_for_timeout(30)
+
+    async def node():
+        return await state(pg, 'window.__journey.F.cur.id')
+
+    check('豬肝紅冒險' in await pg.inner_text('#text'), '標題畫面')
+    await pg.screenshot(path=OUT / f'{tag}0-title.png')
+    await pg.keyboard.press('1')  # 新的旅程
+    await pg.wait_for_timeout(50)
+    check(await node() == 'intro', '數字鍵 1 開始新的旅程')
+    for t in ['走出房間', '50,000', '睡覺']:
+        await pick(t)
+    check(await node() == 'prep', '進到出發前大廳')
+    check(not await pg.locator('#menu').is_hidden(), '側欄選單出現')
+    await pg.screenshot(path=OUT / f'{tag}1-prep.png', full_page=True)
+
+    for t in ['選第一站', '泰國・曼谷', '訂交通', '全服務', '五天後', '訂住宿', '考山路青旅', '3 晚', '去銀行', '換 ¥1,000']:
+        await pick(t)
+    await pick('整理背包')
+    await pg.locator('select[data-id="laptop"]').select_option('mid')
+    check('大背包中層' in await pg.inner_text('#text'), '背包選單可以改位置')
+    await pg.screenshot(path=OUT / f'{tag}2-pack.png', full_page=True)
+    await pick('完成')
+
+    for _ in range(40):
+        S = await state(pg, '({day: window.__journey.J.S.day, dep: window.__journey.J.S.dep, tdac: window.__journey.J.S.tdac})')
+        if S['day'] >= S['dep']:
+            break
+        if not S['tdac'] and S['dep'] - S['day'] <= 3:
+            await pick('辦出國'); await pick('TDAC'); await pick('填好'); await pick('返回')
+        has_sleep = await pg.locator('#ch .c:not([disabled])', has_text='睡覺').count()
+        await pick('睡覺' if has_sleep else '休息')
+    for t in ['出發', '出門', '過邊檢', '旅遊', '登機', '下飛機']:
+        await pick(t)
+    await pg.locator('#ch .c:not([disabled])').first.click()
+    check(await node() == 'stamp', '泰國入境蓋章')
+    check(await state(pg, "!!localStorage.getItem('zgh_stamp')"), '入境章存檔')
+    await pg.screenshot(path=OUT / f'{tag}3-stamp.png', full_page=True)
+
+    await pg.click('#mPass')
+    check('泰國' in await pg.inner_text('#ovb'), '護照面板看得到章')
+    await pg.keyboard.press('Escape')
+    for t in ['走出', '官方計程車', '抵達']:
+        await pick(t)
+    check(await node() == 'city', '走出機場，進到市區')
+    await pg.screenshot(path=OUT / f'{tag}4-city.png', full_page=True)
+    check(await state(pg, 'document.documentElement.scrollWidth') <= width, '沒有橫向捲動')
+    check(not errors, '沒有 JS 錯誤：' + '; '.join(errors))
+    await pg.close()
+
+
 async def main():
     OUT.mkdir(parents=True, exist_ok=True)
     srv = serve()
@@ -120,6 +184,8 @@ async def main():
         br = await p.chromium.launch()
         await desktop(br)
         await phone(br)
+        await opening(br, 1200, 900, 'o')
+        await opening(br, 390, 844, 'om')
         await br.close()
     srv.shutdown()
     print(f'\n{"全部通過" if not failures else f"{len(failures)} 項失敗"}')

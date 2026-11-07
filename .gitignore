@@ -4,3 +4,10 @@ __pycache__/
 .DS_Store
 *.log
 preview/
+
+# 腦力激盪的示意圖（本機用）
+.superpowers/
+# Claude Code 本機設定
+.claude/settings.local.json
+# Godot 編輯器快取
+.godot/
