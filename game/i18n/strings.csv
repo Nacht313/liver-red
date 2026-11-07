@@ -1,6 +1,28 @@
 keys,zh_TW
 ui.app.name,豬肝紅冒險
 ui.test.format,你換到了 {amount} 泰銖。
+ui.date.long,20XX/{m}/{d} 星期{w}
+ui.weekday.0,日
+ui.weekday.1,一
+ui.weekday.2,二
+ui.weekday.3,三
+ui.weekday.4,四
+ui.weekday.5,五
+ui.weekday.6,六
+ui.seg.late,深夜
+ui.seg.morning,上午
+ui.seg.afternoon,下午
+ui.seg.evening,晚上
+toast.locked,上限被鎖住了：{how}可以解鎖。
+toast.learned,旅行知識＋1
+lock.family.how,和家人視訊
+lock.dirty.how,洗澡、換乾淨的衣服
+lock.hunger.how,好好吃一頓正餐
+lock.stock.how,把虧損賺回來，或者認賠出場
+thought.cage.name,一個籠子在尋找一隻鳥
+thought.cage.eff,消化完成後：膽識 +1。你開始相信自己的選擇。
+diary.wrote,在{where}寫下了日記。
+home.place.bedroom,家・你的房間
 # BEGIN generated: npm run export:godot
 know.k_tdac,泰國：中泰互免簽證，每次停留 30 天，180 天內累計不超過 90 天。入境前要在網上填 TDAC 數位入境卡，最早抵達前 3 天才能填，免費。
 know.k_funds,"泰國移民局可能抽查入境資金：免簽旅客每人 10,000 泰銖（或等值外幣、可證明的付款文件）。2026 年 7 月觀光局再次提醒。"
