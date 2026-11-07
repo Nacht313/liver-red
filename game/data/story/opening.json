@@ -2,11 +2,162 @@
  "nodes": {
   "intro": {
    "lines": [
-    {"who": "me", "text": "story.intro.1"},
-    {"who": "me", "text": "story.intro.2"},
-    {"who": "me", "text": "story.intro.3"},
-    {"who": "me", "text": "story.intro.4"},
-    {"who": "me", "text": "story.intro.5"}
+    {
+     "who": "me",
+     "text": "story.intro.1"
+    },
+    {
+     "who": "me",
+     "text": "story.intro.2"
+    },
+    {
+     "who": "me",
+     "text": "story.intro.3"
+    },
+    {
+     "who": "me",
+     "text": "story.intro.4"
+    },
+    {
+     "who": "me",
+     "text": "story.intro.5"
+    }
+   ]
+  },
+  "obj.bed": {
+   "lines": [
+    {
+     "who": "me",
+     "text": "obj.bed.1"
+    }
+   ]
+  },
+  "obj.backpack": {
+   "lines": [
+    {
+     "who": "me",
+     "text": "obj.backpack.1"
+    }
+   ]
+  },
+  "obj.desk_pc": {
+   "lines": [
+    {
+     "who": "me",
+     "text": "obj.desk_pc.1"
+    }
+   ]
+  },
+  "obj.grad_photo": {
+   "lines": [
+    {
+     "who": "me",
+     "text": "obj.grad_photo.1"
+    }
+   ]
+  },
+  "obj.window": {
+   "lines": [
+    {
+     "who": "me",
+     "text": "obj.window.1"
+    }
+   ]
+  },
+  "obj.bookshelf": {
+   "lines": [
+    {
+     "who": "me",
+     "text": "obj.bookshelf.1"
+    }
+   ]
+  },
+  "obj.tv": {
+   "lines": [
+    {
+     "who": "me",
+     "text": "obj.tv.1"
+    }
+   ]
+  },
+  "obj.dad": {
+   "lines": [
+    {
+     "who": "me",
+     "text": "obj.dad.1"
+    }
+   ]
+  },
+  "obj.award": {
+   "lines": [
+    {
+     "who": "me",
+     "text": "obj.award.1"
+    }
+   ]
+  },
+  "obj.fridge": {
+   "lines": [
+    {
+     "who": "me",
+     "text": "obj.fridge.1"
+    }
+   ]
+  },
+  "obj.table": {
+   "lines": [
+    {
+     "who": "me",
+     "text": "obj.table.1"
+    }
+   ]
+  },
+  "obj.mom": {
+   "lines": [
+    {
+     "who": "me",
+     "text": "obj.mom.1"
+    }
+   ]
+  },
+  "obj.front_door": {
+   "lines": [
+    {
+     "who": "me",
+     "text": "obj.front_door.1"
+    }
+   ]
+  },
+  "obj.neighbor": {
+   "lines": [
+    {
+     "who": "me",
+     "text": "obj.neighbor.1"
+    }
+   ]
+  },
+  "obj.flyers": {
+   "lines": [
+    {
+     "who": "me",
+     "text": "obj.flyers.1"
+    }
+   ]
+  },
+  "obj.locker": {
+   "lines": [
+    {
+     "who": "me",
+     "text": "obj.locker.1"
+    }
+   ]
+  },
+  "obj.exit": {
+   "lines": [
+    {
+     "who": "me",
+     "text": "obj.exit.1"
+    }
    ]
   }
  }

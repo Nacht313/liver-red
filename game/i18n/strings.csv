@@ -29,6 +29,47 @@ story.intro.2,畢業證書塞在抽屜裡。手機裡躺著第十一封「很遺
 story.intro.3,網上的人說，經濟會一直壞下去，AI 會拿走大部分的工作。房子、車子、孩子……算了算，這輩子大概都買不起。
 story.intro.4,可是，這些都不是我真正想要的。
 story.intro.5,是一個籠子在尋找一隻鳥。
+home.area.bedroom,我的房間
+home.area.living,客廳
+home.area.dining,飯廳
+home.area.door,大門
+home.area.stairwell,樓梯間
+home.bed.name,床
+home.backpack.name,背包
+home.desk_pc.name,書桌上的電腦
+home.grad_photo.name,畢業照
+home.window.name,窗戶
+home.bookshelf.name,書架
+home.tv.name,電視
+home.dad.name,爸爸
+home.award.name,牆上的獎狀
+home.fridge.name,冰箱
+home.table.name,飯桌
+home.mom.name,媽媽
+home.front_door.name,大門
+home.neighbor.name,隔壁的門
+home.flyers.name,樓道的小廣告
+home.locker.name,快遞櫃
+home.exit.name,樓梯口
+obj.bed.1,床單還是大學宿舍帶回來的那條。洗了很多次，已經有點薄了。
+obj.backpack.1,四十升的背包，買來兩年，只用過一次。那次是畢業旅行，結果下了三天雨。
+obj.desk_pc.1,電腦螢幕上還開著招聘網站。投了四十七份履歷，回覆的只有十一封。
+obj.grad_photo.1,畢業照。大家都笑得很用力。照片裡第三排左邊那個，是我嗎？
+obj.window.1,對面那棟樓的窗戶一格一格亮著。每一格裡，大概都有一個不知道明天要做什麼的人。
+obj.bookshelf.1,書架上有一本翻爛的《背包十年》。高中的時候，我在上面畫了好多重點。
+obj.tv.1,電視在播新聞。今年的應屆畢業生，又創了新高。
+obj.dad.1,爸爸盯著電視，好像沒注意到我。
+obj.award.1,牆上的獎狀，「三好學生」。媽媽一直沒捨得拿下來。
+obj.fridge.1,冰箱上貼著一張便條：「醬油沒了」。媽媽的字。
+obj.table.1,飯桌上鋪著那塊用了很多年的格子桌布。
+obj.mom.1,媽媽在廚房裡忙著，沒回頭。
+obj.front_door.1,門上貼著去年的福字，邊角已經翹起來了。
+obj.neighbor.1,隔壁的王阿姨家傳來電視劇的聲音。
+obj.flyers.1,樓道牆上貼滿了小廣告：開鎖、通下水道、「高薪急聘，包吃住」。
+obj.locker.1,樓下的快遞櫃。螢幕上寫著「暫無您的包裹」。
+obj.exit.1,樓梯往下。還不是時候。
+ui.prompt,[E] {name}
+ui.title.press,按 Enter 開始
 # BEGIN generated: npm run export:godot
 know.k_tdac,泰國：中泰互免簽證，每次停留 30 天，180 天內累計不超過 90 天。入境前要在網上填 TDAC 數位入境卡，最早抵達前 3 天才能填，免費。
 know.k_funds,"泰國移民局可能抽查入境資金：免簽旅客每人 10,000 泰銖（或等值外幣、可證明的付款文件）。2026 年 7 月觀光局再次提醒。"

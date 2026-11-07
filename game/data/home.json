@@ -1,0 +1,141 @@
+{
+ "width": 1920,
+ "floor_y": 230,
+ "start_x": 120,
+ "areas": [
+  {
+   "id": "bedroom",
+   "x0": 0,
+   "x1": 520,
+   "name": "home.area.bedroom"
+  },
+  {
+   "id": "living",
+   "x0": 520,
+   "x1": 1000,
+   "name": "home.area.living"
+  },
+  {
+   "id": "dining",
+   "x0": 1000,
+   "x1": 1440,
+   "name": "home.area.dining"
+  },
+  {
+   "id": "door",
+   "x0": 1440,
+   "x1": 1560,
+   "name": "home.area.door"
+  },
+  {
+   "id": "stairwell",
+   "x0": 1560,
+   "x1": 1920,
+   "name": "home.area.stairwell"
+  }
+ ],
+ "objects": [
+  {
+   "id": "bed",
+   "x": 70,
+   "name": "home.bed.name",
+   "node": "obj.bed"
+  },
+  {
+   "id": "backpack",
+   "x": 160,
+   "name": "home.backpack.name",
+   "node": "obj.backpack"
+  },
+  {
+   "id": "desk_pc",
+   "x": 260,
+   "name": "home.desk_pc.name",
+   "node": "obj.desk_pc"
+  },
+  {
+   "id": "grad_photo",
+   "x": 330,
+   "name": "home.grad_photo.name",
+   "node": "obj.grad_photo"
+  },
+  {
+   "id": "window",
+   "x": 420,
+   "name": "home.window.name",
+   "node": "obj.window"
+  },
+  {
+   "id": "bookshelf",
+   "x": 485,
+   "name": "home.bookshelf.name",
+   "node": "obj.bookshelf"
+  },
+  {
+   "id": "tv",
+   "x": 620,
+   "name": "home.tv.name",
+   "node": "obj.tv"
+  },
+  {
+   "id": "dad",
+   "x": 760,
+   "name": "home.dad.name",
+   "node": "obj.dad"
+  },
+  {
+   "id": "award",
+   "x": 880,
+   "name": "home.award.name",
+   "node": "obj.award"
+  },
+  {
+   "id": "fridge",
+   "x": 1080,
+   "name": "home.fridge.name",
+   "node": "obj.fridge"
+  },
+  {
+   "id": "table",
+   "x": 1200,
+   "name": "home.table.name",
+   "node": "obj.table"
+  },
+  {
+   "id": "mom",
+   "x": 1330,
+   "name": "home.mom.name",
+   "node": "obj.mom"
+  },
+  {
+   "id": "front_door",
+   "x": 1500,
+   "name": "home.front_door.name",
+   "node": "obj.front_door"
+  },
+  {
+   "id": "neighbor",
+   "x": 1630,
+   "name": "home.neighbor.name",
+   "node": "obj.neighbor"
+  },
+  {
+   "id": "flyers",
+   "x": 1710,
+   "name": "home.flyers.name",
+   "node": "obj.flyers"
+  },
+  {
+   "id": "locker",
+   "x": 1790,
+   "name": "home.locker.name",
+   "node": "obj.locker"
+  },
+  {
+   "id": "exit",
+   "x": 1885,
+   "name": "home.exit.name",
+   "node": "obj.exit"
+  }
+ ]
+}
