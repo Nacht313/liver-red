@@ -1,6 +1,11 @@
 {
  "nodes": {
   "intro": {
+   "on_enter": [
+    {
+     "flag": "intro_seen"
+    }
+   ],
    "lines": [
     {
      "who": "me",
@@ -21,30 +26,66 @@
     {
      "who": "me",
      "text": "story.intro.5"
+    },
+    {
+     "who": "mom",
+     "text": "story.intro.call"
     }
    ]
   },
   "obj.bed": {
-   "lines": [
+   "branch": [
     {
-     "who": "me",
-     "text": "obj.bed.1"
+     "when": {
+      "no_flag": "funded"
+     },
+     "goto": "bed.notyet"
+    },
+    {
+     "when": {
+      "any": [
+       {
+        "hour": {
+         "gte": 19
+        }
+       },
+       {
+        "hour": {
+         "lt": 5
+        }
+       }
+      ]
+     },
+     "goto": "bed.night"
+    },
+    {
+     "goto": "bed.day"
     }
    ]
   },
   "obj.backpack": {
-   "lines": [
+   "branch": [
     {
-     "who": "me",
-     "text": "obj.backpack.1"
+     "when": {
+      "flag": "funded"
+     },
+     "goto": "pack.open"
+    },
+    {
+     "goto": "pack.mono"
     }
    ]
   },
   "obj.desk_pc": {
-   "lines": [
+   "branch": [
     {
-     "who": "me",
-     "text": "obj.desk_pc.1"
+     "when": {
+      "flag": "funded"
+     },
+     "goto": "pc.open"
+    },
+    {
+     "goto": "pc.mono"
     }
    ]
   },
@@ -65,10 +106,33 @@
    ]
   },
   "obj.bookshelf": {
-   "lines": [
+   "branch": [
     {
-     "who": "me",
-     "text": "obj.bookshelf.1"
+     "when": [
+      {
+       "flag": "funded"
+      },
+      {
+       "not": {
+        "any": [
+         {
+          "hour": {
+           "gte": 19
+          }
+         },
+         {
+          "hour": {
+           "lt": 5
+          }
+         }
+        ]
+       }
+      }
+     ],
+     "goto": "shelf.day"
+    },
+    {
+     "goto": "shelf.mono"
     }
    ]
   },
@@ -85,6 +149,13 @@
     {
      "who": "me",
      "text": "obj.dad.1"
+    },
+    {
+     "who": "dad",
+     "text": "story.dad.money",
+     "when": {
+      "flag": "funded"
+     }
     }
    ]
   },
@@ -105,26 +176,96 @@
    ]
   },
   "obj.table": {
-   "lines": [
+   "branch": [
     {
-     "who": "me",
-     "text": "obj.table.1"
+     "when": {
+      "no_flag": "funded"
+     },
+     "goto": "dinner"
+    },
+    {
+     "goto": "table.idle"
     }
    ]
   },
   "obj.mom": {
    "lines": [
     {
+     "who": "mom",
+     "text": "story.mom.nag",
+     "when": [
+      {
+       "day": {
+        "gte": 4
+       }
+      },
+      {
+       "is": {
+        "dep": null
+       }
+      }
+     ]
+    },
+    {
+     "who": "mom",
+     "text": "story.mom.meds",
+     "when": {
+      "not": {
+       "is": {
+        "dep": null
+       }
+      }
+     }
+    },
+    {
      "who": "me",
-     "text": "obj.mom.1"
+     "text": "obj.mom.1",
+     "when": {
+      "any": [
+       {
+        "day": {
+         "lt": 4
+        }
+       },
+       {
+        "not": {
+         "is": {
+          "dep": null
+         }
+        }
+       }
+      ]
+     }
     }
    ]
   },
   "obj.front_door": {
-   "lines": [
+   "branch": [
     {
-     "who": "me",
-     "text": "obj.front_door.1"
+     "when": {
+      "no_flag": "funded"
+     },
+     "goto": "door.mono"
+    },
+    {
+     "when": {
+      "any": [
+       {
+        "hour": {
+         "gte": 23
+        }
+       },
+       {
+        "hour": {
+         "lt": 5
+        }
+       }
+      ]
+     },
+     "goto": "door.night"
+    },
+    {
+     "goto": "door.menu"
     }
    ]
   },
@@ -145,6 +286,586 @@
    ]
   },
   "obj.locker": {
+   "on_enter": [
+    {
+     "do": "pick_up_parcels"
+    }
+   ],
+   "branch": [
+    {
+     "when": {
+      "flag": "parcels_got"
+     },
+     "goto": "locker.got"
+    },
+    {
+     "goto": "locker.none"
+    }
+   ]
+  },
+  "obj.exit": {
+   "branch": [
+    {
+     "when": [
+      {
+       "v": "days_to_dep",
+       "gte": 0,
+       "lte": 0
+      },
+      {
+       "v": "late_by",
+       "lte": 0
+      }
+     ],
+     "goto": "depart"
+    },
+    {
+     "when": {
+      "v": "days_to_dep",
+      "gte": 0,
+      "lte": 0
+     },
+     "goto": "exit.late"
+    },
+    {
+     "goto": "exit.notyet"
+    }
+   ]
+  },
+  "table.idle": {
+   "lines": [
+    {
+     "who": "me",
+     "text": "obj.table.1"
+    }
+   ]
+  },
+  "dinner": {
+   "lines": [
+    {
+     "who": "me",
+     "text": "story.dinner.1"
+    },
+    {
+     "who": "narr",
+     "text": "story.dinner.2"
+    },
+    {
+     "who": "mom",
+     "text": "story.dinner.3"
+    }
+   ],
+   "choices": [
+    {
+     "text": "story.dinner.c_truth",
+     "check": {
+      "attr": "nerve",
+      "bonus": 0,
+      "text": "check.dinner.prompt",
+      "win": "dinner.win",
+      "lose": "dinner.lose"
+     }
+    },
+    {
+     "text": "story.dinner.c_quiet",
+     "goto": "dinner.lose"
+    }
+   ]
+  },
+  "dinner.win": {
+   "on_enter": [
+    {
+     "add": {
+      "faith": 5
+     }
+    }
+   ],
+   "lines": [
+    {
+     "who": "me",
+     "text": "story.dinner.win1"
+    },
+    {
+     "who": "narr",
+     "text": "story.dinner.win2"
+    }
+   ],
+   "goto": "dinner.funds"
+  },
+  "dinner.lose": {
+   "on_enter": [
+    {
+     "add": {
+      "faith": -3
+     }
+    }
+   ],
+   "lines": [
+    {
+     "who": "me",
+     "text": "story.dinner.lose1"
+    },
+    {
+     "who": "narr",
+     "text": "story.dinner.lose2"
+    }
+   ],
+   "goto": "dinner.funds"
+  },
+  "dinner.funds": {
+   "lines": [
+    {
+     "who": "mom",
+     "text": "story.funds.1"
+    },
+    {
+     "who": "mom",
+     "text": "story.funds.2"
+    },
+    {
+     "who": "narr",
+     "text": "story.funds.3"
+    }
+   ],
+   "choices": [
+    {
+     "text": "story.funds.c_10k",
+     "sub": "story.funds.c_10k_sub",
+     "effects": [
+      {
+       "do": "start_funds",
+       "n": 10000
+      }
+     ],
+     "goto": "night0"
+    },
+    {
+     "text": "story.funds.c_50k",
+     "sub": "story.funds.c_50k_sub",
+     "effects": [
+      {
+       "do": "start_funds",
+       "n": 50000
+      }
+     ],
+     "goto": "night0"
+    },
+    {
+     "text": "story.funds.c_150k",
+     "sub": "story.funds.c_150k_sub",
+     "effects": [
+      {
+       "do": "start_funds",
+       "n": 150000
+      }
+     ],
+     "goto": "night0"
+    },
+    {
+     "text": "story.funds.c_1m",
+     "req": {
+      "flag": "second_run"
+     },
+     "req_text": "story.funds.c_1m_why",
+     "effects": [
+      {
+       "do": "start_funds",
+       "n": 1000000
+      }
+     ],
+     "goto": "night0"
+    }
+   ]
+  },
+  "night0": {
+   "lines": [
+    {
+     "who": "narr",
+     "text": "story.night0.1"
+    },
+    {
+     "who": "narr",
+     "text": "story.night0.2"
+    }
+   ]
+  },
+  "bed.notyet": {
+   "lines": [
+    {
+     "who": "me",
+     "text": "obj.bed.1"
+    },
+    {
+     "who": "me",
+     "text": "story.bed.notyet"
+    }
+   ]
+  },
+  "bed.night": {
+   "lines": [
+    {
+     "who": "narr",
+     "text": "story.bed.ask"
+    }
+   ],
+   "choices": [
+    {
+     "text": "story.bed.c_sleep",
+     "effects": [
+      {
+       "diary": "home.place.bedroom"
+      },
+      {
+       "sleep": "home"
+      },
+      {
+       "do": "check_missed"
+      },
+      {
+       "open": "day_card"
+      }
+     ],
+     "goto": "bed.morning"
+    },
+    {
+     "text": "story.common.c_leave"
+    }
+   ]
+  },
+  "bed.morning": {
+   "branch": [
+    {
+     "when": {
+      "flag": "missed_now"
+     },
+     "goto": "bed.missed"
+    },
+    {
+     "when": {
+      "v": "days_to_dep",
+      "gte": 0,
+      "lte": 0
+     },
+     "goto": "bed.depday"
+    },
+    {
+     "goto": "bed.wake"
+    }
+   ]
+  },
+  "bed.wake": {
+   "lines": [
+    {
+     "who": "narr",
+     "text": "story.bed.wake"
+    }
+   ]
+  },
+  "bed.depday": {
+   "lines": [
+    {
+     "who": "narr",
+     "text": "story.bed.depday"
+    }
+   ]
+  },
+  "bed.missed": {
+   "lines": [
+    {
+     "who": "narr",
+     "text": "story.bed.missed"
+    }
+   ]
+  },
+  "bed.day": {
+   "lines": [
+    {
+     "who": "narr",
+     "text": "story.bed.rest_ask"
+    }
+   ],
+   "choices": [
+    {
+     "text": "story.bed.c_rest",
+     "effects": [
+      {
+       "do": "rest"
+      }
+     ],
+     "goto": "bed.rested"
+    },
+    {
+     "text": "story.common.c_leave"
+    }
+   ]
+  },
+  "bed.rested": {
+   "lines": [
+    {
+     "who": "narr",
+     "text": "story.bed.rested"
+    }
+   ]
+  },
+  "pc.mono": {
+   "lines": [
+    {
+     "who": "me",
+     "text": "obj.desk_pc.1"
+    }
+   ]
+  },
+  "pc.open": {
+   "on_enter": [
+    {
+     "open": "pc"
+    }
+   ]
+  },
+  "pack.mono": {
+   "lines": [
+    {
+     "who": "me",
+     "text": "obj.backpack.1"
+    }
+   ]
+  },
+  "pack.open": {
+   "on_enter": [
+    {
+     "open": "backpack"
+    }
+   ]
+  },
+  "shelf.mono": {
+   "lines": [
+    {
+     "who": "me",
+     "text": "obj.bookshelf.1"
+    }
+   ]
+  },
+  "shelf.day": {
+   "lines": [
+    {
+     "who": "me",
+     "text": "obj.bookshelf.1"
+    }
+   ],
+   "choices": [
+    {
+     "text": "story.shelf.c_study",
+     "sub": "story.shelf.c_study_sub",
+     "check": {
+      "attr": "knowledge",
+      "bonus": 0,
+      "text": "check.study.prompt",
+      "win": "shelf.win",
+      "lose": "shelf.lose"
+     }
+    },
+    {
+     "text": "story.common.c_leave"
+    }
+   ]
+  },
+  "shelf.win": {
+   "on_enter": [
+    {
+     "do": "study",
+     "won": true
+    }
+   ],
+   "lines": [
+    {
+     "who": "narr",
+     "text": "story.shelf.win"
+    }
+   ]
+  },
+  "shelf.lose": {
+   "on_enter": [
+    {
+     "do": "study",
+     "won": false
+    }
+   ],
+   "lines": [
+    {
+     "who": "narr",
+     "text": "story.shelf.lose"
+    }
+   ]
+  },
+  "door.mono": {
+   "lines": [
+    {
+     "who": "me",
+     "text": "obj.front_door.1"
+    }
+   ]
+  },
+  "door.night": {
+   "lines": [
+    {
+     "who": "narr",
+     "text": "story.door.night"
+    }
+   ]
+  },
+  "door.menu": {
+   "lines": [
+    {
+     "who": "narr",
+     "text": "story.door.ask"
+    }
+   ],
+   "choices": [
+    {
+     "text": "story.door.c_bank",
+     "sub": "story.door.c_bank_sub",
+     "req": {
+      "hour": {
+       "lt": 17
+      }
+     },
+     "req_text": "story.door.bank_closed",
+     "goto": "door.bank"
+    },
+    {
+     "text": "story.door.c_friend",
+     "sub": "story.door.c_friend_sub",
+     "when": {
+      "no_flag": "friend"
+     },
+     "req": {
+      "hour": {
+       "gte": 17
+      }
+     },
+     "req_text": "story.door.friend_later",
+     "check": {
+      "attr": "empathy",
+      "bonus": 0,
+      "text": "check.friend.prompt",
+      "win": "door.friend_win",
+      "lose": "door.friend_lose"
+     }
+    },
+    {
+     "text": "story.common.c_leave"
+    }
+   ]
+  },
+  "door.bank": {
+   "on_enter": [
+    {
+     "open": "fade"
+    }
+   ],
+   "lines": [
+    {
+     "who": "narr",
+     "text": "story.bank.1"
+    }
+   ],
+   "choices": [
+    {
+     "text": "story.bank.c_exchange",
+     "sub": "story.bank.c_exchange_sub",
+     "req": {
+      "card": {
+       "gte": 1000
+      }
+     },
+     "req_text": "story.bank.short",
+     "effects": [
+      {
+       "do": "bank_exchange"
+      }
+     ],
+     "goto": "bank.exchanged"
+    },
+    {
+     "text": "story.bank.c_withdraw",
+     "sub": "story.bank.c_withdraw_sub",
+     "req": {
+      "card": {
+       "gte": 1000
+      }
+     },
+     "req_text": "story.bank.short",
+     "effects": [
+      {
+       "do": "bank_withdraw"
+      }
+     ],
+     "goto": "bank.withdrew"
+    },
+    {
+     "text": "story.bank.c_back"
+    }
+   ]
+  },
+  "bank.exchanged": {
+   "lines": [
+    {
+     "who": "narr",
+     "text": "story.bank.exchanged"
+    }
+   ]
+  },
+  "bank.withdrew": {
+   "lines": [
+    {
+     "who": "narr",
+     "text": "story.bank.withdrew"
+    }
+   ]
+  },
+  "door.friend_win": {
+   "on_enter": [
+    {
+     "open": "fade"
+    },
+    {
+     "do": "friend_dinner",
+     "won": true
+    }
+   ],
+   "lines": [
+    {
+     "who": "narr",
+     "text": "story.friend.win"
+    }
+   ]
+  },
+  "door.friend_lose": {
+   "on_enter": [
+    {
+     "open": "fade"
+    },
+    {
+     "do": "friend_dinner",
+     "won": false
+    }
+   ],
+   "lines": [
+    {
+     "who": "narr",
+     "text": "story.friend.lose"
+    }
+   ]
+  },
+  "locker.got": {
+   "lines": [
+    {
+     "who": "narr",
+     "text": "story.locker.got"
+    }
+   ]
+  },
+  "locker.none": {
    "lines": [
     {
      "who": "me",
@@ -152,11 +873,59 @@
     }
    ]
   },
-  "obj.exit": {
+  "exit.notyet": {
    "lines": [
     {
      "who": "me",
      "text": "obj.exit.1"
+    }
+   ]
+  },
+  "exit.late": {
+   "lines": [
+    {
+     "who": "me",
+     "text": "story.exit.late"
+    }
+   ]
+  },
+  "depart": {
+   "on_enter": [
+    {
+     "do": "depart"
+    }
+   ],
+   "lines": [
+    {
+     "who": "narr",
+     "text": "story.depart.stuffed",
+     "when": {
+      "flag": "stuffed"
+     }
+    },
+    {
+     "who": "narr",
+     "text": "story.depart.snacks",
+     "when": {
+      "no_flag": "stuffed"
+     }
+    },
+    {
+     "who": "dad",
+     "text": "story.depart.dad"
+    },
+    {
+     "who": "me",
+     "text": "story.depart.me"
+    }
+   ],
+   "goto": "depart.end"
+  },
+  "depart.end": {
+   "on_enter": [
+    {
+     "open": "end_card",
+     "arg": "departed"
     }
    ]
   }

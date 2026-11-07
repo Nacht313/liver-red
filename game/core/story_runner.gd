@@ -55,6 +55,11 @@ static func text_keys(n: Dictionary) -> Array:
 	return out
 
 
+## 目前選項的文字代號（測試和除錯用）
+func current_choice_keys() -> Array:
+	return _choices.map(func(c): return c.text)
+
+
 func is_busy() -> bool:
 	return cur_id != ""
 
@@ -103,6 +108,10 @@ func _next_line() -> void:
 
 func _after_lines() -> void:
 	var n: Dictionary = nodes[cur_id]
+	for b in n.get("branch", []):
+		if Rules.test(b.get("when"), J):
+			_enter(b.goto)
+			return
 	if n.has("check"):
 		_begin_check(n.check)
 		return

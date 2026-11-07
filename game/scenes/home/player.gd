@@ -30,7 +30,7 @@ func _ready() -> void:
 
 
 func _process(delta: float) -> void:
-	if not Game.can_move():
+	if not Game.can_move() or Game.J.S.over:
 		return
 	var v := Input.get_axis("move_left", "move_right")
 	if v == 0:

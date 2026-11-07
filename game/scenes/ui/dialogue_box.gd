@@ -13,6 +13,8 @@ const CHARS_PER_SEC := 30.0
 const BOX := Rect2(10, 188, 460, 76)
 const TEXT_X := 66.0
 const FONT_SIZE := 12
+const ROW_H := 16
+const BOTTOM := 264.0
 
 var runner: StoryRunner
 var speakers: Dictionary = {}
@@ -84,6 +86,9 @@ func show_line(who: String, text: String) -> void:
 	_label.visible = true
 	var sp: Dictionary = speakers.get(who, {})
 	_portrait.color = Color(sp.get("color", "2a2230"))
+	_portrait.visible = not sp.get("no_portrait", 0)
+	_set_text_x(TEXT_X if _portrait.visible else 14.0)
+	_resize(BOX.size.y)
 	_pages = _paginate(text)
 	_page = 0
 	_start_page()
@@ -94,6 +99,26 @@ func _start_page() -> void:
 	_shown = 0.0
 	_label.visible_characters = 0
 	_arrow.visible = false
+
+
+func _set_text_x(x: float) -> void:
+	_label.position.x = x
+	_label.size.x = BOX.size.x - x - 14
+	_choice_box.position.x = x
+
+
+func _resize(h: float) -> void:
+	_frame.size = Vector2(BOX.size.x, h)
+	_frame.position = Vector2(BOX.position.x, BOTTOM - h)
+	_arrow.position = Vector2(BOX.size.x - 16, h - 18)
+
+
+func frame_rect() -> Rect2:
+	return Rect2(_frame.position, _frame.size)
+
+
+func text_x() -> float:
+	return _label.position.x
 
 
 func is_typing() -> bool:
@@ -171,6 +196,7 @@ func show_choices(list: Array) -> void:
 	_label.visible = false
 	_arrow.visible = false
 	_sel = 0
+	_resize(maxf(BOX.size.y, list.size() * ROW_H + 14))
 	if not list.is_empty() and list[0].why != "":
 		move(1)
 	_render_choices()
@@ -188,6 +214,7 @@ func _render_choices() -> void:
 		var l := Label.new()
 		l.auto_translate_mode = Node.AUTO_TRANSLATE_MODE_DISABLED
 		l.add_theme_font_size_override("font_size", FONT_SIZE)
+		l.custom_minimum_size.y = ROW_H
 		var mark := "> " if i == _sel else "  "
 		l.text = mark + c.text + (("  (" + c.why + ")") if c.why != "" else ("  " + c.sub if c.sub != "" else ""))
 		l.modulate = Color(1, 0.85, 0.3) if i == _sel else (Color(0.5, 0.5, 0.55) if c.why != "" else Color.WHITE)

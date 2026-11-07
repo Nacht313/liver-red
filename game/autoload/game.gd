@@ -9,7 +9,7 @@ var store: SaveStore
 var J: Journey
 var story: StoryRunner
 var ui := UiLock.new()
-## 章節動作（{ "do": 名稱 } 會呼叫這裡的 Callable）；Task 7 由 OpeningActions 填入
+## 章節動作（{ "do": 名稱 } 會呼叫這裡的 Callable），由 OpeningActions 提供
 var actions: Dictionary = {}
 
 
@@ -17,7 +17,9 @@ func _init() -> void:
 	db = DataDB.load_all()
 	store = SaveStore.new()
 	J = Journey.new(db, store)
+	actions = OpeningActions.table()
 	story = StoryRunner.new(J, StoryRunner.load_nodes(STORY_PATH), actions)
+	ui.follow_endings(J)
 
 
 func new_game() -> void:

@@ -13,6 +13,7 @@ var near_obj: Dictionary = {}
 @onready var cam: Camera2D = $Player/Camera2D
 @onready var prompt: Label = $Hud/Prompt
 var dialogue: DialogueBox
+var cards: Cards
 
 
 func _ready() -> void:
@@ -58,11 +59,48 @@ func _ready() -> void:
 	dialogue.bind(Game.story, speakers)
 	Game.story.line.connect(func(_w, _t): Game.request_ui("dialogue"))
 	Game.story.finished.connect(func(): Game.release_ui("dialogue"))
+	Game.story.open_ui.connect(_on_open_ui)
+	Game.story.check_started.connect(_on_check)
+	cards = Cards.new()
+	add_child(cards)
+	cards.closed.connect(_on_card_closed)
+	Game.J.ended.connect(func(kind): _show_end(kind))
+	if not Game.J.S.flags.has("intro_seen"):
+		Game.story.start.call_deferred("intro")
+
+
+func _on_open_ui(kind: String, arg: Variant) -> void:
+	match kind:
+		"day_card":
+			cards.show_day(Game.J)
+		"end_card":
+			_show_end(str(arg))
+		"fade":
+			cards.fade()
+		_:
+			pass  # pc、backpack：Task 9、10
+
+
+func _show_end(kind: String) -> void:
+	Game.ui.clear()
+	Game.request_ui("card")
+	cards.show_end(Game.J, kind)
+
+
+func _on_card_closed(kind: String) -> void:
+	Game.release_ui("card")
+	if kind == "end_card":
+		get_tree().change_scene_to_file("res://scenes/title/title.tscn")
+
+
+## 判定欄在 Task 8 才有；在那之前直接擲骰
+func _on_check(_info: Dictionary) -> void:
+	Game.story.roll_check.call_deferred()
 
 
 func _process(_delta: float) -> void:
 	near_obj = _nearest()
-	prompt.visible = not near_obj.is_empty() and Game.can_move()
+	prompt.visible = not near_obj.is_empty() and Game.can_move() and not cards.is_open()
 	if prompt.visible:
 		prompt.text = tr("ui.prompt").format({"name": tr(near_obj.name)})
 
@@ -79,7 +117,7 @@ func _nearest() -> Dictionary:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed("interact") and not near_obj.is_empty() and Game.can_move():
+	if event.is_action_pressed("interact") and not near_obj.is_empty() and Game.can_move() and not cards.is_open():
 		get_viewport().set_input_as_handled()
 		interact(near_obj)
 

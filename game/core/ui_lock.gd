@@ -30,3 +30,8 @@ func release(kind: String) -> void:
 func clear() -> void:
 	open = ""
 	changed.emit(open)
+
+
+## 結局時把介面全部關掉（錢花光、精力歸零⋯⋯）
+func follow_endings(J: Journey) -> void:
+	J.ended.connect(func(_kind): clear())

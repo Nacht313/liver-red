@@ -61,3 +61,24 @@ func test_long_text_pages() -> void:
 	b.skip_or_next()
 	eq(_next, 1, "全部看完才下一句")
 	b.queue_free()
+
+
+func test_many_choices_fit_in_box() -> void:
+	var b := _box()
+	var list := []
+	for i in 5:
+		list.append({"text": "Choice %d" % i, "sub": "", "why": ""})
+	b.show_choices(list)
+	ok(b.frame_rect().size.y >= 5 * DialogueBox.ROW_H + 10, "五個選項時框會長高：%s" % b.frame_rect())
+	ok(b.frame_rect().end.y <= 268, "框不超出畫面")
+	b.queue_free()
+
+
+func test_narration_has_no_portrait_gap() -> void:
+	var b := _box()
+	b.speakers = {"narr": {"no_portrait": 1}, "me": {}}
+	b.show_line("narr", "Text")
+	ok(b.text_x() < 30, "旁白從左邊開始：%s" % b.text_x())
+	b.show_line("me", "Text")
+	ok(b.text_x() > 60, "有頭像時讓出位置")
+	b.queue_free()

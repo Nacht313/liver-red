@@ -93,7 +93,32 @@ func test_graph() -> void:
 				ok(nodes.has(c.goto), "%s → %s" % [id, c.goto])
 		if n.has("goto"):
 			ok(nodes.has(n.goto), "%s → %s" % [id, n.goto])
+		for b in n.get("branch", []):
+			ok(nodes.has(b.goto), "%s 分支 → %s" % [id, b.goto])
 		if n.has("check"):
 			ok(nodes.has(n.check.win) and nodes.has(n.check.lose), "%s 的判定去處" % id)
 		for t in StoryRunner.text_keys(n):
 			ok(TranslationServer.translate(t) != t, "%s 的文字代號沒有翻譯：%s" % [id, t])
+
+
+func test_branch_picks_first_match() -> void:
+	var nodes := {"b": {"lines": [{"who": "me", "text": "ui.app.name"}],
+		"branch": [{"when": {"flag": "night"}, "goto": "n"}, {"goto": "d"}]},
+		"n": {"on_enter": [{"flag": "went_n"}]}, "d": {"on_enter": [{"flag": "went_d"}]}}
+	var R := _runner(nodes)
+	R.start("b")
+	R.advance()
+	ok(R.J.S.flags.has("went_d"), "沒有 night 旗標走最後一條")
+	var R2 := _runner(nodes)
+	R2.J.S.flags["night"] = 1
+	R2.start("b")
+	R2.advance()
+	ok(R2.J.S.flags.has("went_n"), "有旗標走第一條")
+
+
+func test_current_choice_keys() -> void:
+	var R := _runner(TWO)
+	R.start("a")
+	R.advance()
+	R.advance()
+	eq(R.current_choice_keys(), ["ui.app.name", "ui.app.name"], "選項的文字代號")

@@ -25,6 +25,8 @@ static func number(name: String, J: Journey) -> float:
 		"total_kg": return Bag.total_kg(J.S, J.db)
 		"cash_thb": return J.cash_thb()
 		"money": return J.money()
+		"days_to_dep": return 99.0 if J.S.dep == null else float(J.S.dep) - J.S.day
+		"late_by": return -99.0 if J.S.trans == null else J.S.h - float(J.db.trans[J.S.trans].latest)
 	push_error("Rules: unknown value " + name)
 	return 0.0
 
@@ -145,6 +147,7 @@ static func fill(key: String, J: Journey, args: Dictionary = {}) -> String:
 	if J.S:
 		vals = {"date": TimeUtil.date_str(J.S.day), "date_short": TimeUtil.date_str(J.S.day, true), "clock": TimeUtil.clock(J.S.h),
 			"total_kg": "%.1f" % Bag.total_kg(J.S, J.db), "cabin_kg": "%.1f" % Bag.cabin_kg(J.S, J.db),
-			"cash_thb": str(roundi(J.cash_thb())), "thb": str(roundi(J.S.thb))}
+			"cash_thb": str(roundi(J.cash_thb())), "thb": str(roundi(J.S.thb)),
+			"missed_loss": str(J.S.flags.get("missed_loss", 0))}
 	vals.merge(args, true)
 	return TranslationServer.translate(k).format(vals)

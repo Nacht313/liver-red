@@ -70,6 +70,92 @@ obj.locker.1,樓下的快遞櫃。螢幕上寫著「暫無您的包裹」。
 obj.exit.1,樓梯往下。還不是時候。
 ui.prompt,[E] {name}
 ui.title.press,按 Enter 開始
+story.intro.call,（飯廳傳來媽媽的聲音）「吃飯了！」
+story.dinner.1,晚飯的時候，我說我想出去走走。不是一個月，可能是一年，也可能更久。
+story.dinner.2,＊ 爸爸放下筷子，很久沒說話。
+story.dinner.3,「你一個人出去，能做什麼？」
+story.dinner.c_truth,說出真心話
+story.dinner.c_quiet,低頭扒飯
+check.dinner.prompt,膽識在你耳邊說：現在不說，就再也不會說了。
+story.dinner.win1,「我不是去玩。我想知道外面的世界是什麼樣子，也想知道我自己是什麼樣子。」
+story.dinner.win2,＊ 媽媽看了你很久。爸爸把一塊排骨夾進你碗裡。
+story.dinner.lose1,「……我會省著花的。」
+story.dinner.lose2,＊ 話說出口，連自己都覺得沒有說服力。
+story.funds.1,「簽證要的錢，我們出。」
+story.funds.2,「但是錢花完了，你就給我回來。」
+story.funds.3,＊ 他們能拿出多少？
+story.funds.c_10k,"¥10,000"
+story.funds.c_10k_sub,媽媽偷偷從存摺裡取的
+story.funds.c_50k,"¥50,000"
+story.funds.c_50k_sub,爸爸說：省著點花
+story.funds.c_150k,"¥150,000"
+story.funds.c_150k_sub,原本是買車的錢
+story.funds.c_1m,"¥1,000,000"
+story.funds.c_1m_why,二週目開放
+story.night0.1,＊ 那天晚上，你很久沒睡著。
+story.night0.2,＊ 新的念頭：一個籠子在尋找一隻鳥。放進思想櫃，需要 3 天消化。
+story.bed.notyet,肚子在叫。先去吃飯吧。
+story.bed.ask,＊ 要睡了嗎？
+story.bed.c_sleep,睡覺（寫日記存檔）
+story.common.c_leave,算了
+story.bed.wake,＊ 新的一天。
+story.bed.depday,＊ 今天是出發的日子。
+story.bed.missed,＊ 你錯過了出發日。票作廢了（損失 ¥{missed_loss}）。
+story.bed.rest_ask,＊ 躺一下嗎？
+story.bed.c_rest,休息到下一段時間
+story.bed.rested,＊ 你躺在床上滑了一會兒手機。
+story.shelf.c_study,讀半天英文小說
+story.shelf.c_study_sub,英語、學識
+check.study.prompt,學識低聲說：生字查得越多，句子就越快連起來。
+story.shelf.win,＊ 你讀完了兩章，竟然沒怎麼查字典。學識 +1。
+story.shelf.lose,＊ 你查了很多單字，筆記寫滿了一頁。
+story.door.night,＊ 太晚了，外面的店都關了。
+story.door.ask,＊ 要出門嗎？
+story.door.c_bank,去銀行
+story.door.c_bank_sub,換泰銖、領現金
+story.door.bank_closed,銀行關門了
+story.door.c_friend,和朋友吃頓飯告別
+story.door.c_friend_sub,¥120
+story.door.friend_later,晚上才約得到人
+check.friend.prompt,共情提醒你：今晚不是要說服誰，是要好好道別。
+story.bank.1,＊ 銀行櫃台。號碼牌上的數字跳得很慢。
+story.bank.c_exchange,"換 ¥1,000 的泰銖現金"
+story.bank.c_exchange_sub,"約 4,400 ฿（銀行匯率普通）"
+story.bank.short,卡裡錢不夠
+story.bank.c_withdraw,"領 ¥1,000 人民幣現金"
+story.bank.c_withdraw_sub,到了再換，市區匯率比較好
+story.bank.c_back,回家
+story.bank.exchanged,＊ 你換到了 {thb} 泰銖。
+story.bank.withdrew,"＊ 你領了 1,000 元現金。"
+story.friend.win,＊ 阿傑一直說羨慕你。「要是我也敢就好了。」你們喝到很晚。信念 +10，共情 +1。
+story.friend.lose,＊ 小林一直在講他公司的五險一金。散場的時候，你突然有點不確定自己在做什麼。信念 −6。
+story.locker.got,＊ 你從快遞櫃拿出了包裹。東西放回家裡了，記得打包。
+story.exit.late,……來不及了。這個時間出門，趕不上了。
+story.depart.stuffed,＊ 媽媽一大早就起來煮了麵。她什麼也沒說，只是趁你不注意，往你的隨身小包裡塞了一大包零食。
+story.depart.snacks,＊ 媽媽一大早就起來煮了麵。她看到你把零食帶上了，笑了一下。
+story.depart.dad,「到了報平安。」
+story.depart.me,樓梯一階一階往下。走出社區大門的時候，我沒有回頭。
+story.mom.nag,「整天在家滑手機，到底什麼時候走？」
+story.mom.meds,「藥要記得帶。」
+story.dad.money,「錢省著點花。」
+diary.funds,爸媽給了 ¥{amount}。
+diary.friend_good,和阿傑吃了告別飯。
+diary.friend_bad,和小林吃了飯，心裡亂糟糟的。
+diary.departed,出發了。
+family.mom,媽媽
+msg.big_spend,卡裡怎麼一下少了這麼多錢？買了什麼？
+msg.eyes,你一整天都盯著手機，眼睛不要了？
+tdac.addr.jay,沙發主人 Jay 的公寓
+ui.day.weekday,星期{w}
+ui.day.today,今天出發
+ui.day.left,距離出發還有 {n} 天
+ui.day.no_trip,還沒決定什麼時候出發
+ui.card.press,按 Enter 繼續
+ui.end.departed_title,旅程開始
+ui.end.departed_body,"在家準備的這幾天，花了 ¥{spent}，還剩 ¥{left}。你知道了 {know} 條旅行知識。
+接下來的路，還在前面。"
+ui.end.keep_knowledge,學到的旅行知識會留到下一次。
+ui.end.to_title,按 Enter 回到標題
 # BEGIN generated: npm run export:godot
 know.k_tdac,泰國：中泰互免簽證，每次停留 30 天，180 天內累計不超過 90 天。入境前要在網上填 TDAC 數位入境卡，最早抵達前 3 天才能填，免費。
 know.k_funds,"泰國移民局可能抽查入境資金：免簽旅客每人 10,000 泰銖（或等值外幣、可證明的付款文件）。2026 年 7 月觀光局再次提醒。"

@@ -1,6 +1,23 @@
 {
- "me": {"color": "e3b994", "voice": "mid"},
- "mom": {"color": "8a4a5a", "voice": "high"},
- "dad": {"color": "4a5a7a", "voice": "low"},
- "neighbor": {"color": "6a7a4a", "voice": "high"}
+ "me": {
+  "color": "e3b994",
+  "voice": "mid"
+ },
+ "mom": {
+  "color": "8a4a5a",
+  "voice": "high"
+ },
+ "dad": {
+  "color": "4a5a7a",
+  "voice": "low"
+ },
+ "neighbor": {
+  "color": "6a7a4a",
+  "voice": "high"
+ },
+ "narr": {
+  "color": "000000",
+  "voice": "mid",
+  "no_portrait": 1
+ }
 }
