@@ -1,0 +1,6 @@
+Pixel art dialogue portraits for a game, Undertale / Deltarune style but in color, 16-bit, hard pixel edges, no anti-aliasing.
+Four square portraits in one row, each a head-and-shoulders close-up facing the viewer, same pixel scale, plain flat solid magenta background (#ff00ff), no text, no frames, no labels.
+1. A 22-year-old Chinese young man, short black hair, white T-shirt, quiet and a little tired.
+2. His mother, about 50, short permed dark hair, maroon cardigan, worried but gentle.
+3. His father, about 53, short graying hair, navy polo shirt, stern and silent.
+4. A neighbor auntie, about 60, curly gray hair, floral shirt, cheerful.

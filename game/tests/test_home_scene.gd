@@ -18,11 +18,11 @@ func test_detects_table_near_player() -> void:
 	_game()
 	var home: Node = load("res://scenes/home/home.tscn").instantiate()
 	(Engine.get_main_loop() as SceneTree).root.add_child(home)
-	home.player.position.x = 1200
+	home.player.position.x = 1497
 	home._process(0.0)
 	eq(home.near_obj.get("id", ""), "table", "站在飯桌前偵測到飯桌")
 	ok(home.has_method("interact"), "可以互動")
-	home.player.position.x = 700
+	home.player.position.x = 760
 	home._process(0.0)
 	eq(home.near_obj.get("id", ""), "", "空地上沒有東西")
 	home.queue_free()

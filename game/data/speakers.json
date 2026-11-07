@@ -1,19 +1,23 @@
 {
  "me": {
   "color": "e3b994",
-  "voice": "mid"
+  "voice": "mid",
+  "face": "res://art/faces/me.png"
  },
  "mom": {
   "color": "8a4a5a",
-  "voice": "high"
+  "voice": "high",
+  "face": "res://art/faces/mom.png"
  },
  "dad": {
   "color": "4a5a7a",
-  "voice": "low"
+  "voice": "low",
+  "face": "res://art/faces/dad.png"
  },
  "neighbor": {
   "color": "6a7a4a",
-  "voice": "high"
+  "voice": "high",
+  "face": "res://art/faces/neighbor.png"
  },
  "narr": {
   "color": "000000",

@@ -3,7 +3,6 @@
 extends Node2D
 
 const NEAR := 26.0
-const AREA_COLORS := {"bedroom": "3a2e44", "living": "3a2a2a", "dining": "4a3428", "door": "2b2233", "stairwell": "2a2a30"}
 
 var data: Dictionary
 var objects: Array = []
@@ -19,39 +18,26 @@ var backpack: Backpack
 var journal: Journal
 var _modulate: CanvasModulate
 var _lamps: Array[PointLight2D] = []
-var _sky: ColorRect
 
 
 func _ready() -> void:
 	data = JSON.parse_string(FileAccess.get_file_as_string("res://data/home.json"))
 	var floor_y: float = data.floor_y
-	for a in data.areas:
-		var r := ColorRect.new()
-		r.color = Color(AREA_COLORS.get(a.id, "333333"))
-		r.position = Vector2(a.x0, 0)
-		r.size = Vector2(a.x1 - a.x0, floor_y)
-		r.z_index = -10
-		add_child(r)
-		var wall := ColorRect.new()
-		wall.color = Color("1a1420")
-		wall.position = Vector2(a.x0, 0)
-		wall.size = Vector2(2, floor_y)
-		wall.z_index = -9
-		add_child(wall)
+	var bg := Sprite2D.new()
+	bg.texture = load(data.background)
+	bg.centered = false
+	bg.z_index = -10
+	add_child(bg)
 	var ground := ColorRect.new()
-	ground.color = Color("1a1420")
-	ground.position = Vector2(0, floor_y)
-	ground.size = Vector2(data.width, 270 - floor_y)
+	ground.color = Color("120e16")
+	ground.position = Vector2(0, bg.texture.get_height())
+	ground.size = Vector2(data.width, 270 - bg.texture.get_height())
 	ground.z_index = -10
 	add_child(ground)
 	for o in data.objects:
-		var box := ColorRect.new()
-		box.color = Color("8a6a4a")
-		box.size = Vector2(16, 20)
-		box.position = Vector2(o.x - 8, floor_y - 20)
-		box.z_index = -5
-		add_child(box)
 		objects.append(o)
+	for n in data.get("npcs", []):
+		_add_npc(n, floor_y)
 	_setup_lighting(floor_y)
 	player.position = Vector2(data.start_x, floor_y)
 	player.world_width = data.width
@@ -164,12 +150,7 @@ func _object_x(id: String) -> float:
 
 
 # ---------- 打光：整體色調跟著時間走，每個房間一盞天花板燈，窗外的天色 ----------
-func _setup_lighting(floor_y: float) -> void:
-	_sky = ColorRect.new()
-	_sky.position = Vector2(_object_x("window") - 24, 40)
-	_sky.size = Vector2(48, 50)
-	_sky.z_index = -8
-	add_child(_sky)
+func _setup_lighting(_floor_y: float) -> void:
 	_modulate = CanvasModulate.new()
 	add_child(_modulate)
 	var tex := GradientTexture2D.new()
@@ -203,7 +184,22 @@ func _update_lighting() -> void:
 	for l in _lamps:
 		l.energy = 0.9 * p.lamp
 		l.visible = p.lamp > 0.01
-	var day_sky := Color("7fb8e0")
-	var dusk_sky := Color("f2a674")
-	var night_sky := Color("1a1e3a")
-	_sky.color = night_sky.lerp(day_sky, p.day).lerp(dusk_sky, 0.6 * p.warm)
+
+
+## 家人和鄰居：站在固定位置，兩張圖輪流（呼吸）
+func _add_npc(n: Dictionary, floor_y: float) -> void:
+	var a := AnimatedSprite2D.new()
+	var f := SpriteFrames.new()
+	f.add_animation("idle")
+	f.set_animation_speed("idle", 1.5)
+	for fr in n.frames:
+		f.add_frame("idle", load("res://art/chars/%s.png" % fr))
+	f.remove_animation("default")
+	a.sprite_frames = f
+	a.centered = false
+	var tex: Texture2D = f.get_frame_texture("idle", 0)
+	a.position = Vector2(float(n.x) - tex.get_width() / 2.0, floor_y - tex.get_height())
+	a.flip_h = n.get("flip", 0) == 1
+	a.z_index = -2
+	add_child(a)
+	a.play("idle")

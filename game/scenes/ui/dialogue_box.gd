@@ -21,6 +21,7 @@ var speakers: Dictionary = {}
 
 var _frame: Panel
 var _portrait: ColorRect
+var _face: TextureRect
 var _label: Label
 var _arrow: Label
 var _choice_box: VBoxContainer
@@ -49,6 +50,13 @@ func _init() -> void:
 	_portrait.size = Vector2(46, 46)
 	_portrait.color = Color("2a2230")
 	_frame.add_child(_portrait)
+	_face = TextureRect.new()
+	_face.position = _portrait.position
+	_face.size = _portrait.size
+	_face.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	_face.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	_face.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	_frame.add_child(_face)
 	_label = Label.new()
 	_label.position = Vector2(TEXT_X, 8)
 	_label.size = Vector2(BOX.size.x - TEXT_X - 14, BOX.size.y - 16)
@@ -88,6 +96,10 @@ func show_line(who: String, text: String) -> void:
 	var sp: Dictionary = speakers.get(who, {})
 	_portrait.color = Color(sp.get("color", "2a2230"))
 	_portrait.visible = not sp.get("no_portrait", 0)
+	_face.texture = load(sp.face) if sp.has("face") and ResourceLoader.exists(sp.face) else null
+	_face.visible = _portrait.visible and _face.texture != null
+	if _face.visible:
+		_portrait.color = Color.BLACK
 	_set_text_x(TEXT_X if _portrait.visible else 14.0)
 	_resize(BOX.size.y)
 	_pages = _paginate(text)

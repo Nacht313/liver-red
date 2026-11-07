@@ -27,6 +27,17 @@ bash ~/path/to/liver-red/tools/art/galata_layers.command   # ［可逆變更］�
 5. 場景解析度是高 320 像素，畫完用最近鄰放大。道具的目標高度：攤販推車約 30、茶攤 36、貓 13、擦鞋箱 11、船寬 62。
 6. 背景：2560×512 生成，`pixelate.py` 4 格、32 色，取 `_1x`（640×128），遊戲裡放大 2 倍。
 
+## Godot 版的家（2026-11）
+
+```bash
+bash tools/art/home/make_home_images.command          # 生成（房間：Anima；角色、頭像：gpt-image-2.5）
+~/VideoStudio/envs/manim/bin/python tools/art/make_home.py   # 後處理 → game/art/
+```
+
+- 房間四張（房間、客廳、飯廳＋大門、樓梯間）各縮到高 200、真像素化，左右拼成一條 2200 寬的家（`game/art/home/home_strip.png`）。家具的位置寫在 `game/data/home.json`，換圖之後要照圖重新對齊。
+- 角色表和頭像用 gpt-image-2.5 生成（同一張圖裡角色比較一致），洋紅底自動切格、去背：主角身高 72、頭像 48×48。
+- 呼叫 OpenAI 用 `tools/art/gen_openai.sh`（curl，不需要 Python 的 openai 套件）。會花錢。
+
 ## 已知問題
 
 - 寬幅（5:1）生成時，Anima 偶爾會重複建築；發生時改成左右兩半分別生成再接。

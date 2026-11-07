@@ -1,0 +1,10 @@
+Pixel art character sprite sheet for a 2D side-scrolling game, 16-bit SNES style, hard pixel edges, no anti-aliasing, limited palette.
+Plain flat solid magenta background (#ff00ff) everywhere, no shadows on the background, no text, no labels, no grid lines.
+All characters are seen from the side (facing right), full body, same pixel scale, about 48 pixels tall in the original art, evenly spaced, not overlapping.
+
+Top row: the main character, a 22-year-old Chinese young man who just graduated: short black hair, plain white T-shirt, dark blue jeans, white sneakers, slim, a bit tired expression. Four walking animation frames from left to right (contact, passing, contact, passing), plus one standing idle frame at the end.
+
+Bottom row, left to right:
+1. His mother, about 50 years old, short permed dark hair, maroon cardigan over a light blouse, dark trousers, standing, two idle frames.
+2. His father, about 53 years old, short graying hair, navy polo shirt, gray trousers, slightly bent posture, standing, two idle frames.
+3. A neighbor auntie, about 60, curly gray hair, floral print shirt, holding a plastic bag of vegetables, standing, two idle frames.
