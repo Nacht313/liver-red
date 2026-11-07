@@ -23,6 +23,12 @@ thought.cage.name,一個籠子在尋找一隻鳥
 thought.cage.eff,消化完成後：膽識 +1。你開始相信自己的選擇。
 diary.wrote,在{where}寫下了日記。
 home.place.bedroom,家・你的房間
+ui.req.default,條件不足
+story.intro.1,六月的最後幾天，宿舍已經搬空了。
+story.intro.2,畢業證書塞在抽屜裡。手機裡躺著第十一封「很遺憾地通知您」。
+story.intro.3,網上的人說，經濟會一直壞下去，AI 會拿走大部分的工作。房子、車子、孩子……算了算，這輩子大概都買不起。
+story.intro.4,可是，這些都不是我真正想要的。
+story.intro.5,是一個籠子在尋找一隻鳥。
 # BEGIN generated: npm run export:godot
 know.k_tdac,泰國：中泰互免簽證，每次停留 30 天，180 天內累計不超過 90 天。入境前要在網上填 TDAC 數位入境卡，最早抵達前 3 天才能填，免費。
 know.k_funds,"泰國移民局可能抽查入境資金：免簽旅客每人 10,000 泰銖（或等值外幣、可證明的付款文件）。2026 年 7 月觀光局再次提醒。"

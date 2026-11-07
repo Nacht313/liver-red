@@ -1,0 +1,13 @@
+{
+ "nodes": {
+  "intro": {
+   "lines": [
+    {"who": "me", "text": "story.intro.1"},
+    {"who": "me", "text": "story.intro.2"},
+    {"who": "me", "text": "story.intro.3"},
+    {"who": "me", "text": "story.intro.4"},
+    {"who": "me", "text": "story.intro.5"}
+   ]
+  }
+ }
+}
