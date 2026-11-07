@@ -18,7 +18,11 @@ python3 -m http.server 8000   # 本機預覽：打開 http://localhost:8000/
 
 ES modules 不能用 file:// 打開，一定要透過 http server。
 
-## 架構（細節見 docs/architecture.md）
+## Godot 版（正式版）
+
+正式版在 `game/`（Godot 4.7.2）。在那裡工作前先讀 `game/CLAUDE.md`。網頁版（下面的架構）留作規則和資料的參考，不再加新功能。
+
+## 網頁版架構（細節見 docs/architecture.md）
 
 - `src/core/`：純函式小工具。
 - `src/game/`：遊戲邏輯（`Game` 類別、條件、語言）。**不碰 DOM 和 canvas**，所以能在 Node 裡完整測試。改規則一定要補 `tests/unit/`。

@@ -11,3 +11,6 @@ preview/
 .claude/settings.local.json
 # Godot 編輯器快取
 .godot/
+
+# Godot 匯入翻譯表時產生的檔案
+game/i18n/*.translation
